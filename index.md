@@ -1,6 +1,6 @@
-@def title = "Franklin Example"
+@def title = "UW-Madison Bitstream Computing Hackathon"
 
-# How to use Franklin
+# Bitstream Computing Hackathon
 
 \tableofcontents <!-- you can use \toc as well -->
 

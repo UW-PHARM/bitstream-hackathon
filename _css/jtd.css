@@ -407,7 +407,7 @@ MAIN CONTENT
 
 .main-header {
   padding-right: 1rem;
-  padding-left: 1rem;
+  /* padding-left: 1rem; */
   display: none;
 
   /* padding-top:1rem; */
@@ -421,7 +421,7 @@ MAIN CONTENT
 @media (min-width: 50rem) {
   .main-header {
     padding-right: 2rem;
-    padding-left: 2rem;
+    /* padding-left: 2rem; */
   }
 }
 
@@ -646,5 +646,4 @@ body { counter-reset: eqnum; }
 franklin-toc {
   /* Avoid clickable elements being too close together. */
   margin: 0.6rem 0;
-}
 }
