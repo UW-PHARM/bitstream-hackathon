@@ -159,3 +159,7 @@ Hopefully, you can now see why stochastic computing can be so resource efficient
 Each channel of `multiply_sbit` only needed to multiply two 1-bit numbers.
 This can be done with a single AND gate.
 
+````julia:ex11
+Pkg.activate(".") # hideall
+````
+
