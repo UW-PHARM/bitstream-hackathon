@@ -1,1 +1,1 @@
-nothing
+SBit(pos = false, neg = false)
