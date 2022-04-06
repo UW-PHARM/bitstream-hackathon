@@ -1,0 +1,12 @@
+[deps]
+BSON = "fbb218c0-5317-5bc6-957e-2ee96dd4b1f0"
+CoordinateTransformations = "150eb455-5306-5404-9cee-2592286d6298"
+DataAugmentation = "88a5189c-e7ff-4f85-ac6b-e6158070f02e"
+DataLoaders = "2e981812-ef13-4a9c-bfa0-ab13047b12a9"
+Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
+FluxTraining = "7bf95e4d-ca32-48da-9824-f0dc5310474f"
+MLDataPattern = "9920b226-0b2a-5f5f-9153-9aa70a013f8b"
+MLDatasets = "eb30cadb-4394-5ae3-aed4-317e484a6458"
+MLUtils = "f1d291b0-491e-4a28-83b9-f70985020b54"
+Metalhead = "dbeba491-748d-5e0e-a39e-b530a07fa0cc"
+ParameterSchedulers = "d7d3b36b-41b8-4d0d-a2bf-768c6151755e"
