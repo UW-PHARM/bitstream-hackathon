@@ -1,6 +1,6 @@
 using Pkg # hideall
 Pkg.activate("_tutorials/Project.toml")
-Pkg.update()
+Pkg.instantiate()
 
 # This is a test.
 

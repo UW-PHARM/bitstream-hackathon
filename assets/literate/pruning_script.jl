@@ -2,7 +2,7 @@
 
 using Pkg # hideall
 Pkg.activate("_tutorials/Project.toml")
-Pkg.update()
+Pkg.instantiate()
 
 include("_tutorials/src/setup.jl");
 

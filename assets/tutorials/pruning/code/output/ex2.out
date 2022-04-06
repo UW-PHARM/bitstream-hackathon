@@ -1,0 +1,4 @@
+LoadError: ArgumentError: Package Flux [587475ba-b771-5e3f-ad9e-33799f191a9c] is required but does not seem to be installed:
+ - Run `Pkg.instantiate()` to install all recorded dependencies.
+
+in expression starting at /home/runner/work/bitstream-hackathon/bitstream-hackathon/_tutorials/src/setup.jl:1
