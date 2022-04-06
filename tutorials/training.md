@@ -3,4 +3,4 @@
 
 # Training tutorial
 
-\literate{/_tutorials/training.jl}
+<!-- \literate{/_tutorials/training.jl} -->
