@@ -3,4 +3,4 @@
 
 # Pruning tutorial
 
-\literate{/_tutorials/pruning.jl}
+\tutorial{pruning.jl}

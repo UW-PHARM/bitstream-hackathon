@@ -18,5 +18,10 @@ prepath = "bitstream-hackathon"
 <!--
 Add here global latex commands to use throughout your pages.
 -->
-\newcommand{\R}{\mathbb R}
-\newcommand{\scal}[1]{\langle #1 \rangle}
+\newcommand{\tutorial}[1]{
+  *Make sure you have completed the [getting started](/tutorials/overview) tutorial.*
+
+  **Table of contents:**
+  
+  \toc\literate{/_tutorials/!#1}
+}
