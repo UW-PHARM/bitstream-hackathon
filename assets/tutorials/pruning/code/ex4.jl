@@ -1,2 +1,3 @@
 # This file was generated, do not modify it. # hide
-Pkg.activate(".") # hideall
+using FluxPrune
+m_pruned = prune(LevelPrune(0.1), m)
