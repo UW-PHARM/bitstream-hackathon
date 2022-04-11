@@ -35,7 +35,7 @@ jobs:
     - run: julia -e '
             using Pkg; Pkg.activate("."); Pkg.instantiate();
             using NodeJS; run(`$(npm_cmd()) install highlight.js`);
-            include("run.jl")
+            include("run.jl");
             deploy();'
     - name: Build and Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
