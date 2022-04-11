@@ -10,7 +10,7 @@ This page will guide you through setting up your Julia environment and the tutor
 
 Going from nothing to a complete Julia IDE is easy. Just follow these steps:
 
-1. Install Julia by downloading v1.7.2 [here](https://julialang.org/downloads/) and installing the binary as per your system requirements. Ensure that your installation is working by opening your terminal and running:
+1. Install Julia by downloading v1.7.2 [here](https://julialang.org/downloads/) and installing the binary as per your system requirements. Ensure that your installation is working by opening your terminal and running (if this doesn't work for you, then you may need to add the `julia` binary to your system path):
     ```txt
     $ julia
                    _
@@ -24,7 +24,6 @@ Going from nothing to a complete Julia IDE is easy. Just follow these steps:
     
     julia>
     ```
-    If this doesn't work for you, then you may need to add the `julia` binary to your system path.
 
 2. Download [VS Code](https://code.visualstudio.com) (the preferred Julia editor). You can use your own editor, but then you will not be able to take advantage of the Julia integration with VS Code. In this case, you would need to copy-and-paste code snippets into a Julia REPL on your terminal.
 
@@ -32,13 +31,24 @@ Going from nothing to a complete Julia IDE is easy. Just follow these steps:
 
 ## Setting up the hackathon tutorials
 
-Download the all hackathon tutorials files [here](https://github.com/UW-PHARM/bitstream-hackathon/tree/gh-pages/_tutorials). Make sure to grab _all the files_. Save them under a shared folder.
+Download the all hackathon tutorials files [here](/assets/tutorials.tar.gz). Uncompress and save them under a shared folder.
 
 Open the folder you just saved in VS Code. You should see the Julia language server autodetect the tutorial environment, and the bottom pane of VS Code will read `Julia env: <name of your folder>`.
 
-Select a tutorial that you would like to run. All the tutorials are stored under a folder called `_tutorials` on the website. You need to delete this prefix from all the paths in the tutorial. For example, if the tutorial contains `include("_tutorials/src/setup.jl")`, then you would change it to `include("src/setup.jl")`.
-
-Now, you can run the tutorial! Open up a new REPL in VS Code, and run
+Now, you can run the tutorials! Open up a new REPL in VS Code, and run
 ```julia-repl
 julia> include("<tutorial file>")
 ```
+
+## Accessing the pre-trained model and dataset
+
+We provide all participants with a pre-trained version of MobileNet-v1 designed to be used with bitstream computing. This model matches the original network with a width multipler of 0.25 and input resolution of 96 by 96. You can access the pre-trained model by setting up the tutorial folder as described in [above](#setting-up-the-hackathon-tutorials). Then, in your code, add
+```julia
+# this is the setup file included in the tutorial
+include("src/setup.jl")
+
+modelpath = joinpath(artifact"mobilenet", "mobilenet.bson")
+m = BSON.load(modelpath)[:m]
+```
+
+We also provide a version of the [Visual Wake Words dataset](https://arxiv.org/abs/1906.05721) via the same artifacts system.

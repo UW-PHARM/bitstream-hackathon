@@ -2,7 +2,6 @@ using Pkg # hideall
 Pkg.activate("_tutorials/Project.toml")
 Pkg.instantiate()
 
-## Seperate sections
 # # Pruning tutorial
 
 # ## Introduction
@@ -89,7 +88,5 @@ m_ch_pruned = prune(ChannelPrune(0.1), m)
 # 2. [Blog Post on Model Compression](https://medium.com/gsi-technology/an-overview-of-model-compression-techniques-for-deep-learning-in-space-3fd8d4ce84e5)
 # 3. [Model Compression Survey Paper](https://arxiv.org/abs/1710.0928)
 # 4. [Deep Compression Paper](https://arxiv.org/abs/1510.00149)
-
-##
 
 Pkg.activate(".") # hideall

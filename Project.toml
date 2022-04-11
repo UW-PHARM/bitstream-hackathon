@@ -1,5 +1,5 @@
 [deps]
-FluxTraining = "7bf95e4d-ca32-48da-9824-f0dc5310474f"
 Franklin = "713c75ef-9fc9-4b05-94a9-213340da978e"
+Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
 NodeJS = "2bd173c7-0d6d-553b-b6af-13a54713934c"
-ParameterSchedulers = "d7d3b36b-41b8-4d0d-a2bf-768c6151755e"
+Tar = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"

@@ -9,7 +9,7 @@ mintoclevel = 2
 # these files might be copied and, if markdown, processed by Franklin which
 # you might not want. Indicate directories by ending the name with a `/`.
 # Base files such as LICENSE.md and README.md are ignored by default.
-ignore = ["node_modules/"]
+ignore = ["node_modules/", "run.jl"]
 
 # URL prepath
 prepath = "bitstream-hackathon"
@@ -22,6 +22,6 @@ Add here global latex commands to use throughout your pages.
   *Make sure you have completed the [getting started](/tutorials/overview) tutorial.*
 
   **Table of contents:**
-  
+
   \toc\literate{/_tutorials/!#1}
 }

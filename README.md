@@ -22,9 +22,9 @@ This will launch Julia using the repo's root directory as the project environmen
 ```
 Finally, you can run a local server with the website by exiting Pkg mode (press "backspace"), then running:
 ```julia-repl
-julia> using Franklin
+julia> include("run.jl")
 
-julia> serve()
+julia> preview()
 ```
 After the website is finished building, a `localhost` server should open up.
 
@@ -35,4 +35,4 @@ All the tutorials are written with [Literate.jl](https://github.com/fredrikekre/
 2. Adding a markdown page for the tutorial under `tutorial`
 3. Adding the page to the sidebar under `_layout/pgwrap.html`
 
-You can see the other tutorials in these locations for an example how-to.
+You can see the other tutorials in these locations for an example how-to. Make sure you prepend your paths with `_tutorials` as the website builder will run the code from the repo root directory. When the tutorials are packaged for the participants, `_tutorials` is replaced by `.`.
