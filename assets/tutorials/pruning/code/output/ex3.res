@@ -58,8 +58,8 @@ Chain(
   Chain(
     GlobalMeanPool(),
     MLUtils.flatten,
-    Dense(256, 64, relu),               # 16_448 parameters
-    Dense(64, 2),                       # 130 parameters
+    Dense(256 => 64, relu),             # 16_448 parameters
+    Dense(64 => 2),                     # 130 parameters
   ),
 )         # Total: 112 trainable arrays, 232_386 parameters,
           # plus 54 non-trainable, 5_472 parameters, summarysize 950.117 KiB.

@@ -138,6 +138,4 @@ abs(estimate(z) - float(z))
 # Each channel of `multiply_sbit` only needed to multiply two 1-bit numbers. 
 # This can be done with a single AND gate.
 
-#
-
 Pkg.activate(".") # hideall

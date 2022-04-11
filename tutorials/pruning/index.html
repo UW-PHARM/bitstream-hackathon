@@ -60,26 +60,150 @@
   Chain(
     GlobalMeanPool(),
     MLUtils.flatten,
-    Dense(256, 64, relu),               # 16_448 parameters
-    Dense(64, 2),                       # 130 parameters
+    Dense(256 => 64, relu),             # 16_448 parameters
+    Dense(64 => 2),                     # 130 parameters
   ),
 )         # Total: 112 trainable arrays, 232_386 parameters,
           # plus 54 non-trainable, 5_472 parameters, summarysize 950.117 KiB.</code></pre>
 <p>compute<em>dot</em>prods&#40;m &#40;96, 96, 3, 1&#41;&#41; # height and weight are 96, input channels are 3, batch size &#61; 1</p>
 <p>Next, we need to load in the dataset to prune and finetune our model. show line that loads in the data. Now that we&#39;ve finished our setup, let&#39;s prune our model. We can use the FluxPrune.jl package to easily prune the lowest magnitude weights.</p>
 <pre><code class=language-julia >using FluxPrune
-m_pruned &#61; prune&#40;LevelPrune&#40;0.1&#41;, m&#41;</code></pre><pre><code class="plaintext code-output">ArgumentError: Package FluxPrune not found in current path:
-- Run `import Pkg; Pkg.add("FluxPrune")` to install the FluxPrune package.
-
-</code></pre>
+m_pruned &#61; prune&#40;LevelPrune&#40;0.1&#41;, m&#41;</code></pre><pre><code class="plaintext code-output">Chain(
+  Chain(
+    Conv((3, 3), 3 => 8, pad=1, stride=2),  # 224 parameters
+    BatchNorm(8, relu),                 # 16 parameters, plus 16
+    Conv((3, 3), 8 => 8, pad=1, groups=8),  # 80 parameters
+    BatchNorm(8, relu),                 # 16 parameters, plus 16
+    Conv((1, 1), 8 => 16),              # 144 parameters
+    BatchNorm(16, relu),                # 32 parameters, plus 32
+    Conv((3, 3), 16 => 16, pad=1, stride=2, groups=16),  # 160 parameters
+    BatchNorm(16, relu),                # 32 parameters, plus 32
+    Conv((1, 1), 16 => 32),             # 544 parameters
+    BatchNorm(32, relu),                # 64 parameters, plus 64
+    Conv((3, 3), 32 => 32, pad=1, groups=32),  # 320 parameters
+    BatchNorm(32, relu),                # 64 parameters, plus 64
+    Conv((1, 1), 32 => 32),             # 1_056 parameters
+    BatchNorm(32, relu),                # 64 parameters, plus 64
+    Conv((3, 3), 32 => 32, pad=1, stride=2, groups=32),  # 320 parameters
+    BatchNorm(32, relu),                # 64 parameters, plus 64
+    Conv((1, 1), 32 => 64),             # 2_112 parameters
+    BatchNorm(64, relu),                # 128 parameters, plus 128
+    Conv((3, 3), 64 => 64, pad=1, groups=64),  # 640 parameters
+    BatchNorm(64, relu),                # 128 parameters, plus 128
+    Conv((1, 1), 64 => 64),             # 4_160 parameters
+    BatchNorm(64, relu),                # 128 parameters, plus 128
+    Conv((3, 3), 64 => 64, pad=1, stride=2, groups=64),  # 640 parameters
+    BatchNorm(64, relu),                # 128 parameters, plus 128
+    Conv((1, 1), 64 => 128),            # 8_320 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((1, 1), 128 => 128),           # 16_512 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((1, 1), 128 => 128),           # 16_512 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((1, 1), 128 => 128),           # 16_512 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((1, 1), 128 => 128),           # 16_512 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((1, 1), 128 => 128),           # 16_512 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, stride=2, groups=128),  # 1_280 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((1, 1), 128 => 256),           # 33_024 parameters
+    BatchNorm(256, relu),               # 512 parameters, plus 512
+    Conv((3, 3), 256 => 256, pad=1, groups=256),  # 2_560 parameters
+    BatchNorm(256, relu),               # 512 parameters, plus 512
+    Conv((1, 1), 256 => 256),           # 65_792 parameters
+    BatchNorm(256, relu),               # 512 parameters, plus 512
+  ),
+  Chain(
+    GlobalMeanPool(),
+    MLUtils.flatten,
+    Dense(256 => 64, relu),             # 16_448 parameters
+    Dense(64 => 2),                     # 130 parameters
+  ),
+)         # Total: 112 trainable arrays, 232_386 parameters,
+          # plus 54 non-trainable, 5_472 parameters, summarysize 992.328 KiB.</code></pre>
 <p>FluxPrune&#39;s prune function takes in two inputs: the pruning strategy and the model to prune. We are using the LevelPrune strategy which traverses each layer of the model and removes the lowest p&#37; &#40;10&#37; in this case&#41; weights in each layer. This is called unstructured pruning since we are concerned with removing the lowest magnitude weights and not worrying about if the sparsity induces some kind of structure. FluxPrune allows you to set a different pruning strategy for every layer in the model if you desire. Typically, we also have to finetune our resulting pruned model in order to recover some accuracy penalty induced by setting the weights to 0. Let&#39;s compute the number of multiplies and accumulates to see how much we have saved.</p>
 <p>compute<em>dot</em>prods&#40;m_pruned, &#40;96, 96, 3, 1&#41;&#41; # height and weight are 96, input channels are 3, batch size &#61; 1</p>
 <p>We can see that we have obtained a reduction in the number of multiplies relative to our unpruned baseline. Unstructured pruning is powerful in that we are able to prune so aggressively that we can obtain sparse models that perform just as well as the baseline at less than 10&#37; of the original model capacity. While unstructured pruning achieves the best compression vs. accuracy tradeoffs, it may not translate into faster inference since the unstructured nature of zeros in the weight matrices may induce irregular memory access patterns and sparse GEMM kernels are competitive with dense ones only at extreme sparsities. For these reasons, one may consider structured pruning instead.</p>
 <h3 id=structured_pruning ><a href="#structured_pruning" class=header-anchor >Structured Pruning</a></h3>
 <p>In structured pruning, we remove entire channels &#40;typically&#41; or filters rather than individual weights. This type of pruning only applies to the convolutional layers, as the concept of removing structure really applies to conv layers as opposed to full-connected layers. By removing the lowest magnitude channels, we are drastically able to reduce the number of multiplies and accumulates that our model has to perform.</p>
 <p>To prune channels, we can define the ChannelPrune strategy, which solely targets the convolutional layers.</p>
-<pre><code class=language-julia >m_ch_pruned &#61; prune&#40;ChannelPrune&#40;0.1&#41;, m&#41;</code></pre><pre><code class="plaintext code-output">UndefVarError: ChannelPrune not defined
-</code></pre>
+<pre><code class=language-julia >m_ch_pruned &#61; prune&#40;ChannelPrune&#40;0.1&#41;, m&#41;</code></pre><pre><code class="plaintext code-output">Chain(
+  Chain(
+    Conv((3, 3), 3 => 8, pad=1, stride=2),  # 224 parameters
+    BatchNorm(8, relu),                 # 16 parameters, plus 16
+    Conv((3, 3), 8 => 8, pad=1, groups=8),  # 80 parameters
+    BatchNorm(8, relu),                 # 16 parameters, plus 16
+    Conv((1, 1), 8 => 16),              # 144 parameters
+    BatchNorm(16, relu),                # 32 parameters, plus 32
+    Conv((3, 3), 16 => 16, pad=1, stride=2, groups=16),  # 160 parameters
+    BatchNorm(16, relu),                # 32 parameters, plus 32
+    Conv((1, 1), 16 => 32),             # 544 parameters
+    BatchNorm(32, relu),                # 64 parameters, plus 64
+    Conv((3, 3), 32 => 32, pad=1, groups=32),  # 320 parameters
+    BatchNorm(32, relu),                # 64 parameters, plus 64
+    Conv((1, 1), 32 => 32),             # 1_056 parameters
+    BatchNorm(32, relu),                # 64 parameters, plus 64
+    Conv((3, 3), 32 => 32, pad=1, stride=2, groups=32),  # 320 parameters
+    BatchNorm(32, relu),                # 64 parameters, plus 64
+    Conv((1, 1), 32 => 64),             # 2_112 parameters
+    BatchNorm(64, relu),                # 128 parameters, plus 128
+    Conv((3, 3), 64 => 64, pad=1, groups=64),  # 640 parameters
+    BatchNorm(64, relu),                # 128 parameters, plus 128
+    Conv((1, 1), 64 => 64),             # 4_160 parameters
+    BatchNorm(64, relu),                # 128 parameters, plus 128
+    Conv((3, 3), 64 => 64, pad=1, stride=2, groups=64),  # 640 parameters
+    BatchNorm(64, relu),                # 128 parameters, plus 128
+    Conv((1, 1), 64 => 128),            # 8_320 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((1, 1), 128 => 128),           # 16_512 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((1, 1), 128 => 128),           # 16_512 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((1, 1), 128 => 128),           # 16_512 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((1, 1), 128 => 128),           # 16_512 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((1, 1), 128 => 128),           # 16_512 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, stride=2, groups=128),  # 1_280 parameters
+    BatchNorm(128, relu),               # 256 parameters, plus 256
+    Conv((1, 1), 128 => 256),           # 33_024 parameters
+    BatchNorm(256, relu),               # 512 parameters, plus 512
+    Conv((3, 3), 256 => 256, pad=1, groups=256),  # 2_560 parameters
+    BatchNorm(256, relu),               # 512 parameters, plus 512
+    Conv((1, 1), 256 => 256),           # 65_792 parameters
+    BatchNorm(256, relu),               # 512 parameters, plus 512
+  ),
+  Chain(
+    GlobalMeanPool(),
+    MLUtils.flatten,
+    Dense(256 => 64, relu),             # 16_448 parameters
+    Dense(64 => 2),                     # 130 parameters
+  ),
+)         # Total: 112 trainable arrays, 232_386 parameters,
+          # plus 54 non-trainable, 5_472 parameters, summarysize 976.656 KiB.</code></pre>
 <p>compute<em>dot</em>prods&#40;m_pruned, &#40;96, 96, 3, 1&#41;&#41; # height and weight are 96, input channels are 3, batch size &#61; 1</p>
 <p>Compared to the number of multiplies reduced from unstructured pruning, structured pruning drastically reduces the computational cost incurred by the model during inference. The caveat for structured pruning is that by eliminating groups of weights, the compression ratio that structured pruning methods are set at are much lower than those from unstructured methods so the memory savings are limited. Choosing what the optimal amount of compression vs. latency of the model during inference is a design choice that must be made during model design and prior to deployment.</p>
 <p>Useful Resources:</p>

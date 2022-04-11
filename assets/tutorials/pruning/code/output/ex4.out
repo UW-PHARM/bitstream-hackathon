@@ -1,3 +1,0 @@
-ArgumentError: Package FluxPrune not found in current path:
-- Run `import Pkg; Pkg.add("FluxPrune")` to install the FluxPrune package.
-

@@ -1,10 +1,8 @@
-# This file was generated, do not modify it.
-
 using Pkg # hideall
-Pkg.activate("_tutorials/Project.toml")
+Pkg.activate("./Project.toml")
 Pkg.instantiate()
 
-include("_tutorials/src/setup.jl");
+include("./src/setup.jl");
 
 m = MobileNet(relu, 0.25; fcsize = 64, nclasses = 2)
 
@@ -14,4 +12,6 @@ m_pruned = prune(LevelPrune(0.1), m)
 m_ch_pruned = prune(ChannelPrune(0.1), m)
 
 Pkg.activate(".") # hideall
+
+# This file was generated using Literate.jl, https://github.com/fredrikekre/Literate.jl
 

@@ -3,8 +3,6 @@
 using Pkg # hideall
 Pkg.activate("_tutorials/Project.toml")
 Pkg.instantiate()
-
-# Seperate sections
 ````
 
 # Pruning tutorial
@@ -108,8 +106,6 @@ Useful Resources:
 4. [Deep Compression Paper](https://arxiv.org/abs/1510.00149)
 
 ````julia:ex6
-#
-
 Pkg.activate(".") # hideall
 ````
 
