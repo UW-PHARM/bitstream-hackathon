@@ -52,3 +52,12 @@ m = BSON.load(modelpath)[:m]
 ```
 
 We also provide a version of the [Visual Wake Words dataset](https://arxiv.org/abs/1906.05721) via the same artifacts system.
+
+```julia
+# this is the setup file included in the tutorial
+include("src/setup.jl")
+
+dataroot = joinpath(artifact"vww", "vww-hackathon")
+# get the train split (options are :train, :test, :val)
+traindata = VisualWakeWords(dataroot; subset = :train)
+```
