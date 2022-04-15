@@ -17,9 +17,15 @@ include(<span class=hljs-string >&quot;src/setup.jl&quot;</span>)
 modelpath = joinpath(<span class=hljs-string >artifact&quot;mobilenet&quot;</span>, <span class=hljs-string >&quot;mobilenet.bson&quot;</span>)
 m = BSON.load(modelpath)[:m]</code></pre>
 <p>We also provide a version of the <a href="https://arxiv.org/abs/1906.05721">Visual Wake Words dataset</a> via the same artifacts system.</p>
+<pre><code class="julia hljs"><span class=hljs-comment ># this is the setup file included in the tutorial</span>
+include(<span class=hljs-string >&quot;src/setup.jl&quot;</span>)
+
+dataroot = joinpath(<span class=hljs-string >artifact&quot;vww&quot;</span>, <span class=hljs-string >&quot;vww-hackathon&quot;</span>)
+<span class=hljs-comment ># get the train split (options are :train, :test, :val)</span>
+traindata = VisualWakeWords(dataroot; subset = :train)</code></pre>
 <div class=page-foot >
     <hr>
-    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> UW-Madison PHARM Group. Last modified: April 11, 2022.
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> UW-Madison PHARM Group. Last modified: April 15, 2022.
     Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
 </div>
 </div>
