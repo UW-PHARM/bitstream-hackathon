@@ -104,10 +104,12 @@ uuid = "b99e7846-7c00-51b0-8f62-c81ae34c0232"
 version = "0.5.10"
 
 [[deps.BitSAD]]
-deps = ["Artifacts", "DataStructures", "Ghost", "LazyArtifacts", "LightGraphs", "LinearAlgebra", "MacroTools", "MetaGraphs", "Random", "Setfield", "Statistics"]
-git-tree-sha1 = "a478b575e252b195a241942766bf2cadd07f3e6a"
+deps = ["Artifacts", "DataStructures", "Ghost", "LazyArtifacts", "LightGraphs", "LinearAlgebra", "MacroTools", "MetaGraphs", "OrderedCollections", "Random", "RandomNumbers", "Setfield", "Statistics"]
+git-tree-sha1 = "1e979fb9c965151ba077424f1b7e7d738e9187d5"
+repo-rev = "master"
+repo-url = "https://github.com/UW-PHARM/BitSAD.jl.git"
 uuid = "7f90e340-ca22-4a3e-a259-118ed254aff3"
-version = "0.1.1"
+version = "0.2.0"
 
 [[deps.BufferedStreams]]
 deps = ["Compat", "Test"]
@@ -397,19 +399,15 @@ version = "0.13.0"
 
 [[deps.FluxPrune]]
 deps = ["ChainRulesCore", "Flux", "Functors", "LinearAlgebra", "MacroTools", "MaskedArrays", "NNlib"]
-git-tree-sha1 = "2b4a26de45905a47d746b1f8b26ae690d477b2f3"
-repo-rev = "main"
-repo-url = "https://github.com/darsnack/FluxPrune.jl"
+git-tree-sha1 = "37aeda389bc16702158e23f0f7abb49f9291e828"
 uuid = "1384c1f3-d8dd-4e05-9122-0c792acaad72"
 version = "0.1.0"
 
 [[deps.FluxTraining]]
 deps = ["BSON", "DataStructures", "EarlyStopping", "Flux", "Glob", "Graphs", "ImageCore", "InlineTest", "OnlineStats", "ParameterSchedulers", "Parameters", "PrettyTables", "ProgressMeter", "Reexport", "Statistics", "TensorBoardLogger", "UUIDs", "ValueHistories", "Zygote"]
-git-tree-sha1 = "43cc508105dea8210abf4eb45c3bc2c1aecff234"
-repo-rev = "master"
-repo-url = "https://github.com/FluxML/FluxTraining.jl.git"
+git-tree-sha1 = "11ed5f3d0a9e9b6312f1ea9dba97ea2f25bf16a8"
 uuid = "7bf95e4d-ca32-48da-9824-f0dc5310474f"
-version = "0.2.4"
+version = "0.3.0"
 
 [[deps.FoldsThreads]]
 deps = ["Accessors", "FunctionWrappers", "InitialValues", "SplittablesBase", "Transducers"]
@@ -801,8 +799,6 @@ uuid = "d6f4376e-aef5-505a-96c1-9c027394607a"
 
 [[deps.MaskedArrays]]
 git-tree-sha1 = "0221f710bab1510075abac7a2b107fa5465b1aef"
-repo-rev = "main"
-repo-url = "https://github.com/darsnack/MaskedArrays.jl"
 uuid = "e3e6debb-e142-42bc-8e83-ba8646d1d252"
 version = "0.1.0"
 
@@ -865,10 +861,10 @@ uuid = "872c559c-99b0-510c-b3b7-b6c96a88d5cd"
 version = "0.8.4"
 
 [[deps.NNlibBitSAD]]
-deps = ["Artifacts", "BitSAD", "Flux", "Functors", "Ghost", "LazyArtifacts", "NNlib"]
-git-tree-sha1 = "eef9a2eca163c16ef6bcfe91a6e54c1be7b268a1"
+deps = ["Artifacts", "BitSAD", "Functors", "Ghost", "LazyArtifacts", "NNlib"]
+git-tree-sha1 = "aad6668668795d06b2fe38564f65d527e005a116"
 repo-rev = "main"
-repo-url = "https://github.com/UW-PHARM/NNlibBitSAD.jl.git"
+repo-url = "https://github.com/UW-PHARM/NNlibBitSAD.jl"
 uuid = "3a97d706-ca6b-42d2-9a6c-df68ab7e4fa7"
 version = "0.1.0"
 

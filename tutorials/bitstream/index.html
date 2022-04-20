@@ -3,7 +3,7 @@
 x &#61; SBitstream&#40;0.3&#41;</code></pre><pre><code class="plaintext code-output">SBitstream{Float64}(value = 0.3)
     with 0 bits.</code></pre> <p>Here, we created a <code>SBitstream</code> &#40;the type in BitSAD for stochastic bitstreams&#41; encoding the real value 0.3. <code>SBitstream</code> will keep track of the mean of the Bernoulli distribution, which we can recover with <code>float</code>.</p> <pre><code class=language-julia >float&#40;x&#41;</code></pre><pre><code class="plaintext code-output">0.3</code></pre>
 <p>You&#39;ll also notice that there were &quot;0 bits enqueue&quot; in <code>x</code>. This refers to the fact that the bitstream, <code>x</code>, is a sequence of samples. Currently, we have not drawn any samples from <code>x</code>. We can try that now:</p>
-<pre><code class=language-julia >xt &#61; pop&#33;&#40;x&#41;</code></pre><pre><code class="plaintext code-output">SBit(pos = true, neg = false)</code></pre>
+<pre><code class=language-julia >xt &#61; pop&#33;&#40;x&#41;</code></pre><pre><code class="plaintext code-output">SBit(pos = false, neg = false)</code></pre>
 <p>Now, we have a single sample, <code>xt</code>, which is of type <code>SBit</code>. An <code>SBit</code> is a &quot;stochastic bit&quot; which is just a convenient alias for a <a href="https://docs.julialang.org/en/v1.6/manual/functions/#Named-Tuples"><code>NamedTuple</code></a> with two parts –- the positive part &#40;<code>pos</code>&#41; and the negative part &#40;<code>neg</code>&#41;.</p>
 <blockquote>
 <p>Wait, I thought stochastic bitstreams were a single bit sequence? <br />    –- You &#40;probably&#41;</p>
@@ -25,7 +25,7 @@ x</code></pre><pre><code class="plaintext code-output">length(x) = 2
 SBitstream{Float64}(value = 0.3)
     with 1002 bits.</code></pre>
 <p>Finally, we can see that the empirical average over the <code>SBit</code>s in queue matches the encoded value quite closely.</p>
-<pre><code class=language-julia >abs&#40;estimate&#40;x&#41; - float&#40;x&#41;&#41;</code></pre><pre><code class="plaintext code-output">0.0043912175648702645</code></pre>
+<pre><code class=language-julia >abs&#40;estimate&#40;x&#41; - float&#40;x&#41;&#41;</code></pre><pre><code class="plaintext code-output">0.017564870259481002</code></pre>
 <h2 id=operations_on_sbitstreams ><a href="#operations_on_sbitstreams" class=header-anchor >Operations on <code>SBitstream</code>s</a></h2>
 <p>So far, we have not computed any meaningful results with BitSAD. Let&#39;s go back to the multiplication example and try to multiply two <code>SBitstream</code>s.</p>
 <pre><code class=language-julia >y &#61; SBitstream&#40;0.5&#41;
@@ -51,14 +51,14 @@ for t in 1:num_samples
     push&#33;&#40;z, zbit&#41;
 end
 
-abs&#40;estimate&#40;z&#41; - float&#40;z&#41;&#41;</code></pre><pre><code class="plaintext code-output">0.008000000000000007</code></pre>
+abs&#40;estimate&#40;z&#41; - float&#40;z&#41;&#41;</code></pre><pre><code class="plaintext code-output">0.012999999999999984</code></pre>
 <p>We used a helper function, <code>multiply_sbit</code> to multiply the positive and negative channel of each <code>SBit</code> separately. This resulted in a new <code>SBit</code>, <code>zbit</code>, which we pushed onto <code>z</code>. When we take the empirical average of all these <code>zbit</code>s, we see that it is close to the true mean of <code>z</code>.</p>
 <p>Hopefully, you can now see why stochastic computing can be so resource efficient. Each channel of <code>multiply_sbit</code> only needed to multiply two 1-bit numbers. This can be done with a single AND gate.</p>
 
 
 <div class=page-foot >
     <hr>
-    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> UW-Madison PHARM Group. Last modified: April 15, 2022.
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> UW-Madison PHARM Group. Last modified: April 20, 2022.
     Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
 </div>
 </div>

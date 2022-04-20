@@ -11,6 +11,7 @@ using MLUtils
 using BSON
 using BitSAD, NNlibBitSAD
 using Artifacts, LazyArtifacts
+using Statistics
 
 import MLDataPattern
 
@@ -40,3 +41,4 @@ end
 include("vww.jl")
 include("augmentation.jl")
 include("mobilenet.jl")
+include("bitstream.jl")
