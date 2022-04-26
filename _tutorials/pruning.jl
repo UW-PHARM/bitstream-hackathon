@@ -59,7 +59,8 @@ m_pruned = prune(LevelPrune(0.1), m)
 # if you desire. Typically, we also have to finetune our resulting pruned model in order to recover some accuracy penalty induced by 
 # setting the weights to 0. Let's compute the number of multiplies and accumulates to see how much we have saved.
 #
-# compute_dot_prods(m_pruned, (96, 96, 3, 1)) # height and weight are 96, input channels are 3, batch size = 1
+mults, adds, output_size = compute_dot_prods(m_pruned, (96, 96, 3, 1)) # height and weight are 96, input channels are 3, batch size = 1
+println("MobileNet Mults ", mults, " Adds ", adds)
 #
 # We can see that we have obtained a reduction in the number of multiplies relative to our unpruned baseline. Unstructured
 # pruning is powerful in that we are able to prune so aggressively that we can obtain sparse models that perform just as well
@@ -76,7 +77,8 @@ m_pruned = prune(LevelPrune(0.1), m)
 
 # To prune channels, we can define the ChannelPrune strategy, which solely targets the convolutional layers.
 m_ch_pruned = prune(ChannelPrune(0.1), m)
-# compute_dot_prods(m_pruned, (96, 96, 3, 1)) # height and weight are 96, input channels are 3, batch size = 1
+mults, adds, output_size = compute_dot_prods(m_pruned, (96, 96, 3, 1)) # height and weight are 96, input channels are 3, batch size = 1
+println("MobileNet Mults ", mults, " Adds ", adds)
 
 # Compared to the number of multiplies reduced from unstructured pruning, structured pruning drastically reduces the computational cost incurred by the model during inference.
 # The caveat for structured pruning is that by eliminating groups of weights, the compression ratio that structured pruning methods are set at are much lower than those

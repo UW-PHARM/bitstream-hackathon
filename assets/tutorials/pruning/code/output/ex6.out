@@ -1,0 +1,7 @@
+num_multiplies in layer 1: 1908555
+num_accumulates in layer 1: 1837888
+output_size: (94, 94, 8, 1)
+num_multiplies in layer 2: 0
+num_accumulates in layer 2: 0
+output_size: (94, 94, 8, 1)
+DimensionMismatch("Input channels must match! (8 vs. 1)")

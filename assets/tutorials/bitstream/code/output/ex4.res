@@ -1,1 +1,1 @@
-SBit(pos = false, neg = false)
+SBit(pos = true, neg = false)
