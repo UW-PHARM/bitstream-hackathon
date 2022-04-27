@@ -19,15 +19,22 @@ In the meantime, you can work through the tutorials on this website to get start
 
 ## Participation rules
 
-**Goal:** Prune a pre-trained MobileNet v1 model to optimize for energy efficiency without compromising the accuracy.
+**Goal:** Prune a pre-trained MobileNetv1 model to optimize for energy efficiency without compromising the accuracy.
+
+Your entry will be evaluated on three categories:
+- *Accuracy:* how well can your model classify input images?
+- *Area:* how big is the hardware circuit implementation of your model?
+- *Energy:* how energy efficient is your hardware?
+
+**NOTE:** Stayed tuned for instructions on how to evaluate your submission.
 
 ## Information and suppport
 
 Join the mailing list for updates/questions/support:
-[bitstream-hackathon+subscribe@googlegroups.com](mailto:bitstream-hackathon+subscribe@googlegroups.com)
-[https://groups.google.com/u/1/g/bitstream-hackathon](https://groups.google.com/u/1/g/bitstream-hackathon)
+- Send a blank email to [bitstream-hackathon+subscribe@googlegroups.com](mailto:bitstream-hackathon+subscribe@googlegroups.com)
+- Or navigate to [https://groups.google.com/u/1/g/bitstream-hackathon](https://groups.google.com/u/1/g/bitstream-hackathon) and select "Join"
 
-**NOTE** you need a gmail/google account to join the mailing list. You can always create one with your existing email and delete it once you are done with it by following the instructions found here:
+**NOTE:** You need a gmail/google account to join the mailing list. You can always create one with your existing email and delete it once you are done with it by following the instructions found here:
 [https://support.google.com/accounts/answer/27441](https://support.google.com/accounts/answer/27441)
 
 [Hackathon flyer](assets/flyer.pdf)
