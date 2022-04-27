@@ -12,6 +12,7 @@ using MLUtils
 using BSON
 using BitSAD, NNlibBitSAD
 using Artifacts, LazyArtifacts
+using Pkg.Artifacts: ensure_artifact_installed, artifact_hash, artifact_path
 using Statistics
 
 import MLDataPattern

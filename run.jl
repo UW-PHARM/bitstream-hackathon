@@ -32,10 +32,10 @@ function build_tutorials(path = "_tutorials", tarpath = "__site/assets/"; ignore
     Tar.create(outpath, joinpath(tarpath, "tutorials.tar.gz"))
 end
 
-function preview()
+function preview(; eval_all = false)
     build_tutorials(ignore = ["training.jl"])
     serve(single = true)
-    serve()
+    serve(eval_all = eval_all)
 end
 
 function deploy()
