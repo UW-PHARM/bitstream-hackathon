@@ -85,7 +85,7 @@ println("MobileNet Mults ", mults, " Adds ", adds)
 # from unstructured methods so the memory savings are limited. Choosing what the optimal amount of compression vs. latency of the model during inference is a design choice that must be made during model design and 
 # prior to deployment.
 
-# ### Pruning and Fintuning pipeline
+# ### Pruning and Finetuning pipeline
 
 # Now that we seen how to prune our model, let's try to finetune it to recover some of the accuracy we lost. First, we need to 
 # provide the root directory for our dataset and use it to construct the dataset objects for our training and validation sets. 
@@ -121,7 +121,7 @@ println("MobileNet Mults ", mults, " Adds ", adds)
 #md # m = BSON.load(modelpath)[:m] |> gpu
 #md # ```
 
-# We define the dataloader which takes a batch of images from the dataset, which is dictated by our batch size. 
+# We define the dataloader which takes a batch of images from the dataset, which is dictated by our batch size. We defer defining the training dataloader until we have to prune (we'll see why soon).
 #md # ```
 #md # bs = 32
 #md # valloader = DataLoader(BatchView(testset; batchsize = bs), nothing; buffered = true)
@@ -136,30 +136,12 @@ println("MobileNet Mults ", mults, " Adds ", adds)
 #md # accfn(data, m) = mean(accfn(m(gpu(x)), gpu(y)) for (x, y) in data)
 #md # ```
 
-# We are now ready to prune and finetune the model. We use the `iterativeprune` function to progressively prune the model.
+# We are now ready to prune and finetune the model. 
+
+# We use the `iterativeprune` function to progressively prune the model.
 # `iterativeprune` accepts 3 arguments: the finetuning function, the pruning strategy to use on the model, and the model to be pruned.
 # We define the finetuning function with the [do-block syntax](https://docs.julialang.org/en/v1/manual/functions/#Do-Block-Syntax-for-Function-Arguments) which gets passed to `iterativeprune`
-# as an anonymous function. We define the optimizer we use, `SGD` with `Momentum` with a learning rate of `0.1`, and the training loop, as well as the loss and gradient update functions.
-# Also, note that we have a function `random_subset` which chooses a smaller random subset of the data to train on. The reason for this is depending on what computing resources are available, 
-# you may find that finetuning on the full dataset can be intensive and potentially a random subset would suffice for our purposes.
-
-# `iterativeprune` will apply the pruning to the model and finetune the model for a set number of epochs to reach a target accuracy we predefine. If it doesn't reach the target within the
-# specified number of epochs, it will retry for a maximum of five times before giving up and returning the last successful stage.
-
-#md # ```
-#md # stages = [
-#md #  ChannelPrune(0.1),
-#md #  ChannelPrune(0.2),
-#md #  ChannelPrune(0.3)    
-#md # ]
-#md # ```
-
-
-# In our example, we ultimately want to prune the model by removing `30%` of the channels that have the lowest magnitude but doing this iteratively allows
-# the model to recover accuracy more smoothly than if we dropped the channels at once. We define the finetuning function with the do 
-
-# Inside the do block, we define the optimizer we want to use, SGD with Momentum at a learning rate of 0.1 in this case, as well as the dataloader for the training set.
-# 
+# as an anonymous function.
 
 #md # ```
 #md # target_acc = 0.78
@@ -185,6 +167,32 @@ println("MobileNet Mults ", mults, " Adds ", adds)
 #md #     return current_accuracy > target_acc
 #md # end
 #md # ```
+
+
+# We define the optimizer (`SGD` with `Momentum` with a learning rate of `0.01`), training dataloader, and the training loop, as well as the loss and gradient update functions.
+# Also, note that we have a function `random_subset` which chooses a smaller random subset of the data to train on. Depending on what computing resources are available, 
+# you may find that finetuning on the full dataset can be intensive and potentially a random subset would suffice for our purposes. The exact number to use is a hyperparameter you can play around with.
+
+
+
+#md # ```
+#md # stages = [
+#md #  ChannelPrune(0.1),
+#md #  ChannelPrune(0.2),
+#md #  ChannelPrune(0.3)    
+#md # ]
+#md # ```
+
+# `stages` dictates what strategy we should use to the prune the model and by how much. For instance, `stages = [ChannelPrune(0.1), ChannelPrune(0.2)]` means that we are going to apply 2 stages
+# of channel pruning in succession until we have a model with `20%` of its channels pruned. `iterativeprune` will apply the pruning to the model and finetune the model for a set number of epochs to reach a target accuracy we predefine. If it doesn't reach the target within the
+# specified number of epochs, it will retry for a maximum of five times before giving up and returning the last successful stage.
+
+
+# In our example, we ultimately want to prune the model by removing `30%` of the channels that have the lowest magnitude and doing this iteratively allows
+# the model to recover accuracy more smoothly than if we dropped the channels at once. We can run this code and see that our model is able to reach the target that we had originally set.
+
+ # With this backbone, you should now be able to test out different strategies for pruning the model, potentially at different layers and pruning magnitudes!
+
 
 # Useful Resources:
 # 1. [Blog Post on Pruning and Sparsity](https://intellabs.github.io/distiller/pruning.html)
