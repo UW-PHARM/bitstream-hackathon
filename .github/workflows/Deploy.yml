@@ -34,6 +34,7 @@ jobs:
     #   specific arguments, see the documentation or ?optimize in the REPL.
     - run: cd _tutorials && julia -e'
             using Pkg; Pkg.activate("."); Pkg.instantiate();
+            using Artifacts, LazyArtifacts;
             model = artifact"mobilenet";
             data = artifact"vww";'
     - run: julia -e '
