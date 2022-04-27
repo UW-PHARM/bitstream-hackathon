@@ -3,7 +3,7 @@
 # Bitstream Computing Hackathon at UW-Madison
 
 ## Welcome to **BCH@UW!**
-This hackathon will give you a chance to learn about unltra low-power neural networks, how they are designed, how they are programmed or trained, and how they are used to process sensory data from the real world.
+This hackathon will give you a chance to learn about ultra low-power neural networks, how they are designed, how they are programmed or trained, and how they are used to process sensory data from the real world.
 
 When you participate, you will learn:
 - a new programming language (Julia)
