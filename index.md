@@ -16,6 +16,12 @@ In the meantime, you can work through the tutorials on this website to get start
 
 Join the mailing list for updates/questions/support:
 [bitstream-hackathon+subscribe@googlegroups.com](mailto:bitstream-hackathon+subscribe@googlegroups.com)
+[https://groups.google.com/u/1/g/bitstream-hackathon](https://groups.google.com/u/1/g/bitstream-hackathon)
+
+**NOTE** you need a gmail/google account to join the mailing list. You can always create one with your existing email and delete it once you are done with it by following the instructions found here:
+[https://support.google.com/accounts/answer/27441](https://support.google.com/accounts/answer/27441)
+
+[Hackathon flyer](assets/flyer.pdf)
 
 #
 🚧 Site under construction 🚧
