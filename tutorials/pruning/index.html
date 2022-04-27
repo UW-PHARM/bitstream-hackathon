@@ -1,163 +1,86 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/bitstream-hackathon/libs/highlight/github.min.css"> <link rel=stylesheet  href="/bitstream-hackathon/css/jtd.css"> <link rel=icon  href="/bitstream-hackathon/assets/favicon.ico"> <title>Pruning Tutorial</title> <div class=page-wrap > <div class=side-bar > <!-- <div class=header > <a href="/bitstream-hackathon/" class=title > <img src="/bitstream-hackathon/assets/pharm_homepage.pdf"> </a> </div> --> <label for=show-menu  class=show-menu >MENU</label> <input type=checkbox  id=show-menu  role=button > <div class=menu  id=side-menu > <ul class=menu-list > <li class="menu-list-item "><a href="/bitstream-hackathon/" class="menu-list-link ">Home</a> <li class=menu-list-item >Tutorials <ul class=menu-list-child-list  style="display: block;"> <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/overview/" class="menu-list-link ">Overview</a> <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/bitstream/" class="menu-list-link ">Bitstreams 101</a> <li class="menu-list-item active"><a href="/bitstream-hackathon/tutorials/pruning/" class="menu-list-link active">Pruning</a> </ul> </ul> </div> <div class=footer > This is <em>Just the docs</em>, adapted from the <a href="https://github.com/pmarsceill/just-the-docs" target=_blank >Jekyll theme</a>. </div> </div> <div class=main-content-wrap > <div class=main-content > <div class=main-header > <span style="padding-right: 250px;"> <img src="/bitstream-hackathon/assets/red-flush-UWlogo.pdf" width=150px > <img src="/bitstream-hackathon/assets/pharm_homepage.pdf" width=175px  style="padding-bottom: 10px;"> </span> <a id=github  href="/bitstream-hackathon//github.com/UW-PHARM/BitSAD.jl">BitSAD.jl on GitHub</a> </div> <div class=franklin-content ><em>Make sure you have completed the <a href="/bitstream-hackathon/tutorials/overview">getting started</a> tutorial.</em></p> <p><strong>Table of contents:</strong></p> <p><div class=franklin-toc ><ol><li><a href="#introduction">Introduction</a><li><a href="#weight_pruning">Weight Pruning</a><ol><li><a href="#unstructured_pruning">Unstructured Pruning</a><li><a href="#structured_pruning">Structured Pruning</a></ol></ol></div> <h1 id=pruning_tutorial ><a href="#pruning_tutorial" class=header-anchor >Pruning tutorial</a></h1> <h2 id=introduction ><a href="#introduction" class=header-anchor >Introduction</a></h2> <p>Deep learning has achieved unprecedented performance on image recognition tasks like ImageNet and natural language processing tasks such as question answering and machine translation. These models generally are on the order of millions or even billions of parameters. For example, Google&#39;s recent released large language model, <a href="https://ai.googleblog.com/2022/04/pathways-language-model-palm-scaling-to.html">Pathways Language Model &#40;PaLM&#41;</a>, can do well on tasks like conceptual understanding and cause &amp; effect reasoning and contains over 540 Billion parameters&#33;</p> <p>While this is great for advancing state of the art &#40;SOTA&#41; in terms of accuracy, we have applications like self-driving cars or server-side video processing where we would want to deploy these models on the edge to meet real-time deadlines. By having models on the device, we can avoid the latency cost of sending a request to the server for the model to process and sending back the output. In these settings, we can&#39;t use these gigantic models for a few reasons: the on-device memory available is quite limited &#40;meaning we can&#39;t fit our model into memory&#41; and the number of operations it takes to obtain output from the model would fail constraints like latency and power. Luckily, we can rely on model compression to address these concerns.</p> <p>Model compression is the area of research focused on deploying SOTA models in resource-constrained devices while minimizing accuracy degradation. Various approaches to compressing a model include: weight pruning, quantization, knowledge distillation, low-rank tensor decomposition, hardware-aware neural architecture search, etc. In particular, we will discuss and target, arguably, the simplest of these methods: weight pruning.</p> <h2 id=weight_pruning ><a href="#weight_pruning" class=header-anchor >Weight Pruning</a></h2> <h3 id=unstructured_pruning ><a href="#unstructured_pruning" class=header-anchor >Unstructured Pruning</a></h3> <p>Pruning a deep learning models involves finding a percentage of the weights that don&#39;t contribute much to the classification output and setting their values to 0. By setting the values to 0, we reduce the memory footprint of the model as well as the number of multiplies and accumulates during inference. The de-facto method is low-weight magnitude pruning where we rank the weights in the network and eliminate the smallest weights upto a threshold dictated by a chosen compression ratio. Let&#39;s explore how to do this in Julia with the Flux.jl package.</p> <p>First, let&#39;s begin with some imports that will help us load the dataset and model.</p> <pre><code class=language-julia >include&#40;&quot;_tutorials/src/setup.jl&quot;&#41;;</code></pre>
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/bitstream-hackathon/libs/highlight/github.min.css"> <link rel=stylesheet  href="/bitstream-hackathon/css/jtd.css"> <link rel=icon  href="/bitstream-hackathon/assets/favicon.ico"> <title>Pruning Tutorial</title> <div class=page-wrap > <div class=side-bar > <!-- <div class=header > <a href="/bitstream-hackathon/" class=title > <img src="/bitstream-hackathon/assets/pharm_homepage.pdf"> </a> </div> --> <label for=show-menu  class=show-menu >MENU</label> <input type=checkbox  id=show-menu  role=button > <div class=menu  id=side-menu > <ul class=menu-list > <li class="menu-list-item "><a href="/bitstream-hackathon/" class="menu-list-link ">Home</a> <li class=menu-list-item >Tutorials <ul class=menu-list-child-list  style="display: block;"> <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/overview/" class="menu-list-link ">Overview</a> <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/bitstream/" class="menu-list-link ">Bitstreams 101</a> <li class="menu-list-item active"><a href="/bitstream-hackathon/tutorials/pruning/" class="menu-list-link active">Pruning</a> <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/mobilenet/" class="menu-list-link ">Simulating MobileNet</a> </ul> </ul> </div> <div class=footer > This is <em>Just the docs</em>, adapted from the <a href="https://github.com/pmarsceill/just-the-docs" target=_blank >Jekyll theme</a>. </div> </div> <div class=main-content-wrap > <div class=main-content > <div class=main-header > <span style="padding-right: 250px;"> <img src="/bitstream-hackathon/assets/red-flush-UWlogo.pdf" width=150px > <img src="/bitstream-hackathon/assets/pharm_homepage.pdf" width=175px  style="padding-bottom: 10px;"> </span> <a id=github  href="/bitstream-hackathon//github.com/UW-PHARM/BitSAD.jl">BitSAD.jl on GitHub</a> </div> <div class=franklin-content ><em>Make sure you have completed the <a href="/bitstream-hackathon/tutorials/overview">getting started</a> tutorial.</em></p> <p><strong>Table of contents:</strong></p> <p><div class=franklin-toc ><ol><li><a href="#introduction">Introduction</a><li><a href="#weight_pruning">Weight Pruning</a><ol><li><a href="#unstructured_pruning">Unstructured Pruning</a><li><a href="#structured_pruning">Structured Pruning</a><li><a href="#pruning_and_finetuning_pipeline">Pruning and Finetuning pipeline</a></ol></ol></div> <h1 id=pruning_tutorial ><a href="#pruning_tutorial" class=header-anchor >Pruning tutorial</a></h1> <h2 id=introduction ><a href="#introduction" class=header-anchor >Introduction</a></h2> <p>Deep learning has achieved unprecedented performance on image recognition tasks like ImageNet and natural language processing tasks such as question answering and machine translation. These models generally are on the order of millions or even billions of parameters. For example, Google&#39;s recent released large language model, <a href="https://ai.googleblog.com/2022/04/pathways-language-model-palm-scaling-to.html">Pathways Language Model &#40;PaLM&#41;</a>, can do well on tasks like conceptual understanding and cause &amp; effect reasoning and contains over 540 Billion parameters&#33;</p> <p>While this is great for advancing state of the art &#40;SOTA&#41; in terms of accuracy, we have applications like self-driving cars or server-side video processing where we would want to deploy these models on the edge to meet real-time deadlines. By having models on the device, we can avoid the latency cost of sending a request to the server for the model to process and sending back the output. In these settings, we can&#39;t use these gigantic models for a few reasons: the on-device memory available is quite limited &#40;meaning we can&#39;t fit our model into memory&#41; and the number of operations it takes to obtain output from the model would fail constraints like latency and power. Luckily, we can rely on model compression to address these concerns.</p> <p>Model compression is the area of research focused on deploying SOTA models in resource-constrained devices while minimizing accuracy degradation. Various approaches to compressing a model include: weight pruning, quantization, knowledge distillation, low-rank tensor decomposition, hardware-aware neural architecture search, etc. In particular, we will discuss and target, arguably, the simplest of these methods: weight pruning.</p> <h2 id=weight_pruning ><a href="#weight_pruning" class=header-anchor >Weight Pruning</a></h2> <h3 id=unstructured_pruning ><a href="#unstructured_pruning" class=header-anchor >Unstructured Pruning</a></h3> <p>Pruning a deep learning models involves finding a percentage of the weights that don&#39;t contribute much to the classification output and setting their values to 0. By setting the values to 0, we reduce the memory footprint of the model as well as the number of multiplies and accumulates during inference. The de-facto method is low-weight magnitude pruning where we rank the weights in the network and eliminate the smallest weights upto a threshold dictated by a chosen compression ratio. Let&#39;s explore how to do this in Julia with the Flux.jl package.</p> <p>First, let&#39;s begin with some imports that will help us load the dataset and model.</p> <pre><code class=language-julia >include&#40;&quot;_tutorials/src/setup.jl&quot;&#41;;</code></pre>
 <p>Next, let&#39;s define our model. We are using <a href="https://arxiv.org/abs/1704.04861">MobileNetv1</a>, which is a popular deep learning model that achieves high classification accuracies while still being very resource-efficient. Note the number of parameters the model contains and the amount of memory needed to store the model. We can also calculate the number of multiplies and accumulates that MobileNetv1 incurs to produce an output.</p>
-<pre><code class=language-julia >m &#61; MobileNet&#40;relu, 0.25; fcsize &#61; 64, nclasses &#61; 2&#41;</code></pre><pre><code class="plaintext code-output">Chain(
-  Chain(
-    Conv((3, 3), 3 => 8, pad=1, stride=2),  # 224 parameters
-    BatchNorm(8, relu),                 # 16 parameters, plus 16
-    Conv((3, 3), 8 => 8, pad=1, groups=8),  # 80 parameters
-    BatchNorm(8, relu),                 # 16 parameters, plus 16
-    Conv((1, 1), 8 => 16),              # 144 parameters
-    BatchNorm(16, relu),                # 32 parameters, plus 32
-    Conv((3, 3), 16 => 16, pad=1, stride=2, groups=16),  # 160 parameters
-    BatchNorm(16, relu),                # 32 parameters, plus 32
-    Conv((1, 1), 16 => 32),             # 544 parameters
-    BatchNorm(32, relu),                # 64 parameters, plus 64
-    Conv((3, 3), 32 => 32, pad=1, groups=32),  # 320 parameters
-    BatchNorm(32, relu),                # 64 parameters, plus 64
-    Conv((1, 1), 32 => 32),             # 1_056 parameters
-    BatchNorm(32, relu),                # 64 parameters, plus 64
-    Conv((3, 3), 32 => 32, pad=1, stride=2, groups=32),  # 320 parameters
-    BatchNorm(32, relu),                # 64 parameters, plus 64
-    Conv((1, 1), 32 => 64),             # 2_112 parameters
-    BatchNorm(64, relu),                # 128 parameters, plus 128
-    Conv((3, 3), 64 => 64, pad=1, groups=64),  # 640 parameters
-    BatchNorm(64, relu),                # 128 parameters, plus 128
-    Conv((1, 1), 64 => 64),             # 4_160 parameters
-    BatchNorm(64, relu),                # 128 parameters, plus 128
-    Conv((3, 3), 64 => 64, pad=1, stride=2, groups=64),  # 640 parameters
-    BatchNorm(64, relu),                # 128 parameters, plus 128
-    Conv((1, 1), 64 => 128),            # 8_320 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((1, 1), 128 => 128),           # 16_512 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((1, 1), 128 => 128),           # 16_512 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((1, 1), 128 => 128),           # 16_512 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((1, 1), 128 => 128),           # 16_512 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((1, 1), 128 => 128),           # 16_512 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((3, 3), 128 => 128, pad=1, stride=2, groups=128),  # 1_280 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((1, 1), 128 => 256),           # 33_024 parameters
-    BatchNorm(256, relu),               # 512 parameters, plus 512
-    Conv((3, 3), 256 => 256, pad=1, groups=256),  # 2_560 parameters
-    BatchNorm(256, relu),               # 512 parameters, plus 512
-    Conv((1, 1), 256 => 256),           # 65_792 parameters
-    BatchNorm(256, relu),               # 512 parameters, plus 512
-  ),
-  Chain(
-    GlobalMeanPool(),
-    MLUtils.flatten,
-    Dense(256 => 64, relu),             # 16_448 parameters
-    Dense(64 => 2),                     # 130 parameters
-  ),
-)         # Total: 112 trainable arrays, 232_386 parameters,
-          # plus 54 non-trainable, 5_472 parameters, summarysize 950.117 KiB.</code></pre>
-<p>compute<em>dot</em>prods&#40;m &#40;96, 96, 3, 1&#41;&#41; # height and weight are 96, input channels are 3, batch size &#61; 1</p>
-<p>Next, we need to load in the dataset to prune and finetune our model. show line that loads in the data. Now that we&#39;ve finished our setup, let&#39;s prune our model. We can use the FluxPrune.jl package to easily prune the lowest magnitude weights.</p>
-<pre><code class=language-julia >using FluxPrune
-m_pruned &#61; prune&#40;LevelPrune&#40;0.1&#41;, m&#41;</code></pre><pre><code class="plaintext code-output">Chain(
-  Chain(
-    Conv((3, 3), 3 => 8, pad=1, stride=2),  # 224 parameters
-    BatchNorm(8, relu),                 # 16 parameters, plus 16
-    Conv((3, 3), 8 => 8, pad=1, groups=8),  # 80 parameters
-    BatchNorm(8, relu),                 # 16 parameters, plus 16
-    Conv((1, 1), 8 => 16),              # 144 parameters
-    BatchNorm(16, relu),                # 32 parameters, plus 32
-    Conv((3, 3), 16 => 16, pad=1, stride=2, groups=16),  # 160 parameters
-    BatchNorm(16, relu),                # 32 parameters, plus 32
-    Conv((1, 1), 16 => 32),             # 544 parameters
-    BatchNorm(32, relu),                # 64 parameters, plus 64
-    Conv((3, 3), 32 => 32, pad=1, groups=32),  # 320 parameters
-    BatchNorm(32, relu),                # 64 parameters, plus 64
-    Conv((1, 1), 32 => 32),             # 1_056 parameters
-    BatchNorm(32, relu),                # 64 parameters, plus 64
-    Conv((3, 3), 32 => 32, pad=1, stride=2, groups=32),  # 320 parameters
-    BatchNorm(32, relu),                # 64 parameters, plus 64
-    Conv((1, 1), 32 => 64),             # 2_112 parameters
-    BatchNorm(64, relu),                # 128 parameters, plus 128
-    Conv((3, 3), 64 => 64, pad=1, groups=64),  # 640 parameters
-    BatchNorm(64, relu),                # 128 parameters, plus 128
-    Conv((1, 1), 64 => 64),             # 4_160 parameters
-    BatchNorm(64, relu),                # 128 parameters, plus 128
-    Conv((3, 3), 64 => 64, pad=1, stride=2, groups=64),  # 640 parameters
-    BatchNorm(64, relu),                # 128 parameters, plus 128
-    Conv((1, 1), 64 => 128),            # 8_320 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((1, 1), 128 => 128),           # 16_512 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((1, 1), 128 => 128),           # 16_512 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((1, 1), 128 => 128),           # 16_512 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((1, 1), 128 => 128),           # 16_512 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((3, 3), 128 => 128, pad=1, groups=128),  # 1_280 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((1, 1), 128 => 128),           # 16_512 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((3, 3), 128 => 128, pad=1, stride=2, groups=128),  # 1_280 parameters
-    BatchNorm(128, relu),               # 256 parameters, plus 256
-    Conv((1, 1), 128 => 256),           # 33_024 parameters
-    BatchNorm(256, relu),               # 512 parameters, plus 512
-    Conv((3, 3), 256 => 256, pad=1, groups=256),  # 2_560 parameters
-    BatchNorm(256, relu),               # 512 parameters, plus 512
-    Conv((1, 1), 256 => 256),           # 65_792 parameters
-    BatchNorm(256, relu),               # 512 parameters, plus 512
-  ),
-  Chain(
-    GlobalMeanPool(),
-    MLUtils.flatten,
-    Dense(256 => 64, relu),             # 16_448 parameters
-    Dense(64 => 2),                     # 130 parameters
-  ),
-)         # Total: 112 trainable arrays, 232_386 parameters,
-          # plus 54 non-trainable, 5_472 parameters, summarysize 992.328 KiB.</code></pre>
-<p>FluxPrune&#39;s prune function takes in two inputs: the pruning strategy and the model to prune. We are using the LevelPrune strategy which traverses each layer of the model and removes the lowest p&#37; &#40;10&#37; in this case&#41; weights in each layer. This is called unstructured pruning since we are concerned with removing the lowest magnitude weights and not worrying about if the sparsity induces some kind of structure. FluxPrune allows you to set a different pruning strategy for every layer in the model if you desire. Typically, we also have to finetune our resulting pruned model in order to recover some accuracy penalty induced by setting the weights to 0. Let&#39;s compute the number of multiplies and accumulates to see how much we have saved.</p>
-<pre><code class=language-julia >mults, adds, output_size &#61; compute_dot_prods&#40;m_pruned, &#40;96, 96, 3, 1&#41;&#41; # height and weight are 96, input channels are 3, batch size &#61; 1
-println&#40;&quot;MobileNet Mults &quot;, mults, &quot; Adds &quot;, adds&#41;</code></pre><pre><code class="plaintext code-output">num_multiplies in layer 1: 1908555
-num_accumulates in layer 1: 1837888
-output_size: (94, 94, 8, 1)
-num_multiplies in layer 2: 0
-num_accumulates in layer 2: 0
-output_size: (94, 94, 8, 1)
-DimensionMismatch("Input channels must match! (8 vs. 1)")
+<pre><code class=language-julia >m &#61; MobileNet&#40;relu, 0.25; fcsize &#61; 64, nclasses &#61; 2&#41;
+mults, adds, output_size &#61; compute_dot_prods&#40;m, &#40;96, 96, 3, 1&#41;&#41; # height and weight are 96, input channels are 3, batch size &#61; 1
+println&#40;&quot;MobileNet Mults &quot;, mults, &quot; Adds &quot;, adds&#41;</code></pre><pre><code class="plaintext code-output">MobileNet Mults 7505664 Adds 7274046
 </code></pre>
-<p>We can see that we have obtained a reduction in the number of multiplies relative to our unpruned baseline. Unstructured pruning is powerful in that we are able to prune so aggressively that we can obtain sparse models that perform just as well as the baseline at less than 10&#37; of the original model capacity. While unstructured pruning achieves the best compression vs. accuracy tradeoffs, it may not translate into faster inference since the unstructured nature of zeros in the weight matrices may induce irregular memory access patterns and sparse GEMM kernels are competitive with dense ones only at extreme sparsities. For these reasons, one may consider structured pruning instead.</p>
+<p>Next, we need to load in the dataset to prune and finetune our model. show line that loads in the data. Now that we&#39;ve finished our setup, let&#39;s prune our model. We can use the FluxPrune.jl package to easily prune the lowest magnitude weights by calling LevelPrune.</p>
+<pre><code class=language-julia >m_pruned &#61; prune&#40;LevelPrune&#40;0.1&#41;, m&#41;;</code></pre>
+<p>FluxPrune&#39;s prune function takes in two inputs: the pruning strategy and the model to prune. We are using the LevelPrune strategy which traverses each layer of the model and removes the lowest <code>p&#37;</code> &#40;<code>10&#37;</code> in this case&#41; weights in each layer. This is called unstructured pruning since we are concerned with removing the lowest magnitude weights and not worrying about if the sparsity induces some kind of structure. FluxPrune allows you to set a different pruning strategy for every layer in the model if you desire. Typically, we also have to finetune our resulting pruned model in order to recover some accuracy penalty induced by setting the weights to 0. Let&#39;s compute the number of multiplies and accumulates to see how much we have saved.</p>
+<pre><code class=language-julia >mults, adds, output_size &#61; compute_dot_prods&#40;m_pruned, &#40;96, 96, 3, 1&#41;&#41; # height and weight are 96, input channels are 3, batch size &#61; 1
+println&#40;&quot;MobileNet Mults &quot;, mults, &quot; Adds &quot;, adds&#41;</code></pre><pre><code class="plaintext code-output">MobileNet Mults 7483266 Adds 7274046
+</code></pre>
+<p>We can see that we have obtained a reduction in the number of multiplies relative to our unpruned baseline. Unstructured pruning is powerful in that we are able to prune so aggressively that we can obtain sparse models that perform just as well as the baseline at less than <code>10&#37;</code> of the original model capacity. While unstructured pruning achieves the best compression vs. accuracy tradeoffs, it may not translate into faster inference since the unstructured nature of zeros in the weight matrices may induce irregular memory access patterns and sparse GEMM kernels are competitive with dense ones only at extreme sparsities. For these reasons, one may consider structured pruning instead.</p>
 <h3 id=structured_pruning ><a href="#structured_pruning" class=header-anchor >Structured Pruning</a></h3>
 <p>In structured pruning, we remove entire channels &#40;typically&#41; or filters rather than individual weights. This type of pruning only applies to the convolutional layers, as the concept of removing structure really applies to conv layers as opposed to full-connected layers. By removing the lowest magnitude channels, we are drastically able to reduce the number of multiplies and accumulates that our model has to perform.</p>
 <p>To prune channels, we can define the ChannelPrune strategy, which solely targets the convolutional layers.</p>
-<pre><code class=language-julia >m_ch_pruned &#61; prune&#40;ChannelPrune&#40;0.1&#41;, m&#41;
-mults, adds, output_size &#61; compute_dot_prods&#40;m_pruned, &#40;96, 96, 3, 1&#41;&#41; # height and weight are 96, input channels are 3, batch size &#61; 1
-println&#40;&quot;MobileNet Mults &quot;, mults, &quot; Adds &quot;, adds&#41;</code></pre><pre><code class="plaintext code-output">num_multiplies in layer 1: 1908555
-num_accumulates in layer 1: 1837888
-output_size: (94, 94, 8, 1)
-num_multiplies in layer 2: 0
-num_accumulates in layer 2: 0
-output_size: (94, 94, 8, 1)
-DimensionMismatch("Input channels must match! (8 vs. 1)")
+<pre><code class=language-julia >m_ch_pruned &#61; prune&#40;ChannelPrune&#40;0.1&#41;, m&#41;;
+mults, adds, output_size &#61; compute_dot_prods&#40;m_ch_pruned, &#40;96, 96, 3, 1&#41;&#41; # height and weight are 96, input channels are 3, batch size &#61; 1
+println&#40;&quot;MobileNet Mults &quot;, mults, &quot; Adds &quot;, adds&#41;</code></pre><pre><code class="plaintext code-output">MobileNet Mults 6874035 Adds 6659256
 </code></pre>
 <p>Compared to the number of multiplies reduced from unstructured pruning, structured pruning drastically reduces the computational cost incurred by the model during inference. The caveat for structured pruning is that by eliminating groups of weights, the compression ratio that structured pruning methods are set at are much lower than those from unstructured methods so the memory savings are limited. Choosing what the optimal amount of compression vs. latency of the model during inference is a design choice that must be made during model design and prior to deployment.</p>
+<h3 id=pruning_and_finetuning_pipeline ><a href="#pruning_and_finetuning_pipeline" class=header-anchor >Pruning and Finetuning pipeline</a></h3>
+<p>Now that we seen how to prune our model, let&#39;s try to finetune it to recover some of the accuracy we lost. First, we need to provide the root directory for our dataset and use it to construct the dataset objects for our training and validation sets.</p>
+<pre><code class=language-julia >dataroot &#61; joinpath&#40;artifact&quot;vww&quot;, &quot;vww-hackathon&quot;&#41;
+traindata &#61; VisualWakeWords&#40;dataroot; subset &#61; :train&#41;
+testdata &#61; VisualWakeWords&#40;dataroot; subset &#61; :val&#41;</code></pre>
+<p>Next, we define the data augmentation pipeline to our model. As an aside, you want to include a variety of different augmentations during training as it&#39;s shown to have increased accuracy and makes the network invariant to those augmentations so it learns the correct features.</p>
+<pre><code class=language-julia >augmentations &#61; Rotate&#40;10&#41; |&gt;
+                RandomTranslate&#40;&#40;96, 96&#41;, &#40;0.05, 0.05&#41;&#41; |&gt;
+                Zoom&#40;&#40;0.9, 1.1&#41;&#41; |&gt;
+                ScaleFixed&#40;&#40;96, 96&#41;&#41; |&gt;
+                Maybe&#40;FlipX&#40;&#41;&#41; |&gt;
+                CenterCrop&#40;&#40;96, 96&#41;&#41; |&gt;
+                ImageToTensor&#40;&#41;
+trainset &#61; map_augmentation&#40;augmentations, traindata&#41;
+
+
+testset &#61; map_augmentation&#40;ImageToTensor&#40;&#41;, testdata&#41;
+;</code></pre>
+<p>Let&#39;s grab the pretrained MobileNet model that we can use to prune, stored in the BSON file.</p>
+<pre><code class=language-julia >modelpath &#61; joinpath&#40;artifact&quot;mobilenet&quot;, &quot;mobilenet.bson&quot;&#41;
+m &#61; BSON.load&#40;modelpath&#41;&#91;:m&#93; |&gt; gpu</code></pre>
+<p>We define the dataloader which takes a batch of images from the dataset, which is dictated by our batch size. We defer defining the training dataloader until we have to prune &#40;we&#39;ll see why soon&#41;.</p>
+<pre><code class=language-julia >bs &#61; 32
+valloader &#61; DataLoader&#40;BatchView&#40;testset; batchsize &#61; bs&#41;, nothing; buffered &#61; true&#41;
+;</code></pre>
+<p>Since the Visual Wake Word dataset is a binary classification problem, we use the binary cross entropy loss, which you can read about in the <a href="https://fluxml.ai/Flux.jl/stable/models/losses/#Flux.Losses.logitbinarycrossentropy">Flux.Losses documentation page</a>. We also have to define our accuracy function to determine if we correctly classified the input based on its label.</p>
+<pre><code class=language-julia >lossfn &#61; Flux.Losses.logitbinarycrossentropy
+accfn&#40;ŷ::AbstractArray, y::AbstractArray&#41; &#61; mean&#40;&#40;ŷ .&gt; 0&#41; .&#61;&#61; y&#41;
+accfn&#40;data, m&#41; &#61; mean&#40;accfn&#40;m&#40;gpu&#40;x&#41;&#41;, gpu&#40;y&#41;&#41; for &#40;x, y&#41; in data&#41;</code></pre>
+<p>We are now ready to prune and finetune the model.</p>
+<p>We use the <code>iterativeprune</code> function to progressively prune the model. <code>iterativeprune</code> accepts 3 arguments: the finetuning function, the pruning strategy to use on the model, and the model to be pruned. We define the finetuning function with the <a href="https://docs.julialang.org/en/v1/manual/functions/#Do-Block-Syntax-for-Function-Arguments">do-block syntax</a> which gets passed to <code>iterativeprune</code> as an anonymous function.</p>
+<pre><code class=language-julia >target_acc &#61; 0.78
+nepochs &#61; 5
+m̄ &#61; iterativeprune&#40;stages, m&#41; do m̄
+    opt &#61; Momentum&#40;0.01&#41;
+    ps &#61; Flux.params&#40;m̄&#41;
+    subset &#61; random_subset&#40;trainset, 5000&#41; # randomly subsample data to make finetuning faster
+    trainloader &#61; DataLoader&#40;BatchView&#40;subset; batchsize &#61; bs&#41;, nothing; buffered &#61; true&#41;
+    for epoch in 1:nepochs
+        @info &quot;Epoch &#36;epoch&quot;
+        @time for &#40;x, y&#41; in trainloader
+            _x, _y &#61; gpu&#40;x&#41;, gpu&#40;y&#41;
+            gs &#61; Flux.gradient&#40;ps&#41; do
+                lossfn&#40;m̄&#40;_x&#41;, _y&#41;
+            end
+            Flux.update&#33;&#40;opt, ps, gs&#41;
+        end
+    end
+    GC.gc&#40;&#41;
+    Flux.CUDA.reclaim&#40;&#41;
+    @show current_accuracy &#61; accfn&#40;valloader, m̄&#41;
+    return current_accuracy &gt; target_acc
+end</code></pre>
+<p>We define the optimizer &#40;<code>SGD</code> with <code>Momentum</code> with a learning rate of <code>0.01</code>&#41;, training dataloader, and the training loop, as well as the loss and gradient update functions. Also, note that we have a function <code>random_subset</code> which chooses a smaller random subset of the data to train on. Depending on what computing resources are available, you may find that finetuning on the full dataset can be intensive and potentially a random subset would suffice for our purposes. The exact number to use is a hyperparameter you can play around with.</p>
+<pre><code class=language-julia >stages &#61; &#91;
+ ChannelPrune&#40;0.1&#41;,
+ ChannelPrune&#40;0.2&#41;,
+ ChannelPrune&#40;0.3&#41;
+&#93;</code></pre>
+<p><code>stages</code> dictates what strategy we should use to the prune the model and by how much. For instance, <code>stages &#61; &#91;ChannelPrune&#40;0.1&#41;, ChannelPrune&#40;0.2&#41;&#93;</code> means that we are going to apply 2 stages of channel pruning in succession until we have a model with <code>20&#37;</code> of its channels pruned. <code>iterativeprune</code> will apply the pruning to the model and finetune the model for a set number of epochs to reach a target accuracy we predefine. If it doesn&#39;t reach the target within the specified number of epochs, it will retry for a maximum of five times before giving up and returning the last successful stage.</p>
+<p>In our example, we ultimately want to prune the model by removing <code>30&#37;</code> of the channels that have the lowest magnitude and doing this iteratively allows the model to recover accuracy more smoothly than if we dropped the channels at once. We can run this code and see that our model is able to reach the target that we had originally set.</p>
+<p>With this backbone, you should now be able to test out different strategies for pruning the model, potentially at different layers and pruning magnitudes&#33;</p>
 <p>Useful Resources:</p>
 <ol>
 <li><p><a href="https://intellabs.github.io/distiller/pruning.html">Blog Post on Pruning and Sparsity</a></p>

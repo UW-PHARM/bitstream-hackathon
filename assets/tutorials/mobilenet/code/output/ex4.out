@@ -1,0 +1,1 @@
+total_scaling = prod(prod.(scalings)) = 5844.316f0

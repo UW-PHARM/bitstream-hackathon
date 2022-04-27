@@ -1,4 +1,5 @@
 using Flux
+using FluxPrune
 using FluxTraining
 using ParameterSchedulers
 using MLDatasets
@@ -11,6 +12,7 @@ using MLUtils
 using BSON
 using BitSAD, NNlibBitSAD
 using Artifacts, LazyArtifacts
+using Pkg.Artifacts: ensure_artifact_installed, artifact_hash, artifact_path
 using Statistics
 
 import MLDataPattern
@@ -42,4 +44,5 @@ include("vww.jl")
 include("augmentation.jl")
 include("mobilenet.jl")
 include("bitstream.jl")
-include("count_macs.jl")
+include("random-subset.jl")
+include("count_zeros.jl")
