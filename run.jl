@@ -34,6 +34,7 @@ end
 
 function preview()
     build_tutorials(ignore = ["training.jl"])
+    serve(single = true)
     serve()
 end
 

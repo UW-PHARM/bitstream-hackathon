@@ -1,4 +1,5 @@
 using Flux
+using FluxPrune
 using FluxTraining
 using ParameterSchedulers
 using MLDatasets
@@ -42,4 +43,5 @@ include("vww.jl")
 include("augmentation.jl")
 include("mobilenet.jl")
 include("bitstream.jl")
-include("count_macs.jl")
+include("random-subset.jl")
+include("count_zeros.jl")

@@ -1,5 +1,6 @@
 [deps]
 BSON = "fbb218c0-5317-5bc6-957e-2ee96dd4b1f0"
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 BitSAD = "7f90e340-ca22-4a3e-a259-118ed254aff3"
 CoordinateTransformations = "150eb455-5306-5404-9cee-2592286d6298"
 DataAugmentation = "88a5189c-e7ff-4f85-ac6b-e6158070f02e"
