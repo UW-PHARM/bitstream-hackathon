@@ -81,7 +81,7 @@ Chain(
 add_conversion_error&#33;&#40;model_scaled, simulation_length&#41;;</code></pre>
 <p>We provide you with a <code>add_conversion_error&#33;</code> function that accepts a model and simulation length in clock cycles. This function will use BitSAD to measure the error incurred by generating bit sequences for each weight and bias, then adjust the floating point weights and biases of the model to be slightly off by the measured error. You can then evaluate the adjusted model like you evaluated the original baseline model above. We make one additional change to the model to make sure we re-scale the output according to <code>total_scaling</code> defined above. The drop in accuracy will be the penalty paid for the inaccuracy in the bitstreams.</p>
 <pre><code class=language-julia >model_rescaled &#61; Chain&#40;model_scaled, x -&gt; x .* total_scaling&#41;
-accfn&#40;valloader, model_rescaled&#41;</code></pre><pre><code class="plaintext code-output">0.587749323867478</code></pre>
+accfn&#40;valloader, model_rescaled&#41;</code></pre><pre><code class="plaintext code-output">0.6385293733480853</code></pre>
 <p>You can see that the accuracy has degraded substantially relative to the original baseline accuracy. This is likely because we used a short simulation length of only 1000 cycles. In practice, your simulation length should be on the order of 100,000 cycles or more.</p>
 <p>More importantly, as you prune the model for the hackathon, you will finetune the weights and potentially increase the scaling factor. This will mean that you need a longer latency to accurately evaluate your model. A higher latency will result in greater energy consumption. Your goal in the hackthon is to choose a pruning strategy and requested latency that minimizes energy consumption while maximizing accuracy.</p>
 <h2 id=real_simulation ><a href="#real_simulation" class=header-anchor >Real simulation</a></h2>
@@ -95,7 +95,7 @@ msim&#40;xbit&#41;</code></pre>
 
 <div class=page-foot >
     <hr>
-    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> UW-Madison PHARM Group. Last modified: April 27, 2022.
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> UW-Madison PHARM Group. Last modified: April 28, 2022.
     Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
 </div>
 </div>

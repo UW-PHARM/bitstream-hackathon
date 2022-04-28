@@ -16,7 +16,7 @@ recent released large language model, [Pathways Language Model (PaLM)](https://a
 understanding and cause & effect reasoning and contains over 540 Billion parameters!
 
 While this is great for advancing state of the art (SOTA) in terms of accuracy, we have applications like
-self-driving cars or server-side video processing where we would want to deploy these models
+self-driving cars or client-side video processing where we would want to deploy these models
 on the edge to meet real-time deadlines. By having models on the device, we can avoid the latency cost
 of sending a request to the server for the model to process and sending back the output.
 In these settings, we can't use these gigantic models for a few reasons: the on-device memory available is
@@ -56,17 +56,17 @@ println("MobileNet Mults ", mults, " Adds ", adds)
 
 Next, we need to load in the dataset to prune and finetune our model.
 show line that loads in the data.
-Now that we've finished our setup, let's prune our model. We can use the FluxPrune.jl package to easily prune the lowest magnitude
-weights by calling LevelPrune.
+Now that we've finished our setup, let's prune our model. We can use the `FluxPrune.jl` package to easily prune the lowest magnitude
+weights by calling `LevelPrune`.
 
 ````julia:ex4
 m_pruned = prune(LevelPrune(0.1), m);
 ````
 
-FluxPrune's prune function takes in two inputs: the pruning strategy and the model to prune. We are using the LevelPrune
+`FluxPrune`'s prune function takes in two inputs: the pruning strategy and the model to prune. We are using the `LevelPrune`
 strategy which traverses each layer of the model and removes the lowest `p%` (`10%` in this case) weights in each layer. This
 is called unstructured pruning since we are concerned with removing the lowest magnitude weights and not worrying about if
-the sparsity induces some kind of structure. FluxPrune allows you to set a different pruning strategy for every layer in the model
+the sparsity induces some kind of structure. `FluxPrune` allows you to set a different pruning strategy for every layer in the model
 if you desire. Typically, we also have to finetune our resulting pruned model in order to recover some accuracy penalty induced by
 setting the weights to 0. Let's compute the number of multiplies and accumulates to see how much we have saved.
 
@@ -88,7 +88,7 @@ type of pruning only applies to the convolutional layers, as the concept of remo
 opposed to full-connected layers. By removing the lowest magnitude channels, we are drastically able to reduce the number of multiplies and accumulates
 that our model has to perform.
 
-To prune channels, we can define the ChannelPrune strategy, which solely targets the convolutional layers.
+To prune channels, we can define the `ChannelPrune` strategy, which solely targets the convolutional layers.
 
 ````julia:ex6
 m_ch_pruned = prune(ChannelPrune(0.1), m);
