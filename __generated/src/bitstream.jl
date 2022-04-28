@@ -14,7 +14,7 @@ function merge_conv_bn(model)
             # check for saturation
             nsaturated = count(x -> abs(x) > 1, w) + count(x -> abs(x) > 1, b)
             percent_saturated = nsaturated / (length(w) + length(b)) * 100
-            @info "Detected $(round(percent_saturated; digits = 2))% saturated parameters"
+            # @info "Detected $(round(percent_saturated; digits = 2))% saturated parameters"
 
             # create a new instance of Conv
             push!(backbone_layers, Conv(w, b, relu;
@@ -41,7 +41,7 @@ function merge_conv_bn(model)
             # check saturation
             nsaturated = count(x -> abs(x) > 1, w) + count(x -> abs(x) > 1, b)
             percent_saturated = nsaturated / (length(w) + length(b)) * 100
-            @info "Detected $(round(percent_saturated; digits = 2))% saturated parameters"
+            # @info "Detected $(round(percent_saturated; digits = 2))% saturated parameters"
 
             push!(fc_layers, Dense(w, b, layer.σ))
         else
@@ -64,7 +64,7 @@ function scale_parameters!(layer::Union{Dense, Conv}, input_scaling = 1)
     # check that nothing is saturated
     nsaturated = count(x -> abs(x) > 1, layer.weight) + count(x -> abs(x) > 1, layer.bias)
     percent_saturated = nsaturated / (length(layer.weight) + length(layer.bias)) * 100
-    @info "Detected $(round(percent_saturated; digits = 2))% saturated parameters"
+    # @info "Detected $(round(percent_saturated; digits = 2))% saturated parameters"
 
     # return the modified layer, additional scaling, and accumulated scaling
     return layer, n, input_scaling * n
@@ -131,9 +131,9 @@ function compute_input_scaling(model, data; device = cpu)
 end
 
 function prepare_bitstream_model(model)
-    @info "Merging conv + bn"
+    # @info "Merging conv + bn"
     model = merge_conv_bn(model)
-    @info "Scaling weights + biases"
+    # @info "Scaling weights + biases"
     _, scaling, _ = scale_parameters!(model)
 
     return model, scaling

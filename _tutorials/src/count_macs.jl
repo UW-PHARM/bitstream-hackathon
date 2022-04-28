@@ -1,9 +1,3 @@
-## import stuff
-using Flux
-using LinearAlgebra
-using FluxPrune
-using MaskedArrays
-## 
 function compute_dot_prods(model::Chain, input_size)
     num_multiplies_total = 0
     num_accumulates_total = 0
@@ -13,9 +7,9 @@ function compute_dot_prods(model::Chain, input_size)
         num_multiplies, num_accumulates, output_size = compute_dot_prods(model[i], intermediate_size)
         num_multiplies_total += num_multiplies
         num_accumulates_total += num_accumulates
-        println("num_multiplies in layer ", i, ": ", num_multiplies)
-        println("num_accumulates in layer ", i, ": ", num_accumulates)
-        println("output_size: ", output_size)  
+        # println("num_multiplies in layer ", i, ": ", num_multiplies)
+        # println("num_accumulates in layer ", i, ": ", num_accumulates)
+        # println("output_size: ", output_size)  
         intermediate_size = output_size
     end
     return num_multiplies_total, num_accumulates_total, intermediate_size
@@ -63,58 +57,4 @@ function compute_dot_prods(m::Conv, input_size)
     num_accumulates = dense_baseline_adds - structured_baseline_adds
 
     return num_multiplies, num_accumulates, output_size
-end
-
-##
-# dummy cost
-function cost_fn(n)
-    return n
-end
-
-##
-function compute_cost(m::Dense, input_size, cost_fn)
-    output_size = Flux.outputsize(m, input_size) # wxhxcinxcout
-    # compute the number of nonzero elements in weight array
-    total_cost = 0
-    for w in eachrow(m.weight)
-        mul_dp = size(m.weight)[2] - count(iszero, w)
-        channel_cost = cost_fn(mul_dp)
-        total_cost += channel_cost
-    end
-    return total_cost, output_size
-end
-##
-function compute_cost(m::Conv, input_size, cost_fn)
-    # compute the number of nonzero elements in weight array
-    total_cost = 0.0
-    output_size = Flux.outputsize(m, input_size) # WxHxCinxCout
-    num_output_patches = output_size[1] * output_size[2] # height of im2col matrix
-    # how to iterate over
-    for w in eachslice(m.weight, dims=4) # iterate over output channels
-        # println(size(w))
-        muls = (prod(size(w)) - count(iszero, w)) * num_output_patches
-        channel_cost = cost_fn(muls)
-        total_cost += channel_cost
-    end
-    return total_cost, output_size
-end
-##
-function compute_cost(model::Chain, input_size, cost_fn)
-    total_cost = 0
-    intermediate_size = input_size
-
-    for i in 1:length(model)
-        layer_cost, output_size = compute_cost(model[i], intermediate_size, cost_fn)
-        total_cost += layer_cost
-        println("cost in layer ", i, ": ", layer_cost)
-        println("output_size: ", output_size)  
-        intermediate_size = output_size
-    end
-    return total_cost, intermediate_size
-end
-
-# default case
-function compute_cost(m, input_size, cost_fn)
-    output_size = Flux.outputsize(m, input_size) # wxhxcinxcout
-    return 0, output_size
 end
