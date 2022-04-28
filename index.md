@@ -26,7 +26,7 @@ Your entry will be evaluated on three categories:
 - *Area:* how big is the hardware circuit implementation of your model?
 - *Energy:* how energy efficient is your hardware?
 
-**NOTE:** Stayed tuned for instructions on how to evaluate your submission.
+Follow the instructions in the [submission guide](/tutorials/submission) to evaluate your result.
 
 ## Information and suppport
 
