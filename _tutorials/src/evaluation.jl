@@ -14,7 +14,7 @@ function evaluate_submission(model, data, simulation_length)
     Evaluation complete!
 
     Area consumption = $area mm²
-    Energy consumption = $(power * simulation_length) mW * cycles
+    Energy consumption = $(power * simulation_length) uW * cycles
     Accuracy = $(round(100 * acc; digits = 2))% correct
 
     Please submit these results on the website.
