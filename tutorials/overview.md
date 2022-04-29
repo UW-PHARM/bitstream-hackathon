@@ -35,12 +35,18 @@ Download the all hackathon tutorials files [here](/assets/tutorials.tar.gz). Unc
 
 Open the folder you just saved in VS Code. You should see the Julia language server autodetect the tutorial environment, and the bottom pane of VS Code will read `Julia env: <name of your folder>`.
 
-Install all the packages by opening a new REPL via VS Code (see the previous section). Press the `]` key to enter Pkg mode. You should see the name of your tutorial folder at the prompt (this is your current Pkg "environment"). Run the command `instantiate` to install all the packages required for the tutorials.
+Install all the packages by opening a new REPL via VS Code (see the [previous section](#setting-up-julia-and-vs-code)). Press the `]` key to enter Pkg mode. You should see the name of your tutorial folder at the prompt (this is your current Pkg "environment"). Run the command `instantiate` to install all the packages required for the tutorials.
 
 Now, you can run the tutorials! Hit the `backspace` key to exit Pkg mode, and run
 ```julia-repl
 julia> include("<tutorial file>")
 ```
+
+*NOTE:* if you open the tutorial folder in VS Code as described above, then running "Julia: Start REPL" in VS Code will start a new REPL with the tutorial folder environment already activated. You can always manually specify the environment when you launch Julia from the terminal via
+```bash
+$ julia --project=.
+```
+where the `.` denotes the "current working directory" as the path for the project.
 
 ## Accessing the pre-trained model and dataset
 
