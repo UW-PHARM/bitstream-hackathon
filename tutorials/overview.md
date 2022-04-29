@@ -46,7 +46,7 @@ julia> include("<tutorial file>")
 ```bash
 $ julia --project=.
 ```
-where the `.` denotes the "current working directory" as the path for the project.
+where the `.` denotes the "current working directory" as the path for the project. You can [read the Pkg docs](https://pkgdocs.julialang.org/v1/environments/#Using-someone-else's-project) for more details.
 
 ## Accessing the pre-trained model and dataset
 
