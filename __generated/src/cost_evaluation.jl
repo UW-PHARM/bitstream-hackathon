@@ -1,7 +1,7 @@
-lfsr_power_model(n) = 10 * n
-lfsr_area_model(n) = 10 * n
-dp_power_model(n) = 2 * n
-dp_area_model(n) = 2 * n
+lfsr_power_model(n) = 10.89 * n
+lfsr_area_model(n) = 354.31 * n
+dp_power_model(n) = 0.2624 * n + 1.5944
+dp_area_model(n) = 14.717 * n + 56.324
 
 ##
 function dp_cost(m::Dense, input_size, cost_fn)
