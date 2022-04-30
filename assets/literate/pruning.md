@@ -177,8 +177,10 @@ m̄ = iterativeprune(stages, m) do m̄
             Flux.update!(opt, ps, gs)
         end
     end
-    GC.gc()
-    Flux.CUDA.reclaim()
+    if Flux.CUDA.functional()
+        GC.gc()
+        Flux.CUDA.reclaim()
+    end
     @show current_accuracy = accfn(valloader, m̄)
     return current_accuracy > target_acc
 end

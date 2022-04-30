@@ -67,8 +67,10 @@ m̄ &#61; iterativeprune&#40;stages, m&#41; do m̄
             Flux.update&#33;&#40;opt, ps, gs&#41;
         end
     end
-    GC.gc&#40;&#41;
-    Flux.CUDA.reclaim&#40;&#41;
+    if Flux.CUDA.functional&#40;&#41;
+        GC.gc&#40;&#41;
+        Flux.CUDA.reclaim&#40;&#41;
+    end
     @show current_accuracy &#61; accfn&#40;valloader, m̄&#41;
     return current_accuracy &gt; target_acc
 end</code></pre>
