@@ -21,3 +21,8 @@ sim_length = 10_000 # in clock cycles
 # evaluate
 evaluate_submission(model, testloader, sim_length)
 ```
+
+Please use this form to submit your results:
+[BCH@UW Submission Form](https://forms.gle/Qqjhmh2F6r3ZBqvB7)
+
+Submissions are due by end of day (any time zone) on Saturday 5/7/2022.
