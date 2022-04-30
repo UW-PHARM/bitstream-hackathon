@@ -161,8 +161,10 @@ println("MobileNet Mults ", mults, " Adds ", adds)
 #md #             Flux.update!(opt, ps, gs)
 #md #         end
 #md #     end
-#md #     GC.gc()
-#md #     Flux.CUDA.reclaim()
+#md #     if Flux.CUDA.functional()
+#md #         GC.gc()
+#md #         Flux.CUDA.reclaim()
+#md #     end
 #md #     @show current_accuracy = accfn(valloader, m̄)
 #md #     return current_accuracy > target_acc
 #md # end
