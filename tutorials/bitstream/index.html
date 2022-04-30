@@ -25,7 +25,7 @@ x</code></pre><pre><code class="plaintext code-output">length(x) = 2
 SBitstream{Float64}(value = 0.3)
     with 1002 bits.</code></pre>
 <p>Finally, we can see that the empirical average over the <code>SBit</code>s in queue matches the encoded value quite closely.</p>
-<pre><code class=language-julia >abs&#40;estimate&#40;x&#41; - float&#40;x&#41;&#41;</code></pre><pre><code class="plaintext code-output">0.0015968063872255356</code></pre>
+<pre><code class=language-julia >abs&#40;estimate&#40;x&#41; - float&#40;x&#41;&#41;</code></pre><pre><code class="plaintext code-output">0.010379241516966065</code></pre>
 <h2 id=operations_on_sbitstreams ><a href="#operations_on_sbitstreams" class=header-anchor >Operations on <code>SBitstream</code>s</a></h2>
 <p>So far, we have not computed any meaningful results with BitSAD. Let&#39;s go back to the multiplication example and try to multiply two <code>SBitstream</code>s.</p>
 <pre><code class=language-julia >y &#61; SBitstream&#40;0.5&#41;

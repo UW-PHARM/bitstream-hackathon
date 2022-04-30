@@ -21,6 +21,7 @@ println&#40;&quot;MobileNet Mults &quot;, mults, &quot; Adds &quot;, adds&#41;</
 <p>Compared to the number of multiplies reduced from unstructured pruning, structured pruning drastically reduces the computational cost incurred by the model during inference. The caveat for structured pruning is that by eliminating groups of weights, the compression ratio that structured pruning methods are set at are much lower than those from unstructured methods so the memory savings are limited. Choosing what the optimal amount of compression vs. latency of the model during inference is a design choice that must be made during model design and prior to deployment.</p>
 <h3 id=pruning_and_finetuning_pipeline ><a href="#pruning_and_finetuning_pipeline" class=header-anchor >Pruning and Finetuning pipeline</a></h3>
 <p>Now that we seen how to prune our model, let&#39;s try to finetune it to recover some of the accuracy we lost. First, we need to provide the root directory for our dataset and use it to construct the dataset objects for our training and validation sets.</p>
+<p>Note: This code is not included in the provided pruning.jl script but you can follow along and copy/paste the code in pruning.jl to run it and see the output.</p>
 <pre><code class=language-julia >dataroot &#61; joinpath&#40;artifact&quot;vww&quot;, &quot;vww-hackathon&quot;&#41;
 traindata &#61; VisualWakeWords&#40;dataroot; subset &#61; :train&#41;
 testdata &#61; VisualWakeWords&#40;dataroot; subset &#61; :val&#41;</code></pre>
