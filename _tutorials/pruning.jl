@@ -90,6 +90,9 @@ println("MobileNet Mults ", mults, " Adds ", adds)
 # Now that we seen how to prune our model, let's try to finetune it to recover some of the accuracy we lost. First, we need to 
 # provide the root directory for our dataset and use it to construct the dataset objects for our training and validation sets. 
 
+# Note: This code is not included in the provided pruning.jl script but you can follow along and copy/paste the
+# code in pruning.jl to run it and see the output.
+
 #md # ```
 #md # dataroot = joinpath(artifact"vww", "vww-hackathon")
 #md # traindata = VisualWakeWords(dataroot; subset = :train)
