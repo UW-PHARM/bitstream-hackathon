@@ -51,7 +51,7 @@ function dp_cost(m, input_size, cost_fn)
     return 0, output_size
 end
 
-lfsr_cost(m) = 0
+lfsr_cost(m, cost_fn) = 0
 lfsr_cost(m::Union{Dense, Conv}, cost_fn) =
     cost_fn(count(iszero, m.weight) + count(iszero, m.bias))
 lfsr_cost(m::Chain, cost_fn) = sum(layer -> lfsr_cost(layer, cost_fn), m)
