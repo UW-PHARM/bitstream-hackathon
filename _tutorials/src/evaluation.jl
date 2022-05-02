@@ -3,6 +3,9 @@ function evaluate_submission(model, data, simulation_length)
     power = power_consumption(model, (96, 96, 3, 1))
     area = area_consumption(model, (96, 96, 3, 1))
 
+    accfn(ŷ::AbstractArray, y::AbstractArray) = mean((ŷ .> 0) .== y)
+    accfn(data, model) = mean(accfn(model(x), y) for (x, y) in data)
+
     @info "Evaluating simulated model performance..."
     model_scaled, scalings = prepare_bitstream_model(model)
     total_scaling = prod(prod.(scalings))
