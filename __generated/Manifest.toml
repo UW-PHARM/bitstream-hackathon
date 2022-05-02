@@ -21,9 +21,9 @@ version = "0.3.4"
 
 [[deps.Accessors]]
 deps = ["Compat", "CompositionsBase", "ConstructionBase", "Future", "LinearAlgebra", "MacroTools", "Requires", "Test"]
-git-tree-sha1 = "4fef25b55a06269d48694c520c247ffe4759f556"
+git-tree-sha1 = "0264a938934447408c7f0be8985afec2a2237af4"
 uuid = "7d9f7c33-5ae7-4f3b-8dc6-eff91059b697"
-version = "0.1.10"
+version = "0.1.11"
 
 [[deps.Adapt]]
 deps = ["LinearAlgebra"]
@@ -111,7 +111,7 @@ version = "0.5.10"
 
 [[deps.BitSAD]]
 deps = ["Artifacts", "DataStructures", "Ghost", "LazyArtifacts", "LightGraphs", "LinearAlgebra", "MacroTools", "MetaGraphs", "OrderedCollections", "Random", "RandomNumbers", "Setfield", "Statistics"]
-git-tree-sha1 = "e84a12c285e48ed5fe09a948de0f89a642671cf5"
+git-tree-sha1 = "f8650e75a5241b91e08cf87c94493a3170a04f12"
 repo-rev = "master"
 repo-url = "https://github.com/UW-PHARM/BitSAD.jl.git"
 uuid = "7f90e340-ca22-4a3e-a259-118ed254aff3"
@@ -248,9 +248,9 @@ version = "1.10.0"
 
 [[deps.DataAugmentation]]
 deps = ["ColorBlendModes", "CoordinateTransformations", "Distributions", "ImageCore", "ImageDraw", "ImageTransformations", "IndirectArrays", "Interpolations", "LinearAlgebra", "MosaicViews", "OffsetArrays", "Parameters", "Random", "Rotations", "Setfield", "StaticArrays", "Statistics", "Test"]
-git-tree-sha1 = "5f2318b65ad41486a274e8bf3babc4cafd87b994"
+git-tree-sha1 = "74272f7c7ed89858549e03ee28e1fcd38708285f"
 uuid = "88a5189c-e7ff-4f85-ac6b-e6158070f02e"
-version = "0.2.7"
+version = "0.2.8"
 
 [[deps.DataDeps]]
 deps = ["BinaryProvider", "HTTP", "Libdl", "Reexport", "SHA", "p7zip_jll"]
@@ -308,9 +308,9 @@ version = "1.0.3"
 
 [[deps.DiffRules]]
 deps = ["IrrationalConstants", "LogExpFunctions", "NaNMath", "Random", "SpecialFunctions"]
-git-tree-sha1 = "dd933c4ef7b4c270aacd4eb88fa64c147492acf0"
+git-tree-sha1 = "28d605d9a0ac17118fe2c5e9ce0fbb76c3ceb120"
 uuid = "b552c78f-8df3-52c6-915a-8e097449b14b"
-version = "1.10.0"
+version = "1.11.0"
 
 [[deps.Distances]]
 deps = ["LinearAlgebra", "SparseArrays", "Statistics", "StatsAPI"]
@@ -324,9 +324,9 @@ uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 
 [[deps.Distributions]]
 deps = ["ChainRulesCore", "DensityInterface", "FillArrays", "LinearAlgebra", "PDMats", "Printf", "QuadGK", "Random", "SparseArrays", "SpecialFunctions", "Statistics", "StatsBase", "StatsFuns", "Test"]
-git-tree-sha1 = "5a4168170ede913a2cd679e53c2123cb4b889795"
+git-tree-sha1 = "70f5bfdfbdc6c9d2b7a143d70ae88f4cb7b193b1"
 uuid = "31c24e10-a181-5473-b8eb-7969acd0382f"
-version = "0.25.53"
+version = "0.25.56"
 
 [[deps.DocStringExtensions]]
 deps = ["LibGit2"]
@@ -405,7 +405,7 @@ version = "0.13.0"
 
 [[deps.FluxPrune]]
 deps = ["ChainRulesCore", "Flux", "Functors", "LinearAlgebra", "MacroTools", "MaskedArrays", "NNlib", "NNlibCUDA"]
-git-tree-sha1 = "96079ffb37a75a9b591f8f6cab42befa0f8b8715"
+git-tree-sha1 = "6afb28cbfd55c09c8727096d2ca727e7a32a7d73"
 repo-rev = "main"
 repo-url = "https://github.com/darsnack/FluxPrune.jl.git"
 uuid = "1384c1f3-d8dd-4e05-9122-0c792acaad72"
@@ -520,16 +520,16 @@ git-tree-sha1 = "7f43342f8d5fd30ead0ba1b49ab1a3af3b787d24"
 uuid = "7869d1d1-7146-5819-86e3-90919afe41df"
 version = "0.4.5"
 
-[[deps.IdentityRanges]]
-deps = ["OffsetArrays"]
-git-tree-sha1 = "be8fcd695c4da16a1d6d0cd213cb88090a150e3b"
-uuid = "bbac6d45-d8f3-5730-bfe4-7a449cd117ca"
-version = "0.3.1"
-
 [[deps.IfElse]]
 git-tree-sha1 = "debdd00ffef04665ccbb3e150747a77560e8fad1"
 uuid = "615f187c-cbe4-4ef1-ba3b-2fcf58d6d173"
 version = "0.1.1"
+
+[[deps.ImageBase]]
+deps = ["ImageCore", "Reexport"]
+git-tree-sha1 = "b51bb8cae22c66d0f6357e3bcb6363145ef20835"
+uuid = "c817782e-172a-44cc-b673-b171935fbb9e"
+version = "0.1.5"
 
 [[deps.ImageCore]]
 deps = ["AbstractFFTs", "ColorVectorSpace", "Colors", "FixedPointNumbers", "Graphics", "MappedArrays", "MosaicViews", "OffsetArrays", "PaddedViews", "Reexport"]
@@ -550,10 +550,10 @@ uuid = "82e4d734-157c-48bb-816b-45c225c6df19"
 version = "0.6.1"
 
 [[deps.ImageTransformations]]
-deps = ["AxisAlgorithms", "ColorVectorSpace", "CoordinateTransformations", "IdentityRanges", "ImageCore", "Interpolations", "OffsetArrays", "Rotations", "StaticArrays"]
-git-tree-sha1 = "e4cc551e4295a5c96545bb3083058c24b78d4cf0"
+deps = ["AxisAlgorithms", "ColorVectorSpace", "CoordinateTransformations", "ImageBase", "ImageCore", "Interpolations", "OffsetArrays", "Rotations", "StaticArrays"]
+git-tree-sha1 = "42fe8de1fe1f80dab37a39d391b6301f7aeaa7b8"
 uuid = "02fcd773-0e25-5acc-982a-7f6622650795"
-version = "0.8.13"
+version = "0.9.4"
 
 [[deps.Imath_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -748,9 +748,9 @@ uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 
 [[deps.LogExpFunctions]]
 deps = ["ChainRulesCore", "ChangesOfVariables", "DocStringExtensions", "InverseFunctions", "IrrationalConstants", "LinearAlgebra"]
-git-tree-sha1 = "a970d55c2ad8084ca317a4658ba6ce99b7523571"
+git-tree-sha1 = "76c987446e8d555677f064aaac1145c4c17662f8"
 uuid = "2ab3a3ac-af41-5b50-aa03-7779005ae688"
-version = "0.3.12"
+version = "0.3.14"
 
 [[deps.Logging]]
 uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
@@ -786,9 +786,9 @@ version = "0.4.10"
 
 [[deps.MLUtils]]
 deps = ["ChainRulesCore", "DelimitedFiles", "FLoops", "FoldsThreads", "Random", "ShowCases", "Statistics", "StatsBase"]
-git-tree-sha1 = "32eeb46fa393ae36a4127c9442ade478c8d01117"
+git-tree-sha1 = "202617a5a49a8b5f3b4abf96621f2519b1592c74"
 uuid = "f1d291b0-491e-4a28-83b9-f70985020b54"
-version = "0.2.3"
+version = "0.2.4"
 
 [[deps.MacroTools]]
 deps = ["Markdown", "Random"]
@@ -807,7 +807,7 @@ uuid = "d6f4376e-aef5-505a-96c1-9c027394607a"
 
 [[deps.MaskedArrays]]
 deps = ["Adapt", "ArrayInterface", "GPUArrays"]
-git-tree-sha1 = "1370a79525d244887a9ee245ff56edb163f53c54"
+git-tree-sha1 = "0015d0da92ffe108d9d4f928b3f52436dd2bc46c"
 repo-rev = "main"
 repo-url = "https://github.com/darsnack/MaskedArrays.jl.git"
 uuid = "e3e6debb-e142-42bc-8e83-ba8646d1d252"
@@ -963,9 +963,9 @@ version = "0.5.5+0"
 
 [[deps.Optimisers]]
 deps = ["ChainRulesCore", "Functors", "LinearAlgebra", "Random", "Statistics"]
-git-tree-sha1 = "cfedc2d6990d792e705ade4c458fea5fbe574520"
+git-tree-sha1 = "41412a5b8ac054bb853909a9470488ad201d9fab"
 uuid = "3bd65402-5787-11e9-1adc-39752487f4e2"
-version = "0.2.2"
+version = "0.2.3"
 
 [[deps.OrderedCollections]]
 git-tree-sha1 = "85f8e6578bf1f9ee0d11e7bb1b1456435479d47c"
@@ -980,9 +980,9 @@ version = "0.11.8"
 
 [[deps.PNGFiles]]
 deps = ["Base64", "CEnum", "ImageCore", "IndirectArrays", "OffsetArrays", "libpng_jll"]
-git-tree-sha1 = "eb4dbb8139f6125471aa3da98fb70f02dc58e49c"
+git-tree-sha1 = "e925a64b8585aa9f4e3047b8d2cdc3f0e79fd4e4"
 uuid = "f57f5aa1-a3ce-4bc8-8ab9-96f992907883"
-version = "0.3.14"
+version = "0.3.16"
 
 [[deps.PaddedViews]]
 deps = ["OffsetArrays"]
@@ -1031,9 +1031,9 @@ version = "0.1.1"
 
 [[deps.PooledArrays]]
 deps = ["DataAPI", "Future"]
-git-tree-sha1 = "28ef6c7ce353f0b35d0df0d5930e0d072c1f5b9b"
+git-tree-sha1 = "a6062fe4063cdafe78f4a0a81cfffb89721b30e7"
 uuid = "2dfb63ee-cc39-5dd5-95bd-886bf059d720"
-version = "1.4.1"
+version = "1.4.2"
 
 [[deps.Preferences]]
 deps = ["TOML"]
@@ -1268,9 +1268,9 @@ version = "0.9.18"
 
 [[deps.Strided]]
 deps = ["LinearAlgebra", "TupleTools"]
-git-tree-sha1 = "7c4bcef07d559776a9e2a009c441547fb9eb5c92"
+git-tree-sha1 = "632001471b256ceac6912c3e64d4b5c65154b216"
 uuid = "5e0ebb24-38b0-5f93-81fe-25c709ecae67"
-version = "1.2.1"
+version = "1.2.2"
 
 [[deps.StringEncodings]]
 deps = ["Libiconv_jll"]
@@ -1332,9 +1332,9 @@ version = "1.2.1"
 
 [[deps.TiffImages]]
 deps = ["ColorTypes", "DataStructures", "DocStringExtensions", "FileIO", "FixedPointNumbers", "IndirectArrays", "Inflate", "OffsetArrays", "PkgVersion", "ProgressMeter", "UUIDs"]
-git-tree-sha1 = "aaa19086bc282630d82f818456bc40b4d314307d"
+git-tree-sha1 = "f90022b44b7bf97952756a6b6737d1a0024a3233"
 uuid = "731e570b-9d59-4bfa-96dc-6df516fadf69"
-version = "0.5.4"
+version = "0.5.5"
 
 [[deps.TimerOutputs]]
 deps = ["ExprTools", "Printf"]
@@ -1412,9 +1412,9 @@ uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
 
 [[deps.Zygote]]
 deps = ["AbstractFFTs", "ChainRules", "ChainRulesCore", "DiffRules", "Distributed", "FillArrays", "ForwardDiff", "IRTools", "InteractiveUtils", "LinearAlgebra", "MacroTools", "NaNMath", "Random", "Requires", "SparseArrays", "SpecialFunctions", "Statistics", "ZygoteRules"]
-git-tree-sha1 = "8c3e9ae8c2b520200df59d4f683a0dab65685ade"
+git-tree-sha1 = "9c65b4b9d4547c4d16fc3f73e3f6ebee08730c76"
 uuid = "e88e6eb3-aa80-5325-afca-941959d7151f"
-version = "0.6.38"
+version = "0.6.39"
 
 [[deps.ZygoteRules]]
 deps = ["MacroTools"]
