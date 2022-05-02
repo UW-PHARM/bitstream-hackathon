@@ -1,2 +1,1 @@
-MethodError: objects of type Vector{NamedTuple{(:pos, :neg), Tuple{Bool, Bool}}} are not callable
-Use square brackets [] for indexing an Array.
+length(x) = 2

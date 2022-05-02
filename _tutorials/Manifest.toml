@@ -111,7 +111,7 @@ version = "0.5.10"
 
 [[deps.BitSAD]]
 deps = ["Artifacts", "DataStructures", "Ghost", "LazyArtifacts", "LightGraphs", "LinearAlgebra", "MacroTools", "MetaGraphs", "OrderedCollections", "Random", "RandomNumbers", "Setfield", "Statistics"]
-git-tree-sha1 = "f8650e75a5241b91e08cf87c94493a3170a04f12"
+git-tree-sha1 = "5762cb0d51789ec46868f3eb38fc29c7d255dba3"
 repo-rev = "master"
 repo-url = "https://github.com/UW-PHARM/BitSAD.jl.git"
 uuid = "7f90e340-ca22-4a3e-a259-118ed254aff3"
