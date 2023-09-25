@@ -1,3 +1,3 @@
 # This file was generated, do not modify it. # hide
-simulation_length = 1000
-add_conversion_error!(model_scaled, simulation_length);
+model_rescaled = Chain(model_scaled, x -> x .* total_scaling)
+accfn(valloader, model_rescaled)

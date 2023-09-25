@@ -17,7 +17,7 @@ function merge_conv_bn(model)
             # @info "Detected $(round(percent_saturated; digits = 2))% saturated parameters"
 
             # create a new instance of Conv
-            push!(backbone_layers, Conv(w, b, relu;
+            push!(backbone_layers, Conv(w, b, bn.λ;
                                         stride = c.stride,
                                         pad = c.pad,
                                         dilation = c.dilation,
@@ -133,10 +133,8 @@ end
 function prepare_bitstream_model(model)
     # @info "Merging conv + bn"
     model = merge_conv_bn(model)
-    # @info "Scaling weights + biases"
-    _, scaling, _ = scale_parameters!(model)
-
-    return model, scaling
+    
+    return model
 end
 
 struct Simlatable{T, S}

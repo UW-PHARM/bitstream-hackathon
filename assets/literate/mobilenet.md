@@ -17,18 +17,13 @@ to name a few.
 In this tutorial, you will learn how all these operations can come together
 to evaluate a neural network using bitstream computing.
 
-First, let us download a pretrained version of our model, MobileNet v1.
-We will do this using the artifact system shown below.
+First, let us take a pretrained version of our model, MobileNet v1.
 In your case, you will prune this model first, then follow this tutorial.
 
 ````julia:ex2
 include("_tutorials/src/setup.jl");
 
-artifacts = "_tutorials/Artifacts.toml"
-ensure_artifact_installed("mobilenet", artifacts)
-mobilenet = artifact_hash("mobilenet", artifacts)
-modelpath = joinpath(artifact_path(mobilenet), "mobilenet.bson")
-model = BSON.load(modelpath, @__MODULE__)[:m];
+BSON.@load "_tutorials/src/pretrained.bson" m
 ````
 
 In addition to the training data set and validation data set, we provide
@@ -50,7 +45,7 @@ accfn(data, model) = mean(accfn(model(x), y) for (x, y) in data)
 accfn(valloader, model)
 ````
 
-This accuracy is quite good at 81%!
+This accuracy is quite good at 79%!
 
 ## Building the bitstream computing model
 
@@ -68,35 +63,14 @@ numbers > 1. So, we must first prepare our model for bitstream mode.
 We have provided you with a utility function that does this step for you.
 
 The function is called `prepare_bitstream_model` and it takes a single argument:
-the model. It will perform the following steps:
-1. Merge the batch norm and convolution layers into a single convolution layer.
-   This is done by adjusting the convolution layer weights and biases
-   according to Eq. 1 below where $w$ and $b$ are the original weights and biases,
-   $\gamma$ and $\beta$ are the batch norm scale and shift,
-   and $\mu$ and $\sigma$ are the batch norm running mean and variance.
+the model. It merges the batch norm and convolution layers into a single convolution layer.
+This is done by adjusting the convolution layer weights and biases
+according to Eq. 1 below where $w$ and $b$ are the original weights and biases,
+$\gamma$ and $\beta$ are the batch norm scale and shift,
+and $\mu$ and $\sigma$ are the batch norm running mean and variance.
    $$
    \bar{w} = \frac{w \gamma}{\sigma} \qquad \bar{b} = \frac{\gamma (b - \mu)}{\sigma} + \beta
    $$
-2. Scale the merged weights and biases to be < 1.
-
-   This is done by finding the largest weight or bias in each layer and
-   normalizing all the parameters by that value (call it $p_{\text{max}}$).
-   Now, the output of our layer is given by Eq. 2 below (shown specifically for convolution).
-   In other words, the input to the next layer is scaled down by $p_{\text{max}}$.
-   We account for this by propagating the scaling factor forward to the next layer,
-   and pre-scale the bias of the next layer by $p_{\text{max}}$.
-   Then we repeat this process, on the next layer and propagate both scaling
-   factors forward onto the third layer. The final output of the network will
-   be scaled by the product of all the scaling factors at every layer.
-   $$
-   z = \mathrm{relu}\left(\frac{w}{p_{\text{max}}} * x + \frac{b}{p_{\text{max}}}\right)
-   $$
-
-````julia:ex4
-model_scaled, scalings = prepare_bitstream_model(model)
-@show total_scaling = prod(prod.(scalings))
-model_scaled
-````
 
 ## Approximating the simulation error
 
@@ -109,7 +83,7 @@ a neural network. At UW-Madison, our group uses the compute resources available
 on campus to simulate these models. For the hackathon, we will be using an
 approximation of the error induced by simulating bitstreams.
 
-````julia:ex5
+````julia:ex4
 simulation_length = 1000
 add_conversion_error!(model_scaled, simulation_length);
 ````
@@ -124,20 +98,14 @@ baseline model above. We make one additional change to the model to make sure
 we re-scale the output according to `total_scaling` defined above.
 The drop in accuracy will be the penalty paid for the inaccuracy in the bitstreams.
 
-````julia:ex6
+````julia:ex5
 model_rescaled = Chain(model_scaled, x -> x .* total_scaling)
 accfn(valloader, model_rescaled)
 ````
 
-You can see that the accuracy has degraded substantially relative to the
-original baseline accuracy. This is likely because we used a short simulation
-length of only 1000 cycles. In practice, your simulation length should be
-on the order of 100,000 cycles or more.
-
-More importantly, as you prune the model for the hackathon, you will finetune
-the weights and potentially increase the scaling factor. This will mean that
-you need a longer latency to accurately evaluate your model. A higher latency
-will result in greater energy consumption.
+The accuracy can vary substantially relative to the original baseline accuracy.
+This can happen if we use an extremely short simulation length.
+In practice, your simulation length should be on the order of 10,000 cycles or more.
 Your goal in the hackthon is to choose a pruning strategy and requested latency
 that minimizes energy consumption while maximizing accuracy.
 
