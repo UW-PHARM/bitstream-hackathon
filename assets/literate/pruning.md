@@ -49,7 +49,7 @@ contains and the amount of memory needed to store the model. We can also calcula
 accumulates that MobileNetv1 incurs to produce an output.
 
 ````julia:ex3
-m = MobileNet(relu, 0.25; fcsize = 64, nclasses = 2)
+m = MobileNet(hardtanh, 0.25; fcsize = 64, nclasses = 2)
 mults, adds, output_size = compute_dot_prods(m, (96, 96, 3, 1)) # height and weight are 96, input channels are 3, batch size = 1
 println("MobileNet Mults ", mults, " Adds ", adds)
 ````
@@ -60,7 +60,7 @@ Now that we've finished our setup, let's prune our model. We can use the `FluxPr
 weights by calling `LevelPrune`.
 
 ````julia:ex4
-m_pruned = prune(LevelPrune(0.1), m);
+m_lv_pruned = prune(LevelPrune(0.1), m);
 ````
 
 `FluxPrune`'s prune function takes in two inputs: the pruning strategy and the model to prune. We are using the `LevelPrune`
@@ -71,7 +71,7 @@ if you desire. Typically, we also have to finetune our resulting pruned model in
 setting the weights to 0. Let's compute the number of multiplies and accumulates to see how much we have saved.
 
 ````julia:ex5
-mults, adds, output_size = compute_dot_prods(m_pruned, (96, 96, 3, 1)) # height and weight are 96, input channels are 3, batch size = 1
+mults, adds, output_size = compute_dot_prods(m_lv_pruned, (96, 96, 3, 1)) # height and weight are 96, input channels are 3, batch size = 1
 println("MobileNet Mults ", mults, " Adds ", adds)
 ````
 
@@ -101,114 +101,40 @@ The caveat for structured pruning is that by eliminating groups of weights, the 
 from unstructured methods so the memory savings are limited. Choosing what the optimal amount of compression vs. latency of the model during inference is a design choice that must be made during model design and
 prior to deployment.
 
+### Propagating the pruning
+
+Once we have a sparse model through structured or unstructured pruning,
+there may be convolution nodes that have been completely eliminated
+in the pruning process. During the propagating phase, we evaluate which
+other neighbouring nodes have been impacted by the effects of pruning, and zero
+them out as well to extract further sparsity from pur pruning without impacting accuracy.
+
+````julia:ex7
+m_pruned = keepprune(m_ch_pruned)
+m_prop = propagate(m_pruned)
+mults, adds, output_size = compute_dot_prods(m_ch_pruned, (96, 96, 3, 1))
+println("Propagated MobileNet Mults ", mults, " Adds ", adds)
+````
+
+### Resizing the propagated model
+If enough nodes get pruned out, there would be slices in the model which
+accomplish nothing, computationally. Instead of wasting resources on passing these
+kernels full of zeros around, they can be eliminated from the structure of our model.
+
+````julia:ex8
+m_resized = resize(m)
+````
+
 ### Pruning and Finetuning pipeline
 
-Now that we seen how to prune our model, let's try to finetune it to recover some of the accuracy we lost. First, we need to
-provide the root directory for our dataset and use it to construct the dataset objects for our training and validation sets.
+Now that we seen how to prune our model, let's try to finetune it to recover some of the accuracy we lost.
+A basic template setup for training the model is provided by trainer function,
+and can be used as a starting point for your own training methodology.
 
-Note: This code is not included in the provided pruning.jl script but you can follow along and copy/paste the
-code in pruning.jl to run it and see the output.
-
-```
-dataroot = joinpath(artifact"vww", "vww-hackathon")
-traindata = VisualWakeWords(dataroot; subset = :train)
-testdata = VisualWakeWords(dataroot; subset = :val)
-```
-
-Next, we define the data augmentation pipeline to our model. As an aside, you want to include a variety of different augmentations during training as
-it's shown to have increased accuracy and makes the network invariant to those augmentations so it learns the correct features.
-
-```
-augmentations = Rotate(10) |>
-                RandomTranslate((96, 96), (0.05, 0.05)) |>
-                Zoom((0.9, 1.1)) |>
-                ScaleFixed((96, 96)) |>
-                Maybe(FlipX()) |>
-                CenterCrop((96, 96)) |>
-                ImageToTensor()
-trainset = map_augmentation(augmentations, traindata)
-
-
-testset = map_augmentation(ImageToTensor(), testdata)
-;
-```
-
-Let's grab the pretrained MobileNet model that we can use to prune, stored in the BSON file.
-
-```
-modelpath = joinpath(artifact"mobilenet", "mobilenet.bson")
-m = BSON.load(modelpath)[:m] |> gpu
-```
-
-We define the dataloader which takes a batch of images from the dataset, which is dictated by our batch size. We defer defining the training dataloader until we have to prune (we'll see why soon).
-```
-bs = 32
-valloader = DataLoader(BatchView(testset; batchsize = bs), nothing; buffered = true)
-;
-```
-
-Since the Visual Wake Word dataset is a binary classification problem, we use the binary cross entropy loss, which you can read about in the [Flux.Losses documentation page](https://fluxml.ai/Flux.jl/stable/models/losses/#Flux.Losses.logitbinarycrossentropy). We also have to
-define our accuracy function to determine if we correctly classified the input based on its label.
-```
-lossfn = Flux.Losses.logitbinarycrossentropy
-accfn(ŷ::AbstractArray, y::AbstractArray) = mean((ŷ .> 0) .== y)
-accfn(data, m) = mean(accfn(m(gpu(x)), gpu(y)) for (x, y) in data)
-```
-
-We are now ready to prune and finetune the model.
-
-We use the `iterativeprune` function to progressively prune the model.
-`iterativeprune` accepts 3 arguments: the finetuning function, the pruning strategy to use on the model, and the model to be pruned.
-We define the finetuning function with the [do-block syntax](https://docs.julialang.org/en/v1/manual/functions/#Do-Block-Syntax-for-Function-Arguments) which gets passed to `iterativeprune`
-as an anonymous function.
-
-```
-target_acc = 0.78
-nepochs = 5
-m̄ = iterativeprune(stages, m) do m̄
-    opt = Momentum(0.01)
-    ps = Flux.params(m̄)
-    subset = random_subset(trainset, 5000) # randomly subsample data to make finetuning faster
-    trainloader = DataLoader(BatchView(subset; batchsize = bs), nothing; buffered = true)
-    for epoch in 1:nepochs
-        @info "Epoch $epoch"
-        @time for (x, y) in trainloader
-            _x, _y = gpu(x), gpu(y)
-            gs = Flux.gradient(ps) do
-                lossfn(m̄(_x), _y)
-            end
-            Flux.update!(opt, ps, gs)
-        end
-    end
-    if Flux.CUDA.functional()
-        GC.gc()
-        Flux.CUDA.reclaim()
-    end
-    @show current_accuracy = accfn(valloader, m̄)
-    return current_accuracy > target_acc
-end
-```
-
-We define the optimizer (`SGD` with `Momentum` with a learning rate of `0.01`), training dataloader, and the training loop, as well as the loss and gradient update functions.
-Also, note that we have a function `random_subset` which chooses a smaller random subset of the data to train on. Depending on what computing resources are available,
-you may find that finetuning on the full dataset can be intensive and potentially a random subset would suffice for our purposes. The exact number to use is a hyperparameter you can play around with.
-
-```
-stages = [
- ChannelPrune(0.1),
- ChannelPrune(0.2),
- ChannelPrune(0.3)
-]
-```
-
-`stages` dictates what strategy we should use to the prune the model and by how much. For instance, `stages = [ChannelPrune(0.1), ChannelPrune(0.2)]` means that we are going to apply 2 stages
-of channel pruning in succession until we have a model with `20%` of its channels pruned. `iterativeprune` will apply the pruning to the model and finetune the model for a set number of epochs to reach a target accuracy we predefine. If it doesn't reach the target within the
-specified number of epochs, it will retry for a maximum of five times before giving up and returning the last successful stage.
-
-In our example, we ultimately want to prune the model by removing `30%` of the channels that have the lowest magnitude and doing this iteratively allows
-the model to recover accuracy more smoothly than if we dropped the channels at once. We can run this code and see that our model is able to reach the target that we had originally set.
-
-With this backbone, you should now be able to test out different strategies for pruning the model, potentially at different layers and pruning magnitudes!
+````julia:ex9
+include("trainerfunc.jl");
+trainer(m_resized, 2) #trains resized model for 2 epochs
+````
 
 Useful Resources:
 1. [Blog Post on Pruning and Sparsity](https://intellabs.github.io/distiller/pruning.html)
@@ -216,7 +142,7 @@ Useful Resources:
 3. [Model Compression Survey Paper](https://arxiv.org/abs/1710.0928)
 4. [Deep Compression Paper](https://arxiv.org/abs/1510.00149)
 
-````julia:ex7
+````julia:ex10
 Pkg.activate(".") # hideall
 ````
 

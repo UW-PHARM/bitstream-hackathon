@@ -1,2 +1,2 @@
-LoadError: Failed to precompile Flux [587475ba-b771-5e3f-ad9e-33799f191a9c] to "/home/runner/.julia/compiled/v1.9/Flux/jl_p5522I".
+LoadError: Failed to precompile Flux [587475ba-b771-5e3f-ad9e-33799f191a9c] to "/home/runner/.julia/compiled/v1.9/Flux/jl_xNI6sX".
 in expression starting at /home/runner/work/bitstream-hackathon/bitstream-hackathon/_tutorials/src/setup.jl:1

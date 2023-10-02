@@ -26,10 +26,7 @@ include("_tutorials/src/setup.jl");
 BSON.@load "_tutorials/src/pretrained.bson" m
 ````
 
-In addition to the training data set and validation data set, we provide
-you with a test data set of only 100 samples. This small subset will be used
-to measure the performance of your model using bitstream computing.
-Let's see the accuracy of the pretrained model on the test data set.
+Let's see the accuracy of the pretrained model on the provided validation data set.
 
 ````julia:ex3
 ensure_artifact_installed("vww", artifacts)

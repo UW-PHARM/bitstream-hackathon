@@ -3,49 +3,55 @@
 
 <url>
     <loc>tutorials/bitstream/index.html</loc>
-    <lastmod>2023-09-25</lastmod>
+    <lastmod>2023-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>tutorials/training/index.html</loc>
-    <lastmod>2023-09-25</lastmod>
+    <lastmod>2023-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>404/index.html</loc>
-    <lastmod>2023-09-25</lastmod>
+    <lastmod>2023-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>index.html</loc>
-    <lastmod>2023-09-25</lastmod>
+    <lastmod>2023-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>tutorials/pruning/index.html</loc>
-    <lastmod>2023-09-25</lastmod>
+    <lastmod>2023-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>tutorials/overview/index.html</loc>
-    <lastmod>2023-09-25</lastmod>
+    <lastmod>2023-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>tutorials/mobilenet/index.html</loc>
-    <lastmod>2023-09-25</lastmod>
+    <lastmod>2023-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
     <loc>tutorials/submission/index.html</loc>
-    <lastmod>2023-09-25</lastmod>
+    <lastmod>2023-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
+    <loc>tutorials/bitstreamlining/index.html</loc>
+    <lastmod>2023-10-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>

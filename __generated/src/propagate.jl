@@ -1,6 +1,13 @@
 
-slopactv(x::Real) = oftype(x, hardtanh(x) - softshrink(x,1)/4)
+slopehtanh(x::Real) = oftype(x, hardtanh(x) - softshrink(x,1)/4)
 
+function resize(model)
+    if(model[1][2] isa BatchNorm)
+        return resize_bn(model)
+    else
+        return resize_nobn(model)
+
+end
 #-------------------------------------------------------------------------------------------------
 
 function resize_nobn(model)
