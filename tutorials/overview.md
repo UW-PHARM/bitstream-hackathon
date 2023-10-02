@@ -50,16 +50,15 @@ where the `.` denotes the "current working directory" as the path for the projec
 
 ## Accessing the pre-trained model and dataset
 
-We provide all participants with a pre-trained version of MobileNet-v1 designed to be used with bitstream computing. This model matches the original network with a width multipler of 0.25 and input resolution of 96 by 96. You can access the pre-trained model by setting up the tutorial folder as described in [above](#setting-up-the-hackathon-tutorials). Then, in your code, add
+We provide all participants with a pre-trained version of MobileNet-v1 designed to be used with bitstream computing. This model matches the original network with a width multipler of 0.25, input resolution of 96 by 96, and an activation function of hardtanh. You can access the pre-trained model by setting up the tutorial folder as described in [above](#setting-up-the-hackathon-tutorials). Then, in your code, add
 ```julia
 # this is the setup file included in the tutorial
 include("src/setup.jl")
 
-modelpath = joinpath(artifact"mobilenet", "mobilenet.bson")
-m = BSON.load(modelpath)[:m]
+BSON.@load "src/pretrained.bson" m
 ```
 
-We also provide a version of the [Visual Wake Words dataset](https://arxiv.org/abs/1906.05721) via the same artifacts system.
+We also provide a version of the [Visual Wake Words dataset](https://arxiv.org/abs/1906.05721) via the artifacts system.
 
 ```julia
 # this is the setup file included in the tutorial
