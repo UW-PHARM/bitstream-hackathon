@@ -1,2 +1,3 @@
-LoadError: Failed to precompile Flux [587475ba-b771-5e3f-ad9e-33799f191a9c] to "/home/runner/.julia/compiled/v1.9/Flux/jl_xNI6sX".
-in expression starting at /home/runner/work/bitstream-hackathon/bitstream-hackathon/_tutorials/src/setup.jl:1
+LoadError: Failed to precompile CSV [336ed68f-0bac-5ca0-87d4-7b16caf5d00b] to "/home/runner/.julia/compiled/v1.9/CSV/jl_uloxSW".
+in expression starting at /home/runner/.julia/packages/MLDatasets/268Pz/src/MLDatasets.jl:1
+in expression starting at /home/runner/work/bitstream-hackathon/bitstream-hackathon/_tutorials/src/setup.jl:5

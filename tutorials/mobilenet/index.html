@@ -1,8 +1,75 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/bitstream-hackathon/libs/katex/katex.min.css"> <link rel=stylesheet  href="/bitstream-hackathon/libs/highlight/github.min.css"> <link rel=stylesheet  href="/bitstream-hackathon/css/jtd.css"> <link rel=icon  href="/bitstream-hackathon/assets/favicon.ico"> <title>Simulating MobileNet</title> <div class=page-wrap > <div class=side-bar > <!-- <div class=header > <a href="/bitstream-hackathon/" class=title > <img src="/bitstream-hackathon/assets/pharm_homepage.jpg"> </a> </div> --> <label for=show-menu  class=show-menu >MENU</label> <input type=checkbox  id=show-menu  role=button > <div class=menu  id=side-menu > <ul class=menu-list > <li class="menu-list-item "><a href="/bitstream-hackathon/" class="menu-list-link ">Home</a> <li class=menu-list-item >Tutorials <ul class=menu-list-child-list  style="display: block;"> <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/overview/" class="menu-list-link ">Overview</a> <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/bitstream/" class="menu-list-link ">Bitstreams 101</a> <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/bitstreamlining/" class="menu-list-link ">Bitstreamlining</a> <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/pruning/" class="menu-list-link ">Pruning</a> <li class="menu-list-item active"><a href="/bitstream-hackathon/tutorials/mobilenet/" class="menu-list-link active">Simulating MobileNet</a> <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/submission/" class="menu-list-link ">Submission guide</a> </ul> </ul> </div> <div class=footer > This is <em>Just the docs</em>, adapted from the <a href="https://github.com/pmarsceill/just-the-docs" target=_blank >Jekyll theme</a>. </div> </div> <div class=main-content-wrap > <div class=main-content > <div class=main-header > <span style="padding-right: 250px;"> <img src="/bitstream-hackathon/assets/red-flush-UWlogo.jpg" width=150px > <img src="/bitstream-hackathon/assets/pharm_homepage.jpg" width=175px  style="padding-bottom: 10px;"> </span> <a id=github  href="/bitstream-hackathon//github.com/UW-PHARM/BitSAD.jl">BitSAD.jl on GitHub</a> </div> <div class=franklin-content ><em>Make sure you have completed the <a href="/bitstream-hackathon/tutorials/overview">getting started</a> tutorial.</em></p> <p><strong>Table of contents:</strong></p> <p><div class=franklin-toc ><ol><li><a href="#evaluating_the_baseline_model">Evaluating the baseline model</a><li><a href="#building_the_bitstream_computing_model">Building the bitstream computing model</a><li><a href="#approximating_the_simulation_error">Approximating the simulation error</a><li><a href="#real_simulation">Real simulation</a></ol></div> <h1 id=simulating_mobilenet ><a href="#simulating_mobilenet" class=header-anchor >Simulating MobileNet</a></h1> <h2 id=evaluating_the_baseline_model ><a href="#evaluating_the_baseline_model" class=header-anchor >Evaluating the baseline model</a></h2> <p>In <a href="/bitstream-hackathon/tutorials/bitstream">Bitstreams 101</a>, you saw how we can compute a multiplication operation using stochastic bitstreams with a single AND gate. But there are many more operations that we can perform with bitstreams, including addition, division, vector dot products, and matrix multiplication, to name a few. In this tutorial, you will learn how all these operations can come together to evaluate a neural network using bitstream computing.</p> <p>First, let us take a pretrained version of our model, MobileNet v1. In your case, you will prune this model first, then follow this tutorial.</p> <pre><code class=language-julia >include&#40;&quot;_tutorials/src/setup.jl&quot;&#41;;
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="/bitstream-hackathon/libs/katex/katex.min.css">
+     
+   <link rel="stylesheet" href="/bitstream-hackathon/libs/highlight/github.min.css">
+   
+    <link rel="stylesheet" href="/bitstream-hackathon/css/jtd.css">
+  <link rel="icon" href="/bitstream-hackathon/assets/favicon.ico">
 
-BSON.@load &quot;_tutorials/src/pretrained.bson&quot; m</code></pre><pre><code class="plaintext code-output">LoadError: Failed to precompile Flux [587475ba-b771-5e3f-ad9e-33799f191a9c] to "/home/runner/.julia/compiled/v1.9/Flux/jl_B20BXA".
-in expression starting at /home/runner/work/bitstream-hackathon/bitstream-hackathon/_tutorials/src/setup.jl:1
-</code></pre> <p>Let&#39;s see the accuracy of the pretrained model on the provided validation data set.</p> <pre><code class=language-julia >ensure_artifact_installed&#40;&quot;vww&quot;, artifacts&#41;
+   <title>Simulating MobileNet</title>  
+</head>
+<body>                      <!-- closed in foot.html -->
+<div class="page-wrap">   <!-- closed in foot.html -->
+  <!-- SIDE BAR -->
+  <div class="side-bar">
+    <!-- <div class="header">
+      <a href="/bitstream-hackathon/" class="title">
+        <img src="/bitstream-hackathon/assets/pharm_homepage.jpg">
+      </a>
+    </div> -->
+    <label for="show-menu" class="show-menu">MENU</label>
+    <input type="checkbox" id="show-menu" role="button">
+    <div class="menu" id="side-menu">
+      <ul class="menu-list">
+        <li class="menu-list-item "><a href="/bitstream-hackathon/" class="menu-list-link ">Home</a>
+        <li class="menu-list-item">Tutorials
+          <ul class="menu-list-child-list" style="display: block;">
+            <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/overview/" class="menu-list-link ">Overview</a>
+            <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/bitstream/" class="menu-list-link ">Bitstreams 101</a>
+            <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/bitstreamlining/" class="menu-list-link ">Bitstreamlining</a>
+            <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/pruning/" class="menu-list-link ">Pruning</a>
+            <li class="menu-list-item active"><a href="/bitstream-hackathon/tutorials/mobilenet/" class="menu-list-link active">Simulating MobileNet</a>
+            <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/submission/" class="menu-list-link ">Submission guide</a>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="footer">
+      This is <em>Just the docs</em>, adapted from the <a href="https://github.com/pmarsceill/just-the-docs" target="_blank">Jekyll theme</a>.
+    </div>
+  </div>
+  <!-- CONTENT -->
+  <div class="main-content-wrap"> <!-- closed in foot.html -->
+    <div class="main-content">    <!-- closed in foot.html -->
+      <div class="main-header">
+        <span style="padding-right: 250px;">
+          <img src="/bitstream-hackathon/assets/red-flush-UWlogo.jpg" width="150px">
+          <img src="/bitstream-hackathon/assets/pharm_homepage.jpg" width="175px" style="padding-bottom: 10px;">
+        </span>
+        <a id="github" href="/bitstream-hackathon//github.com/UW-PHARM/BitSAD.jl">BitSAD.jl on GitHub</a>
+      </div>
+
+
+
+<!-- Content appended here (in class franklin-content) -->
+<div class="franklin-content"><em>Make sure you have completed the <a href="/bitstream-hackathon/tutorials/overview">getting started</a> tutorial.</em></p>
+<p><strong>Table of contents:</strong></p>
+<p><div class="franklin-toc"><ol><li><a href="#evaluating_the_baseline_model">Evaluating the baseline model</a></li><li><a href="#building_the_bitstream_computing_model">Building the bitstream computing model</a></li><li><a href="#approximating_the_simulation_error">Approximating the simulation error</a></li><li><a href="#real_simulation">Real simulation</a></li></ol></div>
+<h1 id="simulating_mobilenet"><a href="#simulating_mobilenet" class="header-anchor">Simulating MobileNet</a></h1>
+<h2 id="evaluating_the_baseline_model"><a href="#evaluating_the_baseline_model" class="header-anchor">Evaluating the baseline model</a></h2>
+<p>In <a href="/bitstream-hackathon/tutorials/bitstream">Bitstreams 101</a>, you saw how we can compute a multiplication operation using stochastic bitstreams with a single AND gate. But there are many more operations that we can perform with bitstreams, including addition, division, vector dot products, and matrix multiplication, to name a few. In this tutorial, you will learn how all these operations can come together to evaluate a neural network using bitstream computing.</p>
+<p>First, let us take a pretrained version of our model, MobileNet v1. In your case, you will prune this model first, then follow this tutorial.</p>
+<pre><code class="language-julia">include&#40;&quot;_tutorials/src/setup.jl&quot;&#41;;
+
+BSON.@load &quot;_tutorials/src/pretrained.bson&quot; m</code></pre><pre><code class="plaintext code-output">LoadError: UndefVarError: `FileDataset` not defined
+in expression starting at /home/runner/work/bitstream-hackathon/bitstream-hackathon/_tutorials/src/setup.jl:6
+</code></pre>
+<p>Let&#39;s see the accuracy of the pretrained model on the provided validation data set.</p>
+<pre><code class="language-julia">ensure_artifact_installed&#40;&quot;vww&quot;, artifacts&#41;
 vwwdata &#61; artifact_hash&#40;&quot;vww&quot;, artifacts&#41;
 dataroot &#61; joinpath&#40;artifact_path&#40;vwwdata&#41;, &quot;vww-hackathon&quot;&#41;
 valdata &#61; VisualWakeWords&#40;dataroot; subset &#61; :val&#41;
@@ -13,10 +80,53 @@ accfn&#40;ŷ::AbstractArray, y::AbstractArray&#41; &#61; mean&#40;&#40;ŷ .&gt
 accfn&#40;data, model&#41; &#61; mean&#40;accfn&#40;model&#40;x&#41;, y&#41; for &#40;x, y&#41; in data&#41;
 
 accfn&#40;valloader, model&#41;</code></pre><pre><code class="plaintext code-output">UndefVarError: `ensure_artifact_installed` not defined
-</code></pre> <p>This accuracy is quite good at 79&#37;&#33;</p> <h2 id=building_the_bitstream_computing_model ><a href="#building_the_bitstream_computing_model" class=header-anchor >Building the bitstream computing model</a></h2> <p>At the end of <a href="/bitstream-hackathon/tutorials/bitstream">Bitstreams 101</a>, you saw that simulating bitstream computing circuits at the bit level requires generating a bit for each input bitstream, then emulating the hardware on those bits, and pushing the result onto an output bitstream.</p> <p>BitSAD.jl automates this process with a <a href="https://uw-pharm.github.io/BitSAD.jl/dev/docs/tutorials/simulation-and-hardware.html"><code>simulatable</code> function</a> that takes a Julia function and builds a &quot;simulatable&quot; version of it. Unfortunately, we can&#39;t naively apply this function to our model. For example, our model weights and biases are represented as floating point numbers &gt; 1. So, we must first prepare our model for bitstream mode. We have provided you with a utility function that does this step for you.</p> <p>The function is called <code>prepare_bitstream_model</code> and it takes a single argument: the model. It merges the batch norm and convolution layers into a single convolution layer. This is done by adjusting the convolution layer weights and biases according to Eq. 1 below where \(w\) and \(b\) are the original weights and biases, \(\gamma\) and \(\beta\) are the batch norm scale and shift, and \(\mu\) and \(\sigma\) are the batch norm running mean and variance.</p> \[ \bar{w} = \frac{w \gamma}{\sigma} \qquad \bar{b} = \frac{\gamma (b - \mu)}{\sigma} + \beta \] <h2 id=approximating_the_simulation_error ><a href="#approximating_the_simulation_error" class=header-anchor >Approximating the simulation error</a></h2> <p>We see that the total scaling is quite large. This means that we will need long bitstreams to accurately represent the scaled weights and biases. Typically, we would use the <code>simulatable</code> function in BitSAD to empirically measure the effect of this error on our accuracy; however, cycle-accurate simulation of hardware is computationally intensive for a large program like a neural network. At UW-Madison, our group uses the compute resources available on campus to simulate these models. For the hackathon, we will be using an approximation of the error induced by simulating bitstreams.</p> <pre><code class=language-julia >simulation_length &#61; 1000
+</code></pre>
+<p>This accuracy is quite good at 79&#37;&#33;</p>
+<h2 id="building_the_bitstream_computing_model"><a href="#building_the_bitstream_computing_model" class="header-anchor">Building the bitstream computing model</a></h2>
+<p>At the end of <a href="/bitstream-hackathon/tutorials/bitstream">Bitstreams 101</a>, you saw that simulating bitstream computing circuits at the bit level requires generating a bit for each input bitstream, then emulating the hardware on those bits, and pushing the result onto an output bitstream.</p>
+<p>BitSAD.jl automates this process with a <a href="https://uw-pharm.github.io/BitSAD.jl/dev/docs/tutorials/simulation-and-hardware.html"><code>simulatable</code> function</a> that takes a Julia function and builds a &quot;simulatable&quot; version of it. Unfortunately, we can&#39;t naively apply this function to our model. For example, our model weights and biases are represented as floating point numbers &gt; 1. So, we must first prepare our model for bitstream mode. We have provided you with a utility function that does this step for you.</p>
+<p>The function is called <code>prepare_bitstream_model</code> and it takes a single argument: the model. It merges the batch norm and convolution layers into a single convolution layer. This is done by adjusting the convolution layer weights and biases according to Eq. 1 below where \(w\) and \(b\) are the original weights and biases, \(\gamma\) and \(\beta\) are the batch norm scale and shift, and \(\mu\) and \(\sigma\) are the batch norm running mean and variance.</p>
+\[
+   \bar{w} = \frac{w \gamma}{\sigma} \qquad \bar{b} = \frac{\gamma (b - \mu)}{\sigma} + \beta
+   \]
+<h2 id="approximating_the_simulation_error"><a href="#approximating_the_simulation_error" class="header-anchor">Approximating the simulation error</a></h2>
+<p>We see that the total scaling is quite large. This means that we will need long bitstreams to accurately represent the scaled weights and biases. Typically, we would use the <code>simulatable</code> function in BitSAD to empirically measure the effect of this error on our accuracy; however, cycle-accurate simulation of hardware is computationally intensive for a large program like a neural network. At UW-Madison, our group uses the compute resources available on campus to simulate these models. For the hackathon, we will be using an approximation of the error induced by simulating bitstreams.</p>
+<pre><code class="language-julia">simulation_length &#61; 1000
 add_conversion_error&#33;&#40;model_scaled, simulation_length&#41;;</code></pre><pre><code class="plaintext code-output">UndefVarError: `add_conversion_error!` not defined
-</code></pre> <p>We provide you with a <code>add_conversion_error&#33;</code> function that accepts a model and simulation length in clock cycles. This function will use BitSAD to measure the error incurred by generating bit sequences for each weight and bias, then adjust the floating point weights and biases of the model to be slightly off by the measured error. You can then evaluate the adjusted model like you evaluated the original baseline model above. We make one additional change to the model to make sure we re-scale the output according to <code>total_scaling</code> defined above. The drop in accuracy will be the penalty paid for the inaccuracy in the bitstreams.</p> <pre><code class=language-julia >model_rescaled &#61; Chain&#40;model_scaled, x -&gt; x .* total_scaling&#41;
+</code></pre>
+<p>We provide you with a <code>add_conversion_error&#33;</code> function that accepts a model and simulation length in clock cycles. This function will use BitSAD to measure the error incurred by generating bit sequences for each weight and bias, then adjust the floating point weights and biases of the model to be slightly off by the measured error. You can then evaluate the adjusted model like you evaluated the original baseline model above. We make one additional change to the model to make sure we re-scale the output according to <code>total_scaling</code> defined above. The drop in accuracy will be the penalty paid for the inaccuracy in the bitstreams.</p>
+<pre><code class="language-julia">model_rescaled &#61; Chain&#40;model_scaled, x -&gt; x .* total_scaling&#41;
 accfn&#40;valloader, model_rescaled&#41;</code></pre><pre><code class="plaintext code-output">UndefVarError: `model_scaled` not defined
-</code></pre> <p>The accuracy can vary substantially relative to the original baseline accuracy. This can happen if we use an extremely short simulation length. In practice, your simulation length should be on the order of 10,000 cycles or more. Your goal in the hackthon is to choose a pruning strategy and requested latency that minimizes energy consumption while maximizing accuracy.</p> <h2 id=real_simulation ><a href="#real_simulation" class=header-anchor >Real simulation</a></h2> <p>As we mentioned above, simulating the network using BitSAD will be computationally intensive, so we do not require this for the hackathon. Unfortunately, our approximation model does not account for all the possible sources of error in bitstream computing, namely correlations between the input bitstreams as well as errors caused by the stateful emulation of the hardware. BitSAD simulatable functions do account for all these sources of error. If you are interested in evaluating your model using BitSAD, you can execute</p> <pre><code class=language-julia >mbit &#61; model_scaled |&gt; tosbitstream
-msim &#61; make_simulatable&#40;mbit, &#40;96, 96, 3, 1&#41;&#41;</code></pre> <p>This code does two things. First, the <code>tosbitstream</code> function will replace all the array parameters in your model with <code>SBitstream</code> arrays from BitSAD. Next, the <code>make_simulatable</code> function will apply the <code>simulatable</code> function from BitSAD to each layer in the network and wrap the result as a &quot;simulatable&quot; version of the layer. We pass the <code>make_simulatable</code> function the size of our input, since the hardware will be built of a specific size. Finally, you can simulate a single cycle of bitstream execution using</p> <pre><code class=language-julia >xbit &#61; SBitstream.&#40;x&#41; # convert a single input sample to SBitstream
-msim&#40;xbit&#41;</code></pre> <p>The output of <code>msim&#40;xbit&#41;</code> will be a single element <code>SBitstream</code> array. If you examine the single element, you will see that it contains a single bit in the queue. That single bit is the result of simulating the bitstream computing hardware. You can now call <code>msim&#40;xbit&#41;</code> repeatedly in a loop to simulate many bit sequentially. For more information, check out the <a href="https://uw-pharm.github.io/BitSAD.jl/dev/README.html">BitSAD.jl docs</a>.</p> <div class=page-foot > <hr> <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> UW-Madison PHARM Group. Last modified: October 02, 2023. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>. </div> </div> </div> </div> </div> <!-- end of class page-wrap--> <script src="/bitstream-hackathon/libs/katex/katex.min.js"></script> <script src="/bitstream-hackathon/libs/katex/auto-render.min.js"></script> <script>renderMathInElement(document.body)</script> <script src="/bitstream-hackathon/libs/highlight/highlight.pack.js"></script> <script>hljs.initHighlightingOnLoad();hljs.configure({tabReplace: ' '});</script>
+</code></pre>
+<p>The accuracy can vary substantially relative to the original baseline accuracy. This can happen if we use an extremely short simulation length. In practice, your simulation length should be on the order of 10,000 cycles or more. Your goal in the hackthon is to choose a pruning strategy and requested latency that minimizes energy consumption while maximizing accuracy.</p>
+<h2 id="real_simulation"><a href="#real_simulation" class="header-anchor">Real simulation</a></h2>
+<p>As we mentioned above, simulating the network using BitSAD will be computationally intensive, so we do not require this for the hackathon. Unfortunately, our approximation model does not account for all the possible sources of error in bitstream computing, namely correlations between the input bitstreams as well as errors caused by the stateful emulation of the hardware. BitSAD simulatable functions do account for all these sources of error. If you are interested in evaluating your model using BitSAD, you can execute</p>
+<pre><code class="language-julia">mbit &#61; model_scaled |&gt; tosbitstream
+msim &#61; make_simulatable&#40;mbit, &#40;96, 96, 3, 1&#41;&#41;</code></pre>
+<p>This code does two things. First, the <code>tosbitstream</code> function will replace all the array parameters in your model with <code>SBitstream</code> arrays from BitSAD. Next, the <code>make_simulatable</code> function will apply the <code>simulatable</code> function from BitSAD to each layer in the network and wrap the result as a &quot;simulatable&quot; version of the layer. We pass the <code>make_simulatable</code> function the size of our input, since the hardware will be built of a specific size. Finally, you can simulate a single cycle of bitstream execution using</p>
+<pre><code class="language-julia">xbit &#61; SBitstream.&#40;x&#41; # convert a single input sample to SBitstream
+msim&#40;xbit&#41;</code></pre>
+<p>The output of <code>msim&#40;xbit&#41;</code> will be a single element <code>SBitstream</code> array. If you examine the single element, you will see that it contains a single bit in the queue. That single bit is the result of simulating the bitstream computing hardware. You can now call <code>msim&#40;xbit&#41;</code> repeatedly in a loop to simulate many bit sequentially. For more information, check out the <a href="https://uw-pharm.github.io/BitSAD.jl/dev/README.html">BitSAD.jl docs</a>.</p>
+
+<div class="page-foot">
+    <hr>
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> UW-Madison PHARM Group. Last modified: October 03, 2023.
+    Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    </div> <!-- end of class main-content -->
+    </div> <!-- end of class main-content-wrap -->
+    </div> <!-- end of class page-wrap-->
+    
+      <script src="/bitstream-hackathon/libs/katex/katex.min.js"></script>
+<script src="/bitstream-hackathon/libs/katex/auto-render.min.js"></script>
+<script>renderMathInElement(document.body)</script>
+
+    
+    
+      <script src="/bitstream-hackathon/libs/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();hljs.configure({tabReplace: '    '});</script>
+
+    
+  </body>
+</html>

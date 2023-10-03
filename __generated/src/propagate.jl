@@ -6,6 +6,7 @@ function resize(model)
         return resize_bn(model)
     else
         return resize_nobn(model)
+    end
 
 end
 #-------------------------------------------------------------------------------------------------

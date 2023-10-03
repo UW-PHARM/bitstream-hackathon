@@ -1,15 +1,93 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/bitstream-hackathon/libs/highlight/github.min.css"> <link rel=stylesheet  href="/bitstream-hackathon/css/jtd.css"> <link rel=icon  href="/bitstream-hackathon/assets/favicon.ico"> <title>Submission instructions</title> <div class=page-wrap > <div class=side-bar > <!-- <div class=header > <a href="/bitstream-hackathon/" class=title > <img src="/bitstream-hackathon/assets/pharm_homepage.jpg"> </a> </div> --> <label for=show-menu  class=show-menu >MENU</label> <input type=checkbox  id=show-menu  role=button > <div class=menu  id=side-menu > <ul class=menu-list > <li class="menu-list-item "><a href="/bitstream-hackathon/" class="menu-list-link ">Home</a> <li class=menu-list-item >Tutorials <ul class=menu-list-child-list  style="display: block;"> <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/overview/" class="menu-list-link ">Overview</a> <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/bitstream/" class="menu-list-link ">Bitstreams 101</a> <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/bitstreamlining/" class="menu-list-link ">Bitstreamlining</a> <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/pruning/" class="menu-list-link ">Pruning</a> <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/mobilenet/" class="menu-list-link ">Simulating MobileNet</a> <li class="menu-list-item active"><a href="/bitstream-hackathon/tutorials/submission/" class="menu-list-link active">Submission guide</a> </ul> </ul> </div> <div class=footer > This is <em>Just the docs</em>, adapted from the <a href="https://github.com/pmarsceill/just-the-docs" target=_blank >Jekyll theme</a>. </div> </div> <div class=main-content-wrap > <div class=main-content > <div class=main-header > <span style="padding-right: 250px;"> <img src="/bitstream-hackathon/assets/red-flush-UWlogo.jpg" width=150px > <img src="/bitstream-hackathon/assets/pharm_homepage.jpg" width=175px  style="padding-bottom: 10px;"> </span> <a id=github  href="/bitstream-hackathon//github.com/UW-PHARM/BitSAD.jl">BitSAD.jl on GitHub</a> </div> <div class=franklin-content ><h1 id=submission_instructions ><a href="#submission_instructions" class=header-anchor >Submission instructions</a></h1> <p>Once you have pruned your model, call the <code>evaluate_submission</code> function on the floating point model &#40;<em>note: DO NOT use the bitstream model</em>&#41;. You get to choose the simulation length for evaluating your model.</p> <pre><code class="julia hljs">include(<span class=hljs-string >&quot;src/setup.jl&quot;</span>)
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+   <link rel="stylesheet" href="/bitstream-hackathon/libs/highlight/github.min.css">
+   
+    <link rel="stylesheet" href="/bitstream-hackathon/css/jtd.css">
+  <link rel="icon" href="/bitstream-hackathon/assets/favicon.ico">
 
-<span class=hljs-comment ># after pruning model</span>
+   <title>Submission instructions</title>  
+</head>
+<body>                      <!-- closed in foot.html -->
+<div class="page-wrap">   <!-- closed in foot.html -->
+  <!-- SIDE BAR -->
+  <div class="side-bar">
+    <!-- <div class="header">
+      <a href="/bitstream-hackathon/" class="title">
+        <img src="/bitstream-hackathon/assets/pharm_homepage.jpg">
+      </a>
+    </div> -->
+    <label for="show-menu" class="show-menu">MENU</label>
+    <input type="checkbox" id="show-menu" role="button">
+    <div class="menu" id="side-menu">
+      <ul class="menu-list">
+        <li class="menu-list-item "><a href="/bitstream-hackathon/" class="menu-list-link ">Home</a>
+        <li class="menu-list-item">Tutorials
+          <ul class="menu-list-child-list" style="display: block;">
+            <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/overview/" class="menu-list-link ">Overview</a>
+            <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/bitstream/" class="menu-list-link ">Bitstreams 101</a>
+            <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/bitstreamlining/" class="menu-list-link ">Bitstreamlining</a>
+            <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/pruning/" class="menu-list-link ">Pruning</a>
+            <li class="menu-list-item "><a href="/bitstream-hackathon/tutorials/mobilenet/" class="menu-list-link ">Simulating MobileNet</a>
+            <li class="menu-list-item active"><a href="/bitstream-hackathon/tutorials/submission/" class="menu-list-link active">Submission guide</a>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="footer">
+      This is <em>Just the docs</em>, adapted from the <a href="https://github.com/pmarsceill/just-the-docs" target="_blank">Jekyll theme</a>.
+    </div>
+  </div>
+  <!-- CONTENT -->
+  <div class="main-content-wrap"> <!-- closed in foot.html -->
+    <div class="main-content">    <!-- closed in foot.html -->
+      <div class="main-header">
+        <span style="padding-right: 250px;">
+          <img src="/bitstream-hackathon/assets/red-flush-UWlogo.jpg" width="150px">
+          <img src="/bitstream-hackathon/assets/pharm_homepage.jpg" width="175px" style="padding-bottom: 10px;">
+        </span>
+        <a id="github" href="/bitstream-hackathon//github.com/UW-PHARM/BitSAD.jl">BitSAD.jl on GitHub</a>
+      </div>
 
-<span class=hljs-comment ># get test set</span>
-dataroot = joinpath(<span class=hljs-string >artifact&quot;vww&quot;</span>, <span class=hljs-string >&quot;vww-hackathon&quot;</span>)
+
+
+<!-- Content appended here (in class franklin-content) -->
+<div class="franklin-content"><h1 id="submission_instructions"><a href="#submission_instructions" class="header-anchor">Submission instructions</a></h1>
+<p>Once you have pruned your model, call the <code>evaluate_submission</code> function on the floating point model &#40;<em>note: DO NOT use the bitstream model</em>&#41;. You get to choose the simulation length for evaluating your model.</p>
+<pre><code class="julia hljs">include(<span class="hljs-string">&quot;src/setup.jl&quot;</span>)
+
+<span class="hljs-comment"># after pruning model</span>
+
+<span class="hljs-comment"># get test set</span>
+dataroot = joinpath(<span class="hljs-string">artifact&quot;vww&quot;</span>, <span class="hljs-string">&quot;vww-hackathon&quot;</span>)
 testdata = VisualWakeWords(dataroot; subset = :test)
 testaug = map_augmentation(ImageToTensor(), testdata)
-testloader = DataLoader(BatchView(testaug; batchsize = <span class=hljs-number >32</span>), <span class=hljs-literal >nothing</span>; buffered = <span class=hljs-literal >true</span>)
+testloader = DataLoader(BatchView(testaug; batchsize = <span class="hljs-number">32</span>), <span class="hljs-literal">nothing</span>; buffered = <span class="hljs-literal">true</span>)
 
-<span class=hljs-comment ># choose simulation length</span>
-sim_length = <span class=hljs-number >10_000</span> <span class=hljs-comment ># in clock cycles</span>
+<span class="hljs-comment"># choose simulation length</span>
+sim_length = <span class="hljs-number">10_000</span> <span class="hljs-comment"># in clock cycles</span>
 
-<span class=hljs-comment ># evaluate</span>
-evaluate_submission(model, testloader, sim_length)</code></pre> <p>Please use this form to submit your results: <a href="https://forms.gle/Qqjhmh2F6r3ZBqvB7">BCH@UW Submission Form</a></p> <p>Submissions are due by end of day &#40;any time zone&#41; on Saturday 5/7/2022.</p> <div class=page-foot > <hr> <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> UW-Madison PHARM Group. Last modified: October 02, 2023. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>. </div> </div> </div> </div> </div> <!-- end of class page-wrap-->
+<span class="hljs-comment"># evaluate</span>
+evaluate_submission(model, testloader, sim_length)</code></pre>
+<p>Please use this form to submit your results: <a href="https://forms.gle/Qqjhmh2F6r3ZBqvB7">BCH@UW Submission Form</a></p>
+<p>Submissions are due by end of day &#40;any time zone&#41; on Saturday 5/7/2022.</p>
+<div class="page-foot">
+    <hr>
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> UW-Madison PHARM Group. Last modified: October 03, 2023.
+    Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    </div> <!-- end of class main-content -->
+    </div> <!-- end of class main-content-wrap -->
+    </div> <!-- end of class page-wrap-->
+    
+    
+      
+
+
+    
+  </body>
+</html>
