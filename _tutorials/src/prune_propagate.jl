@@ -1,4 +1,3 @@
-
 slopehtanh(x::Real) = oftype(x, hardtanh(x) - softshrink(x,1)/4)
 
 function resize(model)
@@ -161,7 +160,7 @@ function resize_bn(model)
                     tempbias3 = false
                     s1 = size(tempweight3)
                     s2 = size(tempbias3)
-                    println("tempbias3 being made with $s1, $s2")
+                    #println("tempbias3 being made with $s1, $s2")
                     replacement3 = Conv(tempweight3, tempbias3 ;
                     stride = model[1].layers[k+2].stride,
                     pad = model[1].layers[k+2].pad,
@@ -355,7 +354,7 @@ function propbck(model)
     return propbck(model, out)
 end
 
-function propagate(model)
+function prune_propagate(model)
     global diff = 1
     global ldiff = 0
     global i = 0

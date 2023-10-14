@@ -12,12 +12,12 @@ Pkg.instantiate()
 
 # A better fit for our range constraint is to use [hardtanh](https://fluxml.ai/Flux.jl/stable/models/activation/#NNlib.hardtanh)
 # as the activation function. Apart from being 
-# much cheaper computationally, it would mimic the behavior of not haing any explicit activation function 
+# much cheaper computationally, it would mimic the behavior of not having any explicit activation function 
 # in the bitstream model. 
 
 # However, you might notice this is not the activation function present in the pretrained model. 
 # Due to the saturating nature of hardtanh, no "learning" might occur once values saturate to a magnitude of 1.
-# Therefore, we add a slight [negative slope](https://arxiv.org/abs/1603.00391) to hardtanh beyond our range of interest in the function slopehtanh(). 
+# Therefore, we add a slight [negative slope](https://arxiv.org/abs/1603.00391) to hardtanh beyond our range of interest in the function slopehtanh() for training the model. 
 
 # ## Penalizing saturation of parameters
 
@@ -30,7 +30,7 @@ Pkg.instantiate()
 # [softshrink](https://fluxml.ai/Flux.jl/stable/models/activation/#NNlib.softshrink) (with λ=1) of all 
 # parameters to the loss in training phase, creating a magnitude-aware training scheme. 
 
-# The functions enable_shrinkloss and disable_shrinkloss can help toggle this functionality on and off. It is off by default. 
+# The functions enable\_shrinkloss and disable\_shrinkloss can help toggle this functionality on and off. It is off by default. 
 
 # IT IS HIGHLY RECOMMENDED TO HAVE enable_shrinkloss() BEFORE YOU TRAIN YOUR MODEL TO AVOID A DIP IN ACCURACY
 
@@ -46,7 +46,8 @@ Pkg.instantiate()
 # once so that any saturations just get replaced by -1 or 1s respectively
 # and do not make the parameter based loss explode.
 
-BSON.@load "src/pretrained.bson" m
+include("_tutorials/src/setup.jl")
+BSON.@load "_tutorials/src/pretrained.bson" m
 m_merged = merge_conv_bn(m)
 m_merged = desaturate(m_merged)
 m = rebn(m_merged)
