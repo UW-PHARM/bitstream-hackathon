@@ -25,4 +25,3 @@ model_rescaled = Chain(model_scaled, x -> x .* total_scaling)
 accfn(valloader, model_rescaled)
 
 # This file was generated using Literate.jl, https://github.com/fredrikekre/Literate.jl
-

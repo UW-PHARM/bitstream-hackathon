@@ -39,4 +39,3 @@ abs(estimate(z) - float(z))
 Pkg.activate(".") # hideall
 
 # This file was generated using Literate.jl, https://github.com/fredrikekre/Literate.jl
-

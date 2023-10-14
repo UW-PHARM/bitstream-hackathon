@@ -49,11 +49,10 @@ end
 #m = prune(ChannelPrune(0.1), m)
 #m = prune(LevelPrune(0.2), m)
 #m = keepprune(m)
-#m = propagate(m)
+#m = prune_propagate(m)
 #m = resize_nobn(m)
 #m = desaturate(m)
 #m = rebn(m)
 #m = trainer(m, 1)
 
 # This file was generated using Literate.jl, https://github.com/fredrikekre/Literate.jl
-

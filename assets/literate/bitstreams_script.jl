@@ -39,4 +39,3 @@ end
 abs(estimate(z) - float(z))
 
 Pkg.activate(".") # hideall
-
