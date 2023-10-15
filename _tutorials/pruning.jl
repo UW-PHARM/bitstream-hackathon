@@ -42,7 +42,7 @@ include("_tutorials/src/setup.jl");
 # contains and the amount of memory needed to store the model. We can also calculate the number of multiplies and 
 # accumulates that MobileNetv1 incurs to produce an output.
 
-m = MobileNet(slopehtanh, 0.25; fcsize = 64, nclasses = 2)
+m = MobileNet(slopehtanh, 0.25; fcsize = 64, nclasses = 1)
 mults, adds, output_size = compute_dot_prods(m, (96, 96, 3, 1)) # height and weight are 96, input channels are 3, batch size = 1
 println("MobileNet Mults ", mults, " Adds ", adds)
 # 
