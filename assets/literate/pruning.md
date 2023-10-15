@@ -60,7 +60,7 @@ Now that we've finished our setup, let's prune our model. We can use the `FluxPr
 weights by calling `LevelPrune`.
 
 ````julia:ex4
-m_lv_pruned = prune(LevelPrune(0.2), m);
+m_lv_pruned = prune(LevelPrune(0.1), m);
 ````
 
 `FluxPrune`'s prune function takes in two inputs: the pruning strategy and the model to prune. We are using the `LevelPrune`
@@ -91,7 +91,7 @@ that our model has to perform.
 To prune channels, we can define the `ChannelPrune` strategy, which solely targets the convolutional layers.
 
 ````julia:ex6
-m_ch_pruned = prune(ChannelPrune(0.2), m);
+m_ch_pruned = prune(ChannelPrune(0.1), m);
 mults, adds, output_size = compute_dot_prods(m_ch_pruned, (96, 96, 3, 1)) # height and weight are 96, input channels are 3, batch size = 1
 println("MobileNet Mults ", mults, " Adds ", adds)
 ````
@@ -112,7 +112,7 @@ them out as well to extract further sparsity from pur pruning without impacting 
 ````julia:ex7
 m_pruned = keepprune(m_ch_pruned)
 m_prop = prune_propagate(m_pruned)
-mults, adds, output_size = compute_dot_prods(m_prop, (96, 96, 3, 1))
+mults, adds, output_size = compute_dot_prods(m_ch_pruned, (96, 96, 3, 1))
 println("Propagated MobileNet Mults ", mults, " Adds ", adds)
 ````
 
@@ -122,9 +122,7 @@ accomplish nothing, computationally. Instead of wasting resources on passing the
 kernels full of zeros around, they can be eliminated from the structure of our model.
 
 ````julia:ex8
-m_resized = resize(m_prop)
-mults, adds, output_size = compute_dot_prods(m_resized, (96, 96, 3, 1))
-println("Resized MobileNet Mults ", mults, " Adds ", adds)
+m_resized = resize(m)
 ````
 
 ### Pruning and Finetuning pipeline

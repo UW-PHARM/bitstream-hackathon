@@ -4,55 +4,55 @@ Chain(
     BatchNorm(8, slopehtanh),           # 16 parameters, plus 16
     Conv((3, 3), 8 => 8, pad=1, groups=8, bias=false),  # 72 parameters
     BatchNorm(8, slopehtanh),           # 16 parameters, plus 16
-    Conv((1, 1), 8 => 12),              # 108 parameters
-    BatchNorm(12, hardtanh),            # 24 parameters, plus 24
-    Conv((3, 3), 12 => 12, pad=1, stride=2, groups=12, bias=false),  # 108 parameters
-    BatchNorm(12, hardtanh),            # 24 parameters, plus 24
-    Conv((1, 1), 12 => 22),             # 286 parameters
-    BatchNorm(22, hardtanh),            # 44 parameters, plus 44
-    Conv((3, 3), 22 => 22, pad=1, groups=22, bias=false),  # 198 parameters
-    BatchNorm(22, hardtanh),            # 44 parameters, plus 44
-    Conv((1, 1), 22 => 20),             # 460 parameters
-    BatchNorm(20, hardtanh),            # 40 parameters, plus 40
-    Conv((3, 3), 20 => 20, pad=1, stride=2, groups=20, bias=false),  # 180 parameters
-    BatchNorm(20, hardtanh),            # 40 parameters, plus 40
-    Conv((1, 1), 20 => 42),             # 882 parameters
-    BatchNorm(42, hardtanh),            # 84 parameters, plus 84
-    Conv((3, 3), 42 => 42, pad=1, groups=42, bias=false),  # 378 parameters
-    BatchNorm(42, hardtanh),            # 84 parameters, plus 84
-    Conv((1, 1), 42 => 40),             # 1_720 parameters
-    BatchNorm(40, hardtanh),            # 80 parameters, plus 80
-    Conv((3, 3), 40 => 40, pad=1, stride=2, groups=40, bias=false),  # 360 parameters
-    BatchNorm(40, hardtanh),            # 80 parameters, plus 80
-    Conv((1, 1), 40 => 84),             # 3_444 parameters
-    BatchNorm(84, hardtanh),            # 168 parameters, plus 168
-    Conv((3, 3), 84 => 84, pad=1, groups=84, bias=false),  # 756 parameters
-    BatchNorm(84, hardtanh),            # 168 parameters, plus 168
-    Conv((1, 1), 84 => 83),             # 7_055 parameters
-    BatchNorm(83, hardtanh),            # 166 parameters, plus 166
-    Conv((3, 3), 83 => 83, pad=1, groups=83, bias=false),  # 747 parameters
-    BatchNorm(83, hardtanh),            # 166 parameters, plus 166
-    Conv((1, 1), 83 => 84),             # 7_056 parameters
-    BatchNorm(84, hardtanh),            # 168 parameters, plus 168
-    Conv((3, 3), 84 => 84, pad=1, groups=84, bias=false),  # 756 parameters
-    BatchNorm(84, hardtanh),            # 168 parameters, plus 168
-    Conv((1, 1), 84 => 85),             # 7_225 parameters
-    BatchNorm(85, hardtanh),            # 170 parameters, plus 170
-    Conv((3, 3), 85 => 85, pad=1, groups=85, bias=false),  # 765 parameters
-    BatchNorm(85, hardtanh),            # 170 parameters, plus 170
-    Conv((1, 1), 85 => 84),             # 7_224 parameters
-    BatchNorm(84, hardtanh),            # 168 parameters, plus 168
-    Conv((3, 3), 84 => 84, pad=1, groups=84, bias=false),  # 756 parameters
-    BatchNorm(84, hardtanh),            # 168 parameters, plus 168
-    Conv((1, 1), 84 => 83),             # 7_055 parameters
-    BatchNorm(83, hardtanh),            # 166 parameters, plus 166
-    Conv((3, 3), 83 => 83, pad=1, stride=2, groups=83, bias=false),  # 747 parameters
-    BatchNorm(83, hardtanh),            # 166 parameters, plus 166
-    Conv((1, 1), 83 => 163),            # 13_692 parameters
-    BatchNorm(163, hardtanh),           # 326 parameters, plus 326
-    Conv((3, 3), 163 => 163, pad=1, groups=163, bias=false),  # 1_467 parameters
-    BatchNorm(163, hardtanh),           # 326 parameters, plus 326
-    Conv((1, 1), 163 => 256),           # 41_984 parameters
+    Conv((1, 1), 8 => 16),              # 144 parameters
+    BatchNorm(16, hardtanh),            # 32 parameters, plus 32
+    Conv((3, 3), 16 => 16, pad=1, stride=2, groups=16, bias=false),  # 144 parameters
+    BatchNorm(16, hardtanh),            # 32 parameters, plus 32
+    Conv((1, 1), 16 => 32),             # 544 parameters
+    BatchNorm(32, hardtanh),            # 64 parameters, plus 64
+    Conv((3, 3), 32 => 32, pad=1, groups=32, bias=false),  # 288 parameters
+    BatchNorm(32, hardtanh),            # 64 parameters, plus 64
+    Conv((1, 1), 32 => 32),             # 1_056 parameters
+    BatchNorm(32, hardtanh),            # 64 parameters, plus 64
+    Conv((3, 3), 32 => 32, pad=1, stride=2, groups=32, bias=false),  # 288 parameters
+    BatchNorm(32, hardtanh),            # 64 parameters, plus 64
+    Conv((1, 1), 32 => 64),             # 2_112 parameters
+    BatchNorm(64, hardtanh),            # 128 parameters, plus 128
+    Conv((3, 3), 64 => 64, pad=1, groups=64, bias=false),  # 576 parameters
+    BatchNorm(64, hardtanh),            # 128 parameters, plus 128
+    Conv((1, 1), 64 => 64),             # 4_160 parameters
+    BatchNorm(64, hardtanh),            # 128 parameters, plus 128
+    Conv((3, 3), 64 => 64, pad=1, stride=2, groups=64, bias=false),  # 576 parameters
+    BatchNorm(64, hardtanh),            # 128 parameters, plus 128
+    Conv((1, 1), 64 => 128),            # 8_320 parameters
+    BatchNorm(128, hardtanh),           # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, groups=128, bias=false),  # 1_152 parameters
+    BatchNorm(128, hardtanh),           # 256 parameters, plus 256
+    Conv((1, 1), 128 => 128),           # 16_512 parameters
+    BatchNorm(128, hardtanh),           # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, groups=128, bias=false),  # 1_152 parameters
+    BatchNorm(128, hardtanh),           # 256 parameters, plus 256
+    Conv((1, 1), 128 => 128),           # 16_512 parameters
+    BatchNorm(128, hardtanh),           # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, groups=128, bias=false),  # 1_152 parameters
+    BatchNorm(128, hardtanh),           # 256 parameters, plus 256
+    Conv((1, 1), 128 => 128),           # 16_512 parameters
+    BatchNorm(128, hardtanh),           # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, groups=128, bias=false),  # 1_152 parameters
+    BatchNorm(128, hardtanh),           # 256 parameters, plus 256
+    Conv((1, 1), 128 => 128),           # 16_512 parameters
+    BatchNorm(128, hardtanh),           # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, groups=128, bias=false),  # 1_152 parameters
+    BatchNorm(128, hardtanh),           # 256 parameters, plus 256
+    Conv((1, 1), 128 => 128),           # 16_512 parameters
+    BatchNorm(128, hardtanh),           # 256 parameters, plus 256
+    Conv((3, 3), 128 => 128, pad=1, stride=2, groups=128, bias=false),  # 1_152 parameters
+    BatchNorm(128, hardtanh),           # 256 parameters, plus 256
+    Conv((1, 1), 128 => 256),           # 33_024 parameters
+    BatchNorm(256, hardtanh),           # 512 parameters, plus 512
+    Conv((3, 3), 256 => 256, pad=1, groups=256, bias=false),  # 2_304 parameters
+    BatchNorm(256, hardtanh),           # 512 parameters, plus 512
+    Conv((1, 1), 256 => 256),           # 65_792 parameters
     BatchNorm(256, slopehtanh),         # 512 parameters, plus 512
   ),
   Chain(
@@ -61,5 +61,5 @@ Chain(
     Dense(256 => 64, slopehtanh),       # 16_448 parameters
     Dense(64 => 1),                     # 65 parameters
   ),
-)         # Total: 98 trainable arrays, 125_962 parameters,
-          # plus 54 non-trainable, 3_752 parameters, summarysize 527.133 KiB.
+)         # Total: 98 trainable arrays, 231_073 parameters,
+          # plus 54 non-trainable, 5_472 parameters, summarysize 944.441 KiB.
