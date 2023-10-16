@@ -35,8 +35,8 @@ m = MobileNet(relu, 0.25; fcsize = 64, nclasses = 2)
 ## data loaders
 
 bs = 32
-trainloader = DataLoader(BatchView(trainaug; batchsize = bs), nothing; buffered = true)
-valloader = DataLoader(BatchView(valaug; batchsize = 2 * bs), nothing; buffered = true)
+trainloader = DataLoader(BatchView(trainaug; batchsize = bs); buffer = true)
+valloader = DataLoader(BatchView(valaug; batchsize = 2 * bs); buffer = true)
 ;
 
 ## training setup

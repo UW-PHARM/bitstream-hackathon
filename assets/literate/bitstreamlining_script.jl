@@ -3,6 +3,7 @@
 using Pkg # hideall
 Pkg.activate("_tutorials/Project.toml")
 Pkg.instantiate()
+include("_tutorials/src/setup.jl");
 
 include("_tutorials/src/setup.jl")
 BSON.@load "_tutorials/src/pretrained.bson" m

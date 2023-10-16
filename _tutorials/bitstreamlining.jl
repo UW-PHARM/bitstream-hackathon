@@ -1,6 +1,7 @@
 using Pkg # hideall
 Pkg.activate("_tutorials/Project.toml")
 Pkg.instantiate()
+include("_tutorials/src/setup.jl");
 
 # # Bitstreamlining: Training a model for bitstream computing
 
@@ -30,9 +31,8 @@ Pkg.instantiate()
 # [softshrink](https://fluxml.ai/Flux.jl/stable/models/activation/#NNlib.softshrink) (with λ=1) of all 
 # parameters to the loss in training phase, creating a magnitude-aware training scheme. 
 
-# The functions enable\_shrinkloss and disable\_shrinkloss can help toggle this functionality on and off. It is off by default. 
-
-# IT IS HIGHLY RECOMMENDED TO HAVE enable_shrinkloss() BEFORE YOU TRAIN YOUR MODEL TO AVOID A DIP IN ACCURACY
+# The functions enable\_shrinkloss and disable\_shrinkloss can help toggle this functionality on and off. 
+# It is highly recommended to have enable_shrinkloss() before you train your model. It is on by default. 
 
 # ## Training without the Batchnorm
 # While the BatchNorm helps our model train, it can be a place for parameter saturations to hide.

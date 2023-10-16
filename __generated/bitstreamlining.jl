@@ -1,6 +1,7 @@
 using Pkg # hideall
 Pkg.activate("./Project.toml")
 Pkg.instantiate()
+include("./src/setup.jl");
 
 include("./src/setup.jl")
 BSON.@load "./src/pretrained.bson" m

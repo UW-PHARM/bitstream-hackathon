@@ -2,3 +2,4 @@
 using Pkg # hideall
 Pkg.activate("_tutorials/Project.toml")
 Pkg.instantiate()
+include("_tutorials/src/setup.jl");
