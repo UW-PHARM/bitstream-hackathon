@@ -1,2 +1,1 @@
-LoadError: UndefVarError: `nobs` not defined
-in expression starting at /home/runner/work/bitstream-hackathon/bitstream-hackathon/_tutorials/src/setup.jl:35
+UndefVarError: `#slopehtanh` not defined

@@ -4,7 +4,7 @@ using FluxTraining
 using ParameterSchedulers
 using MLDatasets
 using MLDatasets: FileDataset
-#using DataLoaders: DataLoader
+#using DataLoaders: DataLoader MLDataPattern.LearnBase.nobs(x) = MLUtils.numobs(x)
 using DataAugmentation
 using CoordinateTransformations
 using Metalhead
@@ -32,7 +32,6 @@ Flux._indices(x::Base.ReshapedArray{<:Any, <:Any, <:Flux.OneHotVector}) =
 
 # hack for DataLoaders.jl + MLUtils.jl
 MLDataPattern.LearnBase.getobs(x, i) = MLUtils.getobs(x, i)
-MLDataPattern.LearnBase.nobs(x) = MLUtils.numobs(x)
 
 # bug fix for ADAMW + FluxTraining
 FluxTraining.setlearningrate!(os::Flux.Optimiser, lr) = foreach(os) do o
