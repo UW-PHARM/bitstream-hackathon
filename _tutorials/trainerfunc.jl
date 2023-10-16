@@ -14,8 +14,8 @@ function trainer(m, ln::Real=10)
     ;
 
     bs = 32
-    trainloader = DataLoader(BatchView(trainaug; batchsize = bs), nothing; buffered = true)
-    valloader = DataLoader(BatchView(valaug; batchsize =  2*bs), nothing; buffered = true)
+    trainloader = DataLoader(BatchView(trainaug; batchsize = bs); buffer = true)
+    valloader = DataLoader(BatchView(valaug; batchsize =  2*bs); buffer = true)
     ;
 
     lossfn = Flux.Losses.logitbinarycrossentropy 

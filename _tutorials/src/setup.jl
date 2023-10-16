@@ -4,7 +4,7 @@ using FluxTraining
 using ParameterSchedulers
 using MLDatasets
 using MLDatasets: FileDataset
-using DataLoaders: DataLoader
+#using DataLoaders: DataLoader
 using DataAugmentation
 using CoordinateTransformations
 using Metalhead
@@ -50,3 +50,5 @@ include("count_macs.jl")
 include("cost_evaluation.jl")
 include("evaluation.jl")
 include("prune_propagate.jl")
+
+enable_shrinkloss();

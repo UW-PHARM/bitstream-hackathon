@@ -114,7 +114,7 @@ println("Resized MobileNet Mults ", mults, " Adds ", adds)
 # and can be used as a starting point for your own training methodology.
 
 include("_tutorials/trainerfunc.jl");
-trainer(m_resized, 2) #trains resized model for 2 epochs
+trainer(m_resized, 1) #trains resized model for 2 epochs
 
 # Useful Resources:
 # 1. [Blog Post on Pruning and Sparsity](https://intellabs.github.io/distiller/pruning.html)

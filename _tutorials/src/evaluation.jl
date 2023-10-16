@@ -34,7 +34,7 @@ function evaluate_submission(model, simulation_length=1000)
     dataroot = joinpath(artifact"vww", "vww-hackathon")
     valdata = VisualWakeWords(dataroot; subset = :val)
     valaug = map_augmentation(ImageToTensor(), valdata)
-    valloader = DataLoader(BatchView(valaug; batchsize =  2*32), nothing; buffered = true)
+    valloader = DataLoader(BatchView(valaug; batchsize =  2*32); buffer = true)
     return evaluate_submission(model, valloader, simulation_length)
 end
 
@@ -61,6 +61,6 @@ function evaluate_submission_accuracy(model, simulation_length=10000)
     dataroot = joinpath(artifact"vww", "vww-hackathon")
     valdata = VisualWakeWords(dataroot; subset = :val)
     valaug = map_augmentation(ImageToTensor(), valdata)
-    valloader = DataLoader(BatchView(valaug; batchsize =  2*32), nothing; buffered = true)
+    valloader = DataLoader(BatchView(valaug; batchsize =  2*32); buffer = true)
     return evaluate_submission_accuracy(model, valloader, simulation_length)
 end
