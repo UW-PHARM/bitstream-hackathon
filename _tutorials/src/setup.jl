@@ -49,5 +49,3 @@ include("count_macs.jl")
 include("cost_evaluation.jl")
 include("evaluation.jl")
 include("prune_propagate.jl")
-
-enable_shrinkloss();

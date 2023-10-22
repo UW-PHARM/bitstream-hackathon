@@ -526,7 +526,7 @@ version = "0.2.0"
 
 [[deps.FluxTraining]]
 deps = ["BSON", "ChainRulesCore", "DataStructures", "EarlyStopping", "Flux", "Glob", "Graphs", "ImageCore", "InlineTest", "OnlineStats", "Optimisers", "ParameterSchedulers", "Parameters", "PrecompileTools", "PrettyTables", "ProgressMeter", "Reexport", "Setfield", "Statistics", "TensorBoardLogger", "UUIDs", "ValueHistories", "Zygote"]
-git-tree-sha1 = "a52bbe28043bba166debd7400e78cb84e3a2016e"
+git-tree-sha1 = "37b5ba69367df2c00b7361f99de682b262715d74"
 repo-rev = "master"
 repo-url = "https://github.com/nityajoshi/FluxTraining.jl"
 uuid = "7bf95e4d-ca32-48da-9824-f0dc5310474f"
