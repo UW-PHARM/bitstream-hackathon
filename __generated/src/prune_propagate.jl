@@ -154,7 +154,7 @@ function resize_bn(model)
 
                     push!(l1new, replacement1)
 
-                    push!(l1new, BatchNorm(size((tempweight1),4), hardtanh))
+                    push!(l1new, BatchNorm(size((tempweight1),4), model[1].layers[k+1].λ))
                     #k+=2
 
                     tempbias3 = false
@@ -168,7 +168,7 @@ function resize_bn(model)
                     groups = size(tempweight1, 4))
 
                     push!(l1new, replacement3)
-                    push!(l1new, BatchNorm(size((tempweight1),4), hardtanh))
+                    push!(l1new, BatchNorm(size((tempweight1),4), model[1].layers[k+1].λ))
 
                     tempbias5 = copy(model[1].layers[k+4].bias)
                     replacement5 = Conv(tempweight5, tempbias5;
