@@ -28,7 +28,4 @@ m_resized = resize(m_prop)
 mults, adds, output_size = compute_dot_prods(m_resized, (96, 96, 3, 1))
 println("Resized MobileNet Mults ", mults, " Adds ", adds)
 
-include("_tutorials/trainerfunc.jl");
-trainer(m_resized, 1) #trains resized model for 2 epochs
-
 Pkg.activate(".") # hideall

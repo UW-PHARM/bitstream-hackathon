@@ -3,7 +3,6 @@
 using Pkg # hideall
 Pkg.activate("_tutorials/Project.toml")
 Pkg.instantiate()
-include("_tutorials/src/setup.jl");
 ````
 
 # Bitstreamlining: Training a model for bitstream computing
@@ -50,10 +49,16 @@ once so that any saturations just get replaced by -1 or 1s respectively
 and do not make the parameter based loss explode.
 
 ````julia:ex2
-include("_tutorials/src/setup.jl")
-BSON.@load "_tutorials/src/pretrained.bson" m
-m_merged = merge_conv_bn(m)
-m_merged = desaturate(m_merged)
-m = rebn(m_merged)
+include("_tutorials/src/setup.jl");
+m = MobileNet(slopehtanh, 0.25; fcsize = 64, nclasses = 1);
+m_merged = merge_conv_bn(m);
+m_merged = desaturate(m_merged);
+m_bn = rebn(m_merged);
+````
+
+Do not forget to remove saturated values from model when merging batchnorm.
+
+````julia:ex3
+Pkg.activate(".") # hideall
 ````
 

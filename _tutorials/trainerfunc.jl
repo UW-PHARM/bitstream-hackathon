@@ -1,4 +1,4 @@
-function trainer(m, ln::Real=10)
+function trainer(m, func, ln::Real=5)
     dataroot = joinpath(artifact"vww", "vww-hackathon")
     traindata = VisualWakeWords(dataroot; subset = :train) |> shuffleobs
     valdata = VisualWakeWords(dataroot; subset = :val)
@@ -12,7 +12,7 @@ function trainer(m, ln::Real=10)
     trainaug = map_augmentation(augmentations, traindata)
     valaug = map_augmentation(ImageToTensor(), valdata)
     ;
-    enable_shrinkloss(1)
+
     bs = 32
     trainloader = DataLoader(BatchView(trainaug; batchsize = bs); buffer = true)
     valloader = DataLoader(BatchView(valaug; batchsize =  2*bs); buffer = true)
@@ -22,10 +22,9 @@ function trainer(m, ln::Real=10)
     accfn(ŷ, y) = mean((ŷ .> 0) .== y)
     # define schedule and optimizer
     es = length(trainloader)
-    initial_lr = 0.01
+    initial_lr = 0.001
     schedule = Interpolator(Step(initial_lr, 0.5, [25, 10]), es)
-    #optim = Nesterov(initial_lr)
-    optim =  Adam(initial_lr)
+    optim = func(initial_lr)
     # callbacks
     logger = TensorBoardBackend("tblogs")
     # schcb = Scheduler(LearningRate => schedule)
@@ -45,6 +44,10 @@ function trainer(m, ln::Real=10)
     return m
 end
 
+function trainer(m, ln::Real=10)
+    m = trainer(m, Adam, ln)
+    return m
+end
 
 #m = prune(ChannelPrune(0.1), m)
 #m = prune(LevelPrune(0.2), m)
