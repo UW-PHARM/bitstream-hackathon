@@ -53,7 +53,7 @@ println("MobileNet Mults ", mults, " Adds ", adds)
 
 m_lv_pruned = prune(LevelPrune(0.2), m);
 # `FluxPrune`'s prune function takes in two inputs: the pruning strategy and the model to prune. We are using the `LevelPrune`
-# strategy which traverses each layer of the model and removes the lowest `p%` (`10%` in this case) weights in each layer. This 
+# strategy which traverses each layer of the model and removes the lowest `p%` (`20%` in this case) weights in each layer. This 
 # is called unstructured pruning since we are concerned with removing the lowest magnitude weights and not worrying about if
 # the sparsity induces some kind of structure. `FluxPrune` allows you to set a different pruning strategy for every layer in the model
 # if you desire. Typically, we also have to finetune our resulting pruned model in order to recover some accuracy penalty induced by 
@@ -113,9 +113,10 @@ println("Resized MobileNet Mults ", mults, " Adds ", adds)
 # A basic template setup for training the model is provided by trainer function, 
 # and can be used as a starting point for your own training methodology.
 
-include("_tutorials/trainerfunc.jl");
-trainer(m_resized, 1) #trains resized model for 2 epochs
-
+# ```julia
+# include("_tutorials/trainerfunc.jl");
+# m = trainer(m, 1); #trains the model m for 1 epoch
+# ```
 # Useful Resources:
 # 1. [Blog Post on Pruning and Sparsity](https://intellabs.github.io/distiller/pruning.html)
 # 2. [Blog Post on Model Compression](https://medium.com/gsi-technology/an-overview-of-model-compression-techniques-for-deep-learning-in-space-3fd8d4ce84e5)

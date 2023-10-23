@@ -4,38 +4,6 @@ Pkg.instantiate()
 
 # # Simulating MobileNet
 
-# ## Evaluating the baseline model
-
-# In [Bitstreams 101](/tutorials/bitstream), you saw how we can compute a
-# multiplication operation using stochastic bitstreams with a single AND gate.
-# But there are many more operations that we can perform with bitstreams,
-# including addition, division, vector dot products, and matrix multiplication,
-# to name a few.
-# In this tutorial, you will learn how all these operations can come together
-# to evaluate a neural network using bitstream computing.
-
-# First, let us take a pretrained version of our model, MobileNet v1.
-# In your case, you will prune this model first, then follow this tutorial.
-
-include("_tutorials/src/setup.jl");
-
-BSON.@load "_tutorials/src/pretrained.bson" m
-
-# Let's see the accuracy of the pretrained model on the provided validation data set.
-
-ensure_artifact_installed("vww", artifacts)
-vwwdata = artifact_hash("vww", artifacts)
-dataroot = joinpath(artifact_path(vwwdata), "vww-hackathon")
-valdata = VisualWakeWords(dataroot; subset = :val)
-valaug = map_augmentation(ImageToTensor(), valdata)
-valloader = DataLoader(BatchView(valaug; batchsize = 32); buffer = true)
-
-accfn(ŷ::AbstractArray, y::AbstractArray) = mean((ŷ .> 0) .== y)
-accfn(data, model) = mean(accfn(model(x), y) for (x, y) in data)
-
-accfn(valloader, model)
-
-# This accuracy is quite good at 79%!
 
 # ## Building the bitstream computing model
 
@@ -74,27 +42,49 @@ accfn(valloader, model)
 # on campus to simulate these models. For the hackathon, we will be using an
 # approximation of the error induced by simulating bitstreams.
 
-simulation_length = 1000
-add_conversion_error!(model_scaled, simulation_length);
-
 # We provide you with a `add_conversion_error!` function that accepts a model
 # and simulation length in clock cycles. This function will use BitSAD to measure
 # the error incurred by generating bit sequences for each weight and bias,
 # then adjust the floating point weights and biases of the model to be slightly
 # off by the measured error.
-# You can then evaluate the adjusted model like you evaluated the original
-# baseline model above. We make one additional change to the model to make sure
-# we re-scale the output according to `total_scaling` defined above.
-# The drop in accuracy will be the penalty paid for the inaccuracy in the bitstreams.
-
-model_rescaled = Chain(model_scaled, x -> x .* total_scaling)
-accfn(valloader, model_rescaled)
 
 # The accuracy can vary substantially relative to the original baseline accuracy. 
-# This can happen if we use an extremely short simulation length.
-# In practice, your simulation length should be on the order of 10,000 cycles or more.
+# This can happen if we use an extremely short simulation length or 
+# the training regime was not streamlined for bitstream paradigm.
+# In practice, your simulation length should be on the order of 1,000 cycles or more.
 # Your goal in the hackthon is to choose a pruning strategy and requested latency
 # that minimizes energy consumption while maximizing accuracy.
+
+# ## Evaluating the baseline model
+
+# Let us now combine these adjustments and evaluate our model.
+
+# First, we take a pretrained version of our model, MobileNet v1.
+# In your case, you will prune + finetune this model first, then follow these steps.
+# ```julia
+# include("src/setup.jl");
+# 
+# BSON.@load "src/pretrained.bson" m
+# ```
+# Let's see the accuracy of the pretrained model on the provided validation data set.
+# ```julia
+# #the simulation length here is 10,000 cycles
+# evaluate_submission(m, 10,000)
+# ```
+# ```julia
+# [ Info: Calculating HW cost...
+# [ Info: Evaluating simulated model performance...
+# ┌ Info: Evaluation complete!
+# │ 
+# │ Area consumption = 1.2350551110799986e8 mm²
+# │ Energy consumption = 2.338759584800001e9 uW * cycles
+# │ Accuracy = 79.2% correct
+# │ 
+# └ Please submit these results on the website.
+# (1.2350551110799986e8, 2.3387595848000012e6, 0.7919858237631863)
+# ```
+
+# This accuracy is quite good at 79%!
 
 # ## Real simulation
 

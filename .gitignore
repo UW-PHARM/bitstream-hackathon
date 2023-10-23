@@ -3,4 +3,4 @@ __generated/
 .DS_Store
 node_modules/
 package-lock.json
-_tutorials/quantization.jl
+_tutorials/src/logs

@@ -10,7 +10,7 @@ This page will guide you through setting up your Julia environment and the tutor
 
 Going from nothing to a complete Julia IDE is easy. Just follow these steps:
 
-1. Install Julia by downloading v1.7.2 [here](https://julialang.org/downloads/) and installing the binary as per your system requirements. Ensure that your installation is working by opening your terminal and running (if this doesn't work for you, then you may need to add the `julia` binary to your system path):
+1. Install Julia by downloading v1.9.3 [here](https://julialang.org/downloads/) and installing the binary as per your system requirements. Ensure that your installation is working by opening your terminal and running (if this doesn't work for you, then you may need to add the `julia` binary to your system path):
     ```txt
     $ julia
                    _
@@ -18,7 +18,7 @@ Going from nothing to a complete Julia IDE is easy. Just follow these steps:
       (_)     | (_) (_)    |
        _ _   _| |_  __ _   |  Type "?" for help, "]?" for Pkg help.
       | | | | | | |/ _` |  |
-      | | |_| | | | (_| |  |  Version 1.7.2 (2022-02-06)
+      | | |_| | | | (_| |  |  Version 1.9.3 (2023-08-24)
      _/ |\__'_|_|_|\__'_|  |  Official https://julialang.org/ release
     |__/                   |
     
@@ -50,7 +50,7 @@ where the `.` denotes the "current working directory" as the path for the projec
 
 ## Accessing the pre-trained model and dataset
 
-We provide all participants with a pre-trained version of MobileNet-v1 designed to be used with bitstream computing. This model matches the original network with a width multipler of 0.25, input resolution of 96 by 96, and an activation function of hardtanh. You can access the pre-trained model by setting up the tutorial folder as described in [above](#setting-up-the-hackathon-tutorials). Then, in your code, add
+We provide all participants with a pre-trained version of MobileNet-v1 designed to be used with bitstream computing. This model matches the original network with a width multipler of 0.25, input resolution of 96 by 96, and an activation function of hardtanh, but with negative slope beyond [-1,1] (more on this later). You can access the pre-trained model by setting up the tutorial folder as described in [above](#setting-up-the-hackathon-tutorials). Then, in your code, add
 ```julia
 # this is the setup file included in the tutorial
 include("src/setup.jl")
@@ -65,6 +65,6 @@ We also provide a version of the [Visual Wake Words dataset](https://arxiv.org/a
 include("src/setup.jl")
 
 dataroot = joinpath(artifact"vww", "vww-hackathon")
-# get the train split (options are :train, :test, :val)
+# get the train split (options are :train, :val)
 traindata = VisualWakeWords(dataroot; subset = :train)
 ```
