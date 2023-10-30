@@ -25,7 +25,7 @@ x</code></pre><pre><code class="plaintext hljs">length(x) = 2
 SBitstream{Float64}(value = 0.3)
     with 1002 bits.</code></pre>
 <p>Finally, we can see that the empirical average over the <code>SBit</code>s in queue matches the encoded value quite closely.</p>
-<pre><code class="julia hljs">abs(estimate(x) - float(x))</code></pre><pre><code class="plaintext hljs">0.005389221556886259</code></pre>
+<pre><code class="julia hljs">abs(estimate(x) - float(x))</code></pre><pre><code class="plaintext hljs">0.006387225548902198</code></pre>
 <h2 id=operations_on_sbitstreams ><a href="#operations_on_sbitstreams" class=header-anchor >Operations on <code>SBitstream</code>s</a></h2>
 <p>So far, we have not computed any meaningful results with BitSAD. Let&#39;s go back to the multiplication example and try to multiply two <code>SBitstream</code>s.</p>
 <pre><code class="julia hljs">y = SBitstream(<span class=hljs-number >0.5</span>)
@@ -51,7 +51,7 @@ num_samples = <span class=hljs-number >1000</span>
     push!(z, zbit)
 <span class=hljs-keyword >end</span>
 
-abs(estimate(z) - float(z))</code></pre><pre><code class="plaintext hljs">0.0040000000000000036</code></pre>
+abs(estimate(z) - float(z))</code></pre><pre><code class="plaintext hljs">0.009999999999999981</code></pre>
 <p>We used a helper function, <code>multiply_sbit</code> to multiply the positive and negative channel of each <code>SBit</code> separately. This resulted in a new <code>SBit</code>, <code>zbit</code>, which we pushed onto <code>z</code>. When we take the empirical average of all these <code>zbit</code>s, we see that it is close to the true mean of <code>z</code>.</p>
 <p>Hopefully, you can now see why stochastic computing can be so resource efficient. Each channel of <code>multiply_sbit</code> only needed to multiply two 1-bit numbers. This can be done with a single AND gate.</p>
 

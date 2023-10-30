@@ -50,16 +50,19 @@ and do not make the parameter based loss explode.
 
 ```julia
 include("_tutorials/src/setup.jl");
+
+# this pretrained model has good accuracy on evaluating, but needs batchnorms if being trained.
+BSON.@load "src\\pretrained.bson" m
+m_bn = rebn(m);
+# m_bn now has blank batchnorms, ready for pruning and training.
+
 # this pretrained model still has its batchnorm layers present, which can cause saturations.
 BSON.@load "src\\pretrained_BN.bson" m
 m_merged = merge_conv_bn(m);
 #on merging the batchnorm, desaturation is necessary.
 m_merged = desaturate(m_merged);
-
-# this pretrained model has good accuracy on evaluating, but needs batchnorms if being trained.
-BSON.@load "src\\pretrained.bson" m
-m_bn = rebn(m);
-```julia
+# m_merged can now be trained for finetuning.
+```
 
 ````julia:ex2
 Pkg.activate(".") # hideall
