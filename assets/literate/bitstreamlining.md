@@ -34,7 +34,7 @@ saturated parameters during training. We can do this by adding a
 parameters to the loss in training phase, creating a magnitude-aware training scheme.
 
 The functions enable\_shrinkloss and disable\_shrinkloss can help toggle this functionality on and off.
-It is highly recommended to have enable_shrinkloss() before you train your model. It is on by default.
+It is highly recommended to have enable_shrinkloss(1) before you train your model. It is set to 1 by default.
 
 ## Training without the Batchnorm
 While the BatchNorm helps our model train, it can be a place for parameter saturations to hide.
@@ -48,17 +48,20 @@ On merging batchnorm, it would be helpful to desaturate the model
 once so that any saturations just get replaced by -1 or 1s respectively
 and do not make the parameter based loss explode.
 
-````julia:ex2
+```julia
 include("_tutorials/src/setup.jl");
-m = MobileNet(slopehtanh, 0.25; fcsize = 64, nclasses = 1);
+# this pretrained model still has its batchnorm layers present, which can cause saturations.
+BSON.@load "src\\pretrained_BN.bson" m
 m_merged = merge_conv_bn(m);
+#on merging the batchnorm, desaturation is necessary.
 m_merged = desaturate(m_merged);
-m_bn = rebn(m_merged);
-````
 
-Do not forget to remove saturated values from model when merging batchnorm.
+# this pretrained model has good accuracy on evaluating, but needs batchnorms if being trained.
+BSON.@load "src\\pretrained.bson" m
+m_bn = rebn(m);
+```julia
 
-````julia:ex3
+````julia:ex2
 Pkg.activate(".") # hideall
 ````
 
