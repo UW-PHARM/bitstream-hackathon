@@ -6,7 +6,7 @@
 
 ## Welcome to **BCH@UW!**
 
-Watch the [Introduction video](https://youtu.be/YAJSpcst7j0) or browse the [PPTX slides](assets/hackathon_introduction.pptx) at your convenience.
+Watch the [Introduction video](https://youtu.be/ZT_1PJJm-O8)) or browse the [PPTX slides](assets/hackathon_introduction.pptx) at your convenience.
 
 This hackathon will give you a chance to learn about ultra low-power neural networks, how they are designed, how they are programmed or trained, and how they are used to process sensory data from the real world.
 
@@ -16,7 +16,7 @@ When you participate, you will learn:
 - how to train a powerful neural network called MobileNet
 - how to prune/tune/quantize this network to make it energy efficient
 
-The **BCH@UW** Hackathon kicks off on *Sat 4/30 at 1pm in EH2261*.
+The **BCH@UW** Hackathon kicks off on *Sun 11/12/2023 at 1pm in EH2261*.
 In the meantime, you can work through the tutorials on this website to get started with the tools and optimization flows.
 
 ## Participation rules
