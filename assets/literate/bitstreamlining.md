@@ -49,7 +49,7 @@ once so that any saturations just get replaced by -1 or 1s respectively
 and do not make the parameter based loss explode.
 
 ```julia
-include("_tutorials/src/setup.jl");
+include("./src/setup.jl");
 
 # this pretrained model has good accuracy on evaluating, but needs batchnorms if being trained.
 BSON.@load "src\\pretrained.bson" m

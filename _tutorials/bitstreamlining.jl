@@ -46,7 +46,7 @@ Pkg.instantiate()
 # and do not make the parameter based loss explode.
 
 # ```julia
-# include("_tutorials/src/setup.jl"); 
+# include("./src/setup.jl"); 
 
 
 # # this pretrained model has good accuracy on evaluating, but needs batchnorms if being trained.
