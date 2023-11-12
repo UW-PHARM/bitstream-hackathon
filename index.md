@@ -6,6 +6,8 @@
 
 ## Welcome to **BCH@UW!**
 
+The hackathon is now live. You can work through the materials off line, on your own schedule. Please join the mailing list to ask any questions!  Submissions are due in two weeks (don't be afraid to ask for an extension if you need one).
+
 Watch the [Introduction video](https://youtu.be/DQgAueqjj4I) or browse the [PPTX slides](assets/hackathon_introduction.pptx) at your convenience.
 
 This hackathon will give you a chance to learn about ultra low-power neural networks, how they are designed, how they are programmed or trained, and how they are used to process sensory data from the real world.
