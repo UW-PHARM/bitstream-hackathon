@@ -26,18 +26,21 @@ function trainer(m, func, ln::Real=5)
     schedule = Interpolator(Step(initial_lr, 0.5, [25, 10]), es)
     optim = func(initial_lr)
 
-    logger = TensorBoardBackend("tblogs")
+    logger = TensorBoardBackend("tblog")
+    try
 
-    logcb = (LogMetrics(logger),)# LogHyperParams(logger))
-    valcb = Metrics(Metric(accfn; phase = TrainingPhase, name = "train_acc"),
-                    Metric(accfn; phase = ValidationPhase, name = "val_acc"))
-    learner = Learner(m, lossfn;
-                    data = (trainloader, valloader),
-                    optimizer = optim,
-                    callbacks = [ToGPU(), logcb..., valcb])
+        logcb = (LogMetrics(logger),)# LogHyperParams(logger))
+        valcb = Metrics(Metric(accfn; phase = TrainingPhase, name = "train_acc"),
+                        Metric(accfn; phase = ValidationPhase, name = "val_acc"))
+        learner = Learner(m, lossfn;
+                        data = (trainloader, valloader),
+                        optimizer = optim,
+                        callbacks = [ToGPU(), logcb..., valcb])
 
-    FluxTraining.fit!(learner, ln)
-    close(logger.logger)
+        FluxTraining.fit!(learner, ln)
+    finally
+        close(logger.logger)
+    end
 
     # save model
     m = learner.model |> cpu

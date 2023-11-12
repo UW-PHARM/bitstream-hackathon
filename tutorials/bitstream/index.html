@@ -3,7 +3,7 @@
 x = SBitstream(<span class=hljs-number >0.3</span>)</code></pre><pre><code class="plaintext hljs">SBitstream{Float64}(value = 0.3)
     with 0 bits.</code></pre> <p>Here, we created a <code>SBitstream</code> &#40;the type in BitSAD for stochastic bitstreams&#41; encoding the real value 0.3. <code>SBitstream</code> will keep track of the mean of the Bernoulli distribution, which we can recover with <code>float</code>.</p> <pre><code class="julia hljs">float(x)</code></pre><pre><code class="plaintext hljs">0.3</code></pre>
 <p>You&#39;ll also notice that there were &quot;0 bits enqueue&quot; in <code>x</code>. This refers to the fact that the bitstream, <code>x</code>, is a sequence of samples. Currently, we have not drawn any samples from <code>x</code>. We can try that now:</p>
-<pre><code class="julia hljs">xt = pop!(x)</code></pre><pre><code class="plaintext hljs">SBit(pos = true, neg = false)</code></pre>
+<pre><code class="julia hljs">xt = pop!(x)</code></pre><pre><code class="plaintext hljs">SBit(pos = false, neg = false)</code></pre>
 <p>Now, we have a single sample, <code>xt</code>, which is of type <code>SBit</code>. An <code>SBit</code> is a &quot;stochastic bit&quot; which is just a convenient alias for a <a href="https://docs.julialang.org/en/v1.6/manual/functions/#Named-Tuples"><code>NamedTuple</code></a> with two parts –- the positive part &#40;<code>pos</code>&#41; and the negative part &#40;<code>neg</code>&#41;.</p>
 <blockquote>
 <p>Wait, I thought stochastic bitstreams were a single bit sequence? <br />    –- You &#40;probably&#41;</p>
@@ -51,7 +51,7 @@ num_samples = <span class=hljs-number >1000</span>
     push!(z, zbit)
 <span class=hljs-keyword >end</span>
 
-abs(estimate(z) - float(z))</code></pre><pre><code class="plaintext hljs">0.0040000000000000036</code></pre>
+abs(estimate(z) - float(z))</code></pre><pre><code class="plaintext hljs">0.01100000000000001</code></pre>
 <p>We used a helper function, <code>multiply_sbit</code> to multiply the positive and negative channel of each <code>SBit</code> separately. This resulted in a new <code>SBit</code>, <code>zbit</code>, which we pushed onto <code>z</code>. When we take the empirical average of all these <code>zbit</code>s, we see that it is close to the true mean of <code>z</code>.</p>
 <p>Hopefully, you can now see why stochastic computing can be so resource efficient. Each channel of <code>multiply_sbit</code> only needed to multiply two 1-bit numbers. This can be done with a single AND gate.</p>
 
