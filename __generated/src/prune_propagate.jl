@@ -53,7 +53,7 @@ function resize_nobn(model)
                         i+=1
                     end
                     
-                    replacement1 = Conv(tempweight1, tempbias1 ;
+                    replacement1 = Conv(tempweight1, tempbias1 , papalayer.σ;
                     stride = papalayer.stride,
                     pad = papalayer.pad,
                     dilation = papalayer.dilation,
@@ -68,7 +68,7 @@ function resize_nobn(model)
                     s1 = size(tempweight3)
                     s2 = size(tempbias3)
                     #println("tempbias3 being made with $s1, $s2")
-                    replacement3 = Conv(tempweight3, tempbias3 ;
+                    replacement3 = Conv(tempweight3, tempbias3, model[1].layers[k+1].σ;
                     stride = model[1].layers[k+1].stride,
                     pad = model[1].layers[k+1].pad,
                     dilation = model[1].layers[k+1].dilation,
@@ -78,7 +78,7 @@ function resize_nobn(model)
                     #push!(l1new, BatchNorm(size((tempweight1),4), hardtanh))
 
                     tempbias5 = copy(model[1].layers[k+2].bias)
-                    replacement5 = Conv(tempweight5, tempbias5;
+                    replacement5 = Conv(tempweight5, tempbias5, model[1].layers[k+2].σ;
                     stride = model[1].layers[k+2].stride,
                     pad = model[1].layers[k+2].pad,
                     dilation = model[1].layers[k+2].dilation,
@@ -146,7 +146,7 @@ function resize_bn(model)
                         i+=1
                     end
                     
-                    replacement1 = Conv(tempweight1, tempbias1 ;
+                    replacement1 = Conv(tempweight1, tempbias1 , papalayer.σ;
                     stride = papalayer.stride,
                     pad = papalayer.pad,
                     dilation = papalayer.dilation,
@@ -161,7 +161,7 @@ function resize_bn(model)
                     s1 = size(tempweight3)
                     s2 = size(tempbias3)
                     #println("tempbias3 being made with $s1, $s2")
-                    replacement3 = Conv(tempweight3, tempbias3 ;
+                    replacement3 = Conv(tempweight3, tempbias3, model[1].layers[k+2].σ;
                     stride = model[1].layers[k+2].stride,
                     pad = model[1].layers[k+2].pad,
                     dilation = model[1].layers[k+2].dilation,
@@ -171,7 +171,7 @@ function resize_bn(model)
                     push!(l1new, BatchNorm(size((tempweight1),4), model[1].layers[k+1].λ))
 
                     tempbias5 = copy(model[1].layers[k+4].bias)
-                    replacement5 = Conv(tempweight5, tempbias5;
+                    replacement5 = Conv(tempweight5, tempbias5, model[1].layers[k+4].σ;
                     stride = model[1].layers[k+4].stride,
                     pad = model[1].layers[k+4].pad,
                     dilation = model[1].layers[k+4].dilation,
