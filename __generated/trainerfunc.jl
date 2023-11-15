@@ -26,13 +26,14 @@ function trainer(m, func, ln::Real=5)
     schedule = Interpolator(Step(initial_lr, 0.5, [25, 10]), es)
     optim = func(initial_lr)
 
-    logger = TensorBoardBackend("tblog")
+    #logger = TensorBoardBackend("tblog")
     try
+        global logger = TensorBoardBackend("tblogs")
 
-        logcb = (LogMetrics(logger),)# LogHyperParams(logger))
-        valcb = Metrics(Metric(accfn; phase = TrainingPhase, name = "train_acc"),
+        global logcb = (LogMetrics(logger),)# LogHyperParams(logger))
+        global valcb = Metrics(Metric(accfn; phase = TrainingPhase, name = "train_acc"),
                         Metric(accfn; phase = ValidationPhase, name = "val_acc"))
-        learner = Learner(m, lossfn;
+        global learner = Learner(m, lossfn;
                         data = (trainloader, valloader),
                         optimizer = optim,
                         callbacks = [ToGPU(), logcb..., valcb])

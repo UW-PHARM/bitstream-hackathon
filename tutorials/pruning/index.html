@@ -24,13 +24,13 @@ println(<span class=hljs-string >&quot;MobileNet Mults &quot;</span>, mults, <sp
 <pre><code class="julia hljs">m_pruned = keepprune(m_ch_pruned)
 m_prop = prune_propagate(m_pruned)
 mults, adds, output_size = compute_dot_prods(m_prop, (<span class=hljs-number >96</span>, <span class=hljs-number >96</span>, <span class=hljs-number >3</span>, <span class=hljs-number >1</span>))
-println(<span class=hljs-string >&quot;Propagated MobileNet Mults &quot;</span>, mults, <span class=hljs-string >&quot; Adds &quot;</span>, adds)</code></pre><pre><code class="plaintext hljs">Propagated MobileNet Mults 4968641 Adds 4866825
+println(<span class=hljs-string >&quot;Propagated MobileNet Mults &quot;</span>, mults, <span class=hljs-string >&quot; Adds &quot;</span>, adds)</code></pre><pre><code class="plaintext hljs">Propagated MobileNet Mults 5002864 Adds 4899018
 </code></pre>
 <h3 id=resizing_the_propagated_model ><a href="#resizing_the_propagated_model" class=header-anchor >Resizing the propagated model</a></h3>
 <p>If enough nodes get pruned out, there would be slices in the model which accomplish nothing, computationally. Instead of wasting resources on passing these kernels full of zeros around, they can be eliminated from the structure of our model.</p>
 <pre><code class="julia hljs">m_resized = resize(m_prop)
 mults, adds, output_size = compute_dot_prods(m_resized, (<span class=hljs-number >96</span>, <span class=hljs-number >96</span>, <span class=hljs-number >3</span>, <span class=hljs-number >1</span>))
-println(<span class=hljs-string >&quot;Resized MobileNet Mults &quot;</span>, mults, <span class=hljs-string >&quot; Adds &quot;</span>, adds)</code></pre><pre><code class="plaintext hljs">Resized MobileNet Mults 3638364 Adds 3487521
+println(<span class=hljs-string >&quot;Resized MobileNet Mults &quot;</span>, mults, <span class=hljs-string >&quot; Adds &quot;</span>, adds)</code></pre><pre><code class="plaintext hljs">Resized MobileNet Mults 3680115 Adds 3527886
 </code></pre>
 <h3 id=pruning_and_finetuning_pipeline ><a href="#pruning_and_finetuning_pipeline" class=header-anchor >Pruning and Finetuning pipeline</a></h3>
 <p>Now that we seen how to prune our model, let&#39;s try to finetune it to recover some of the accuracy we lost. A basic template setup for training the model is provided by trainer function, and can be used as a starting point for your own training methodology.</p>
@@ -51,7 +51,7 @@ m = trainer(m, <span class=hljs-number >1</span>); <span class=hljs-comment >#tr
 
 <div class=page-foot >
     <hr>
-    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> UW-Madison PHARM Group. Last modified: November 12, 2023.
+    <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> UW-Madison PHARM Group. Last modified: November 15, 2023.
     Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
 </div>
 </div>

@@ -27,14 +27,15 @@ function trainer(m, func, ln::Real=5)
     optim = func(initial_lr)
     # callbacks
 
-    logger = TensorBoardBackend("tblog")
+    #logger = TensorBoardBackend("tblog")
     try
-        
+        global logger = TensorBoardBackend("tblogs")
+
         # schcb = Scheduler(LearningRate => schedule)
-        logcb = (LogMetrics(logger),)# LogHyperParams(logger))
-        valcb = Metrics(Metric(accfn; phase = TrainingPhase, name = "train_acc"),
+        global logcb = (LogMetrics(logger),)# LogHyperParams(logger))
+        global valcb = Metrics(Metric(accfn; phase = TrainingPhase, name = "train_acc"),
                         Metric(accfn; phase = ValidationPhase, name = "val_acc"))
-        learner = Learner(m, lossfn;
+        global learner = Learner(m, lossfn;
                         data = (trainloader, valloader),
                         optimizer = optim,
                         callbacks = [ToGPU(), logcb..., valcb])
